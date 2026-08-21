@@ -12,6 +12,35 @@
   --radius:14px;
   --shadow:0 4px 18px rgba(38,51,60,0.08);
 }
+/* Colores por grado (PK-8vo) y grupo de Educación Especial/Autismo (E1-E13),
+   usados en el horario semanal, la tabla de maestros, las pestañas y el almanaque. */
+.c-pk{--gc-bg:#f1cfcf;--gc-fg:#9b3a3a}
+.c-k{--gc-bg:#f1e3cf;--gc-fg:#9b743a}
+.c-1{--gc-bg:#eaf1cf;--gc-fg:#889b3a}
+.c-2{--gc-bg:#d6f1cf;--gc-fg:#4e9b3a}
+.c-3{--gc-bg:#cff1dd;--gc-fg:#3a9b61}
+.c-4{--gc-bg:#cff1f1;--gc-fg:#3a9b9b}
+.c-5{--gc-bg:#cfddf1;--gc-fg:#3a619b}
+.c-6{--gc-bg:#d6cff1;--gc-fg:#4e3a9b}
+.c-7{--gc-bg:#eacff1;--gc-fg:#883a9b}
+.c-8{--gc-bg:#f1cfe3;--gc-fg:#9b3a74}
+.c-e1{--gc-bg:#c8e8e8;--gc-fg:#287a7a}
+.c-e2{--gc-bg:#c8d9e8;--gc-fg:#28547a}
+.c-e3{--gc-bg:#c8cbe8;--gc-fg:#282f7a}
+.c-e4{--gc-bg:#d5c8e8;--gc-fg:#48287a}
+.c-e5{--gc-bg:#e3c8e8;--gc-fg:#6d287a}
+.c-e6{--gc-bg:#e8c8de;--gc-fg:#7a2861}
+.c-e7{--gc-bg:#e8c8d0;--gc-fg:#7a283b}
+.c-e8{--gc-bg:#e8d0c8;--gc-fg:#7a3b28}
+.c-e9{--gc-bg:#e8dec8;--gc-fg:#7a6128}
+.c-e10{--gc-bg:#e3e8c8;--gc-fg:#6d7a28}
+.c-e11{--gc-bg:#d5e8c8;--gc-fg:#487a28}
+.c-e12{--gc-bg:#c8e8cb;--gc-fg:#287a2f}
+.c-e13{--gc-bg:#c8e8d9;--gc-fg:#287a54}
+.chip, .wk-cell, .wk-rot-chip{ background:var(--gc-bg); color:var(--gc-fg); }
+.dot{ background:var(--gc-bg); border-color:var(--gc-fg); }
+.grade-dot, .sw{ background:var(--gc-bg); }
+
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
@@ -277,7 +306,7 @@ td.cal-day.out-month .chip{opacity:.4; filter:saturate(.7);}
 .month-detail summary{cursor:pointer; padding:12px 0; font-weight:600; color:var(--teal-deep); font-size:.92rem;}
 .month-detail-list{list-style:none; margin:0; padding:0 0 14px; display:grid; gap:8px;}
 .month-detail-list li{font-size:.88rem; display:flex; align-items:flex-start; gap:8px;}
-.month-detail-list .dot{width:10px; height:10px; border-radius:3px; border:1px solid; flex:none; margin-top:4px;}
+.month-detail-list .dot{width:10px; height:10px; border-radius:3px; border-width:1px; border-style:solid; flex:none; margin-top:4px;}
 .no-sessions{color:var(--ink-soft); font-style:italic; padding:12px 0;}
 
 @media (max-width: 720px){
