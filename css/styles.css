@@ -170,17 +170,34 @@ a{color:var(--teal);}
 .hero-meta .item .label{font-family:'IBM Plex Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft);}
 .hero-meta .item .value{font-weight:600; margin-top:4px; color:var(--teal-deep);}
 .today-banner{
-  margin-top:18px; max-width:900px; background:var(--card); border:1px solid var(--line);
-  border-radius:var(--radius); padding:12px 18px; font-size:.88rem; box-shadow:var(--shadow);
-  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  margin-top:18px; max-width:640px; background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); padding:16px 20px; font-size:.88rem; box-shadow:var(--shadow);
 }
-.today-banner-dot{width:8px; height:8px; border-radius:50%; background:var(--mango); flex:none; align-self:center;}
+.today-banner-head{display:flex; align-items:center; gap:9px; margin-bottom:10px;}
+.today-banner-dot{width:8px; height:8px; border-radius:50%; background:var(--mango); flex:none;}
 .today-banner strong{color:var(--teal-deep);}
 .today-banner.is-today{
   border-color:var(--teal);
   background:linear-gradient(135deg, rgba(31,111,120,0.08), rgba(232,163,61,0.1));
 }
 .today-banner.is-today .today-banner-dot{background:var(--teal);}
+.today-banner-list{list-style:none; margin:0; padding:0; display:grid; gap:6px;}
+.today-banner-list li{
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  padding:4px 0; border-bottom:1px dashed var(--line);
+}
+.today-banner-list li:last-child{border-bottom:none;}
+.today-banner-list .tb-time{font-family:'IBM Plex Mono',monospace; font-size:.76rem; color:var(--ink-soft); min-width:82px; flex:none;}
+.today-banner-list .tb-grade{font-weight:600; flex:none;}
+.today-banner-list .tb-title{color:var(--ink-soft);}
+.today-banner-list li.is-done{opacity:.5;}
+.today-banner-list li.is-done .tb-time,
+.today-banner-list li.is-done .tb-grade,
+.today-banner-list li.is-done .tb-title{text-decoration:line-through;}
+.today-banner-list .tb-now{
+  font-family:'IBM Plex Mono',monospace; font-size:.65rem; font-weight:700; letter-spacing:.04em;
+  color:#fff; background:var(--teal-btn); padding:2px 7px; border-radius:999px; flex:none;
+}
 td.cal-day.is-today{border:2px solid var(--teal); box-shadow:0 0 0 3px rgba(31,111,120,0.15);}
 td.cal-day.is-today .daynum{color:var(--teal-deep); font-weight:700;}
 

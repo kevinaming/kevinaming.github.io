@@ -227,6 +227,7 @@ function fmtFechaLarga(year, month, day, lang){
         if(!fecha || !horas) return;
         sessions.push({
           start: new Date(fecha.year, fecha.month, fecha.day, horas[0].h, horas[0].min),
+          end: new Date(fecha.year, fecha.month, fecha.day, horas[1].h, horas[1].min),
           grade: gradeText, title: titulo,
         });
       });
@@ -235,43 +236,51 @@ function fmtFechaLarga(year, month, day, lang){
     return sessions;
   }
 
+  function dayKey(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
+
   function renderBanner(){
     const el = document.getElementById('today-banner');
     if(!el) return;
     const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
     const sessions = getAllSessions();
     const now = new Date();
-    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-    const todaySessions = sessions.filter(s => s.start >= startOfToday && s.start <= endOfToday);
-    const upcoming = sessions.filter(s => s.start > now);
+    const todayKey = dayKey(now);
 
-    if(todaySessions.length){
-      const items = todaySessions
-        .map(s => `${s.grade} · ${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)} — ${s.title}`)
-        .join(' &nbsp;·&nbsp; ');
-      const label = lang === 'en'
-        ? (todaySessions.length === 1 ? 'Today’s session:' : `Today’s sessions (${todaySessions.length}):`)
-        : (todaySessions.length === 1 ? 'Charla de hoy:' : `Charlas de hoy (${todaySessions.length}):`);
-      el.innerHTML = `<span class="today-banner-dot"></span><strong>${label}</strong> ${items}`;
-      el.hidden = false;
-      el.classList.add('is-today');
-    } else if(upcoming.length){
-      const next = upcoming[0];
-      const dateStr = fmtFechaLarga(next.start.getFullYear(), next.start.getMonth(), next.start.getDate(), lang);
-      const timeStr = fmtHora12(next.start.getHours(), next.start.getMinutes(), lang);
-      const label = lang === 'en' ? 'Next session:' : 'Próxima charla:';
-      el.innerHTML = `<span class="today-banner-dot"></span><strong>${label}</strong> ${dateStr}, ${next.grade} · ${timeStr} — ${next.title}`;
-      el.hidden = false;
-      el.classList.remove('is-today');
-    } else {
-      el.hidden = true;
-      el.innerHTML = '';
+    let todaySessions = sessions.filter(s => dayKey(s.start) === todayKey);
+    const allTodayDone = todaySessions.length > 0 && todaySessions.every(s => s.end <= now);
+
+    let targetSessions = todaySessions;
+    let isToday = true;
+    if(!todaySessions.length || allTodayDone){
+      const future = sessions.filter(s => s.start > now);
+      if(!future.length){ el.hidden = true; el.innerHTML = ''; return; }
+      const nextKey = dayKey(future[0].start);
+      targetSessions = future.filter(s => dayKey(s.start) === nextKey);
+      isToday = false;
     }
+
+    const label = isToday
+      ? (lang === 'en' ? 'Today’s sessions' : 'Charlas de hoy')
+      : (lang === 'en' ? 'Upcoming sessions' : 'Próximas charlas');
+    const dateStr = fmtFechaLarga(targetSessions[0].start.getFullYear(), targetSessions[0].start.getMonth(), targetSessions[0].start.getDate(), lang);
+    const nowLabel = lang === 'en' ? 'NOW' : 'AHORA';
+
+    const items = targetSessions.map(s=>{
+      const isDone = s.end <= now;
+      const isCurrent = s.start <= now && now < s.end;
+      const cls = isDone ? 'is-done' : (isCurrent ? 'is-current' : '');
+      const badge = isCurrent ? `<span class="tb-now">${nowLabel}</span>` : '';
+      return `<li class="${cls}"><span class="tb-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="tb-grade">${s.grade}</span><span class="tb-title">${s.title}</span>${badge}</li>`;
+    }).join('');
+
+    el.innerHTML = `<div class="today-banner-head"><span class="today-banner-dot"></span><strong>${label} — ${dateStr}</strong></div><ul class="today-banner-list">${items}</ul>`;
+    el.hidden = false;
+    el.classList.toggle('is-today', isToday);
   }
 
   renderBanner();
   window.I18N_RERENDER_HOOKS.push(renderBanner);
+  setInterval(renderBanner, 60000);
 
   const now = new Date();
   const monthId = `mes-${now.getFullYear()}-${pad2(now.getMonth()+1)}`;
