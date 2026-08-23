@@ -309,6 +309,7 @@ document.querySelectorAll('.tabs-group').forEach(group=>{
       panels.forEach(p=>p.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById(btn.dataset.tab).classList.add('active');
+      history.replaceState(null, '', '#' + btn.dataset.tab);
     });
   });
   if(buttons.length){ buttons[0].classList.add('active'); }
@@ -323,7 +324,27 @@ function activarTab(tabId, grupo){
   panelsContainer.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id===tabId));
   const target = document.getElementById(tabId);
   if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+  history.replaceState(null, '', '#' + tabId);
 }
+
+/* ---------- 02 · Abrir el grado/grupo correcto si la URL trae #tab-XX ---------- */
+(function(){
+  function activarDesdeHash(smooth){
+    const id = location.hash.slice(1);
+    if(!id) return;
+    const btn = document.querySelector(`.grade-tab[data-tab="${id}"]`);
+    if(!btn) return;
+    const grupo = btn.closest('.tabs-group')?.dataset.group;
+    if(!grupo) return;
+    activarTab(id, grupo);
+    if(!smooth){
+      const target = document.getElementById(id);
+      if(target){ target.scrollIntoView({behavior:'auto', block:'start'}); }
+    }
+  }
+  activarDesdeHash(false);
+  window.addEventListener('hashchange', ()=> activarDesdeHash(true));
+})();
 
 /* ---------- 03 · Filtro Maestros que se cruzan + Spotlight ---------- */
 (function(){
