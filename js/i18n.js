@@ -364,7 +364,7 @@ function i18nTranslateCalTableHeaders(lang) {
 const I18N_SCOPED_SELECTORS = [
   '.weekly-table', '.panel-head', '.grade-table', '.month-detail-list',
   '.month-title', '.month-nav-link', '#tabla-maestros tbody', '.hero-meta .value',
-  '.tabs-nav', '.legend',
+  '.tabs-nav', '.legend', '#mf-grado',
 ];
 
 function i18nApply(lang) {

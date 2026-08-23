@@ -17,9 +17,7 @@
 (function(){
   try {
     var stored = localStorage.getItem('lang');
-    var lang = (stored === 'en' || stored === 'es')
-      ? stored
-      : (navigator.language && navigator.language.toLowerCase().indexOf('en') === 0 ? 'en' : 'es');
+    var lang = (stored === 'en' || stored === 'es') ? stored : 'es';
     document.documentElement.setAttribute('lang', lang);
   } catch (e) {}
 })();
