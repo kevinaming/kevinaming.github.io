@@ -128,7 +128,8 @@ a{color:var(--teal);}
   letter-spacing:.03em; transition:.15s;
 }
 .lang-toggle:hover{border-color:var(--teal); color:var(--teal-deep);}
-.topnav .brand{font-family:'Fraunces',serif; font-weight:600; color:var(--teal-deep); white-space:nowrap; font-size:1.05rem;}
+.topnav .brand{font-family:'Fraunces',serif; font-weight:600; color:var(--teal-deep); white-space:nowrap; font-size:1.05rem; text-decoration:none; transition:.15s;}
+.topnav .brand:hover{color:var(--teal);}
 .topnav nav{display:flex; gap:16px; flex-wrap:nowrap;}
 .topnav nav a{
   color:var(--ink-soft); text-decoration:none; font-size:.92rem; font-weight:500;
