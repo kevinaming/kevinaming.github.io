@@ -87,6 +87,7 @@ const I18N_UI = {
 
     'footer.p1': 'Calendario preparado por Kevin García, Maestro Recurso en el Uso de la Computadora, para la Escuela Arianys Nicole Rosa Luquis, dirigido a la Dra. Rebecca López Morell. Elaborado a partir de la Organización Escolar 2026–2027 y el Calendario Escolar 2026–2027 del Departamento de Educación de Puerto Rico.',
     'footer.sig': 'Educación Bilingüe · Dos idiomas, infinitas posibilidades',
+    'footer.copyright': 'Escuela Arianys Nicole Rosa Luquis. Todos los derechos reservados.',
 
     'lang.toggle.label': 'Switch to English',
   },
@@ -170,6 +171,7 @@ const I18N_UI = {
 
     'footer.p1': 'Calendar prepared by Kevin García, Resource Teacher for Computer Use, for Arianys Nicole Rosa Luquis School, addressed to Dr. Rebecca López Morell. Built from the 2026–2027 school master schedule and the Puerto Rico Department of Education’s 2026–2027 School Calendar.',
     'footer.sig': 'Bilingual Education · Two languages, endless possibilities',
+    'footer.copyright': 'Arianys Nicole Rosa Luquis School. All rights reserved.',
 
     'lang.toggle.label': 'Cambiar a español',
   },

@@ -1,3 +1,9 @@
+/* ---------- 00a · Año del copyright ---------- */
+(function(){
+  const el = document.getElementById('copyright-year');
+  if(el) el.textContent = new Date().getFullYear();
+})();
+
 /* ---------- 00 · Modo claro / oscuro ---------- */
 (function(){
   const btn = document.getElementById('theme-toggle');
