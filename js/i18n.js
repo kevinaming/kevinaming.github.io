@@ -80,6 +80,7 @@ const I18N_UI = {
     'grados.th.hora': 'Hora',
     'grados.th.unidad': 'Unidad',
     'grados.th.tema': 'Tema de la charla',
+    'grados.rotation-note': 'Estos 13 grupos autocontenidos comparten los 5 períodos de Integrado que quedaban libres en el horario. Cada período rota entre 2 o 3 grupos semana por semana (ver el horario semanal arriba), por lo que cada grupo recibe una charla aproximadamente cada 2 o 3 semanas, siguiendo el mismo temario adaptado a su nivel.',
 
     'almanaque.kicker': 'Vista de almanaque',
     'almanaque.h2': 'Almanaque del año escolar',
@@ -164,6 +165,7 @@ const I18N_UI = {
     'grados.th.hora': 'Time',
     'grados.th.unidad': 'Unit',
     'grados.th.tema': 'Session topic',
+    'grados.rotation-note': 'These 13 self-contained groups share the 5 Integrated periods left unassigned in the schedule. Each period rotates among 2 or 3 groups week by week (see the weekly schedule above), so each group gets a session roughly every 2 or 3 weeks, following the same curriculum adapted to their level.',
 
     'almanaque.kicker': 'Calendar view',
     'almanaque.h2': 'School year calendar',
@@ -295,6 +297,9 @@ const I18N_PHRASES = [
   ['Fundamentos de la Alfabetización Digital (TEED 151-1025)', 'Digital Literacy Fundamentals (TEED 151-1025)'],
   ['Fundamentos de la Alfabetización Digital (adaptado)', 'Digital Literacy Fundamentals (adapted)'],
   ['Unidad', 'Unit'],
+  ['Ver detalle de charlas de', 'See session details for'],
+  ['comparte este período con', 'shares this period with'],
+  ['Rotación de', 'Rotation of'],
 ];
 
 /* ---------- 3. Motor de traducción de patrones ---------- */
@@ -341,6 +346,7 @@ function i18nTranslateContainer(root, lang) {
     acceptNode(node) {
       const tag = node.parentElement && node.parentElement.tagName;
       if (tag === 'SCRIPT' || tag === 'STYLE') return NodeFilter.FILTER_REJECT;
+      if (node.parentElement && node.parentElement.closest('.pending')) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     },
   });
@@ -364,7 +370,7 @@ function i18nTranslateCalTableHeaders(lang) {
 
 /* ---------- 4. Aplicar idioma a toda la página ---------- */
 const I18N_SCOPED_SELECTORS = [
-  '.weekly-table', '.panel-head', '.grade-table', '.month-detail-list',
+  '.weekly-table', '.panel-head', '.grade-table', '.month-detail',
   '.month-title', '.month-nav-link', '#tabla-maestros tbody', '.hero-meta .value',
   '.tabs-nav', '.legend', '#mf-grado',
 ];
