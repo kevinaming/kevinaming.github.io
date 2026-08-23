@@ -1,3 +1,41 @@
+/* ---------- 00 · Modo claro / oscuro ---------- */
+(function(){
+  const btn = document.getElementById('theme-toggle');
+  if(!btn) return;
+  const root = document.documentElement;
+
+  function syncButton(theme){
+    const isDark = theme === 'dark';
+    btn.setAttribute('aria-pressed', String(isDark));
+    const label = isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  }
+
+  syncButton(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
+  btn.addEventListener('click', ()=>{
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch(e) {}
+    syncButton(next);
+  });
+
+  if(window.matchMedia){
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const onSystemChange = (e)=>{
+      let stored = null;
+      try { stored = localStorage.getItem('theme'); } catch(err) {}
+      if(stored === 'light' || stored === 'dark') return;
+      const theme = e.matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', theme);
+      syncButton(theme);
+    };
+    if(mq.addEventListener) mq.addEventListener('change', onSystemChange);
+    else if(mq.addListener) mq.addListener(onSystemChange);
+  }
+})();
+
 document.querySelectorAll('.tabs-group').forEach(group=>{
   const groupName = group.dataset.group;
   const panelsContainer = document.querySelector(`[data-panels="${groupName}"]`);

@@ -3,6 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<script>
+(function(){
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored === 'light' || stored === 'dark'
+      ? stored
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+</script>
 <title>Calendario de Charlas de Alfabetización Digital — Escuela Arianys Nicole Rosa Luquis</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="description" content="Calendario semanal de charlas de Alfabetización Digital de PK a 8vo grado en la Escuela Arianys Nicole Rosa Luquis, año escolar 2026–2027: horario, maestros y almanaque completo.">
@@ -29,6 +41,10 @@
       <a href="#grados">Charlas por grado</a>
       <a href="#almanaque">Almanaque</a>
     </nav>
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.4"/><path d="M12 19.1v2.4"/><path d="M4.2 4.2l1.7 1.7"/><path d="M18.1 18.1l1.7 1.7"/><path d="M2.5 12h2.4"/><path d="M19.1 12h2.4"/><path d="M4.2 19.8l1.7-1.7"/><path d="M18.1 5.9l1.7-1.7"/></g></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.8A8.6 8.6 0 1 1 9.2 3.8a7 7 0 0 0 11 11z" fill="currentColor"/></svg>
+    </button>
   </div>
 </div>
 

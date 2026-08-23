@@ -6,11 +6,51 @@
   --line:#dcd3c2;
   --teal:#1f6f78;
   --teal-deep:#154f56;
+  --teal-btn:#1f6f78;
+  --teal-btn-hover:#154f56;
   --mango:#e8a33d;
   --mango-deep:#b97c22;
   --card:#ffffff;
+  --nav-bg:rgba(250,246,239,0.92);
   --radius:14px;
   --shadow:0 4px 18px rgba(38,51,60,0.08);
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --paper:#1b2127;
+  --paper-alt:#20262d;
+  --ink:#e7ebee;
+  --ink-soft:#9aa7b0;
+  --line:#333c44;
+  --teal:#5cc3cc;
+  --teal-deep:#8bdae1;
+  --teal-btn:#227b85;
+  --teal-btn-hover:#1a5b64;
+  --mango:#f0b35c;
+  --mango-deep:#f7ca85;
+  --card:#232a31;
+  --nav-bg:rgba(27,33,39,0.88);
+  --shadow:0 4px 18px rgba(0,0,0,0.35);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]):not([data-theme="dark"]){
+    --paper:#1b2127;
+    --paper-alt:#20262d;
+    --ink:#e7ebee;
+    --ink-soft:#9aa7b0;
+    --line:#333c44;
+    --teal:#5cc3cc;
+    --teal-deep:#8bdae1;
+    --teal-btn:#227b85;
+    --teal-btn-hover:#1a5b64;
+    --mango:#f0b35c;
+    --mango-deep:#f7ca85;
+    --card:#232a31;
+    --nav-bg:rgba(27,33,39,0.88);
+    --shadow:0 4px 18px rgba(0,0,0,0.35);
+    color-scheme:dark;
+  }
 }
 /* Colores por grado (PK-8vo) y grupo de Educación Especial/Autismo (E1-E13),
    usados en el horario semanal, la tabla de maestros, las pestañas y el almanaque. */
@@ -63,11 +103,22 @@ a{color:var(--teal);}
 /* ---------- NAV ---------- */
 .topnav{
   position:sticky; top:0; z-index:50;
-  background:rgba(250,246,239,0.92);
+  background:var(--nav-bg);
   backdrop-filter:blur(6px);
   border-bottom:1px solid var(--line);
 }
 .topnav .wrap{display:flex; align-items:center; gap:18px; padding:12px 24px; overflow-x:auto;}
+.theme-toggle{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:34px; height:34px; border-radius:999px; border:1px solid var(--line);
+  background:var(--card); color:var(--ink-soft); cursor:pointer; flex:none;
+  margin-left:auto; padding:0; transition:.15s;
+}
+.theme-toggle:hover{border-color:var(--teal); color:var(--teal-deep);}
+.theme-toggle svg{width:18px; height:18px; display:block;}
+.theme-toggle .icon-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
 .topnav .brand{font-family:'Fraunces',serif; font-weight:600; color:var(--teal-deep); white-space:nowrap; font-size:1.05rem;}
 .topnav nav{display:flex; gap:16px; flex-wrap:nowrap;}
 .topnav nav a{
@@ -93,7 +144,7 @@ a{color:var(--teal);}
 .eyebrow{
   display:inline-flex; align-items:center; gap:8px;
   font-family:'IBM Plex Mono', monospace; font-size:.78rem; letter-spacing:.08em; text-transform:uppercase;
-  color:var(--teal-deep); background:#fff; border:1px solid var(--line);
+  color:var(--teal-deep); background:var(--card); border:1px solid var(--line);
   padding:6px 12px; border-radius:999px; margin-bottom:22px;
 }
 .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--mango);}
@@ -130,7 +181,7 @@ section.block.alt{background:var(--paper-alt); border-top:1px solid var(--line);
   display:flex; gap:12px; align-items:flex-start; box-shadow:var(--shadow);
 }
 .method-list .num{
-  font-family:'IBM Plex Mono',monospace; font-weight:600; color:#fff; background:var(--teal);
+  font-family:'IBM Plex Mono',monospace; font-weight:600; color:#fff; background:var(--teal-btn);
   width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center;
   flex:none; font-size:.82rem;
 }
@@ -157,12 +208,12 @@ table.weekly-table thead th{
 .wk-rot-list li{margin-bottom:2px;}
 .subsection-title{font-size:1.05rem; margin:34px 0 14px; color:var(--teal-deep); display:flex; align-items:center; gap:10px;}
 .subsection-title .tag{font-family:'IBM Plex Mono',monospace; font-size:.7rem; background:var(--mango); color:#fff; padding:3px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:.04em;}
-.rotation-note{background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:20px; font-size:.88rem; color:var(--ink-soft);}
+.rotation-note{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:20px; font-size:.88rem; color:var(--ink-soft);}
 
 /* Maestros que se cruzan */
 .filter-bar{
   display:flex; flex-wrap:wrap; gap:14px; align-items:flex-end;
-  background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px; box-shadow:var(--shadow);
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px; box-shadow:var(--shadow);
 }
 .filter-field{display:flex; flex-direction:column; gap:6px;}
 .filter-field label{font-family:'IBM Plex Mono',monospace; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);}
@@ -174,7 +225,7 @@ table.weekly-table thead th{
   font-family:'IBM Plex Mono',monospace; font-size:.78rem; color:var(--teal); background:none; border:1px solid var(--teal);
   border-radius:999px; padding:8px 14px; cursor:pointer; align-self:flex-end;
 }
-.filter-clear:hover{background:var(--teal); color:#fff;}
+.filter-clear:hover{background:var(--teal-btn); color:#fff;}
 .filter-count{font-size:.82rem; color:var(--ink-soft); margin-bottom:14px;}
 table.maestros-table{border-collapse:collapse; width:100%; min-width:760px;}
 table.maestros-table th{
@@ -203,13 +254,13 @@ em.pending{color:var(--mango-deep); font-style:italic; font-size:.86rem;}
 .spotlight-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; flex-wrap:wrap;}
 .spotlight-head h3{margin:0; font-size:1.2rem;}
 .spotlight-close{
-  font-family:'IBM Plex Mono',monospace; font-size:.76rem; color:var(--ink-soft); background:#fff;
+  font-family:'IBM Plex Mono',monospace; font-size:.76rem; color:var(--ink-soft); background:var(--card);
   border:1px solid var(--line); border-radius:999px; padding:5px 12px; cursor:pointer;
 }
 .spotlight-close:hover{border-color:var(--teal); color:var(--teal-deep);}
 .spotlight-sub{color:var(--ink-soft); font-size:.9rem; margin-bottom:16px;}
 .spotlight-cards{display:grid; gap:12px; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
-.spot-card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow);}
+.spot-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow);}
 .spot-card .sc-title{font-weight:600; color:var(--teal-deep); margin-bottom:4px;}
 .spot-card .sc-when{font-family:'IBM Plex Mono',monospace; font-size:.78rem; color:var(--ink-soft); margin-bottom:6px;}
 .spot-card .sc-materia{font-size:.86rem; margin-bottom:10px;}
@@ -222,17 +273,17 @@ em.pending{color:var(--mango-deep); font-style:italic; font-size:.86rem;}
   padding:3px 7px; border-radius:6px;
 }
 .spot-card .sc-jump{
-  font-family:'IBM Plex Mono',monospace; font-size:.78rem; font-weight:600; color:#fff; background:var(--teal);
+  font-family:'IBM Plex Mono',monospace; font-size:.78rem; font-weight:600; color:#fff; background:var(--teal-btn);
   border:none; border-radius:8px; padding:7px 12px; cursor:pointer; width:100%;
 }
-.spot-card .sc-jump:hover{background:var(--teal-deep);}
+.spot-card .sc-jump:hover{background:var(--teal-btn-hover);}
 .spotlight-empty{color:var(--ink-soft); font-style:italic; font-size:.9rem;}
 
 /* Grade tabs */
 .tabs-nav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
 .grade-tab{
   font-family:'Work Sans',sans-serif; font-weight:600; font-size:.9rem;
-  border:1px solid var(--line); background:#fff; color:var(--ink-soft);
+  border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
   padding:9px 16px; border-radius:999px; cursor:pointer; transition:.15s;
 }
 .grade-tab:hover{border-color:var(--teal);}
@@ -272,10 +323,10 @@ tr.repaso-row td{opacity:.7; font-style:italic;}
 }
 .month-nav-link{
   font-family:'IBM Plex Mono',monospace; font-size:.78rem; text-decoration:none;
-  color:var(--teal-deep); background:#fff; border:1px solid var(--line); border-radius:999px;
+  color:var(--teal-deep); background:var(--card); border:1px solid var(--line); border-radius:999px;
   padding:6px 12px; white-space:nowrap;
 }
-.month-nav-link:hover{background:var(--teal); color:#fff; border-color:var(--teal);}
+.month-nav-link:hover{background:var(--teal-btn); color:#fff; border-color:var(--teal-btn);}
 .month-block{margin-bottom:52px; scroll-margin-top:120px;}
 .month-title{font-size:1.4rem; margin-bottom:14px;}
 .cal-table{border-collapse:separate; border-spacing:6px; width:100%; table-layout:fixed;}
@@ -319,7 +370,7 @@ td.cal-day.out-month .chip{opacity:.4; filter:saturate(.7);}
 .legend{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;}
 .legend .lg-item{
   display:flex; align-items:center; gap:7px; font-size:.82rem; color:var(--ink-soft);
-  background:#fff; border:1px solid var(--line); border-radius:999px; padding:5px 10px;
+  background:var(--card); border:1px solid var(--line); border-radius:999px; padding:5px 10px;
 }
 .legend .sw{width:12px; height:12px; border-radius:4px;}
 
@@ -342,16 +393,16 @@ footer .sig{margin-top:18px; font-family:'Fraunces',serif; color:var(--teal-deep
   border:1px solid var(--line); background:var(--paper);
 }
 .search-row button{
-  font-family:'IBM Plex Mono',monospace; font-size:.82rem; font-weight:600; color:#fff; background:var(--teal);
+  font-family:'IBM Plex Mono',monospace; font-size:.82rem; font-weight:600; color:#fff; background:var(--teal-btn);
   border:none; border-radius:9px; padding:10px 18px; cursor:pointer;
 }
-.search-row button:hover{background:var(--teal-deep);}
+.search-row button:hover{background:var(--teal-btn-hover);}
 .search-result{margin-top:12px; font-size:.88rem; color:var(--ink-soft);}
 .search-result .hit-list{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
 .search-result .hit-btn{
-  font-family:'IBM Plex Mono',monospace; font-size:.78rem; border:1px solid var(--line); background:#fff;
+  font-family:'IBM Plex Mono',monospace; font-size:.78rem; border:1px solid var(--line); background:var(--card);
   color:var(--teal-deep); border-radius:999px; padding:6px 13px; cursor:pointer;
 }
-.search-result .hit-btn:hover{background:var(--teal); color:#fff; border-color:var(--teal);}
+.search-result .hit-btn:hover{background:var(--teal-btn); color:#fff; border-color:var(--teal-btn);}
 .search-result .no-hit{color:var(--mango-deep);}
 @media (max-width:600px){ .search-row{flex-direction:column;} }
