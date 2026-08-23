@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<title>Página no encontrada — Calendario de Charlas de Alfabetización Digital</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .notfound{
+    min-height:calc(100vh - 140px);
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:64px 24px;
+  }
+  .notfound .code{
+    font-family:'IBM Plex Mono',monospace; font-size:.85rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--mango-deep); margin-bottom:14px;
+  }
+  .notfound h1{font-size:clamp(1.8rem,4vw,2.6rem); max-width:620px; margin:0 auto 14px;}
+  .notfound p{color:var(--ink-soft); max-width:520px; margin:0 auto 8px; line-height:1.6;}
+  .notfound p.en{font-size:.92rem; margin-bottom:28px;}
+  .notfound .home-link{
+    display:inline-block; margin-top:12px; font-family:'IBM Plex Mono',monospace; font-size:.85rem; font-weight:600;
+    color:#fff; background:var(--teal-btn); text-decoration:none; padding:11px 22px; border-radius:999px;
+    transition:.15s;
+  }
+  .notfound .home-link:hover{background:var(--teal-btn-hover);}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="wrap">
+    <span class="brand">Alfabetización Digital · ANRL</span>
+  </div>
+</div>
+
+<main class="notfound">
+  <div>
+    <div class="code">Error 404</div>
+    <h1>Esta página no existe</h1>
+    <p>El enlace que seguiste puede estar roto, desactualizado, o la página fue movida. Vuelve al calendario para encontrar lo que buscabas.</p>
+    <p class="en">This page doesn’t exist. The link you followed may be broken or outdated — head back to the calendar.</p>
+    <a class="home-link" href="index.html">Volver al inicio · Back to home</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; <span id="copyright-year">2026</span> Escuela Arianys Nicole Rosa Luquis. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('copyright-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
