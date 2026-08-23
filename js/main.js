@@ -1,3 +1,5 @@
+window.I18N_RERENDER_HOOKS = [];
+
 /* ---------- 00a · Año del copyright ---------- */
 (function(){
   const el = document.getElementById('copyright-year');
@@ -42,8 +44,152 @@
   }
 })();
 
+/* ---------- 00c · Exportar charlas a .ics (Google Calendar / Outlook / Apple) ---------- */
+(function(){
+  const MESES_ES = {enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,octubre:9,noviembre:10,diciembre:11};
+  const MESES_EN = {january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11};
+  const ICS_LABEL = { es: 'Agregar al calendario (.ics)', en: 'Add to calendar (.ics)' };
+  const ICS_PREFIX = { es: 'Charla de Alfabetización Digital', en: 'Digital Literacy Session' };
+
+  function parseFecha(text){
+    if(!text) return null;
+    let m = text.match(/(\d{1,2}) de (\p{L}+) de (\d{4})/iu);
+    if(m){
+      const month = MESES_ES[m[2].toLowerCase()];
+      if(month !== undefined) return {day:+m[1], month, year:+m[3]};
+    }
+    m = text.match(/(\p{L}+) (\d{1,2}),\s*(\d{4})/iu);
+    if(m){
+      const month = MESES_EN[m[1].toLowerCase()];
+      if(month !== undefined) return {day:+m[2], month, year:+m[3]};
+    }
+    return null;
+  }
+
+  function parseHoraRango(text){
+    if(!text) return null;
+    const parts = text.split(/[–-]/).map(s=>s.trim());
+    if(parts.length < 2) return null;
+    function parseUna(s){
+      const m = s.match(/(\d{1,2}):(\d{2})\s*(a\.m\.|p\.m\.|am|pm)/i);
+      if(!m) return null;
+      let h = parseInt(m[1],10);
+      const min = parseInt(m[2],10);
+      const ampm = m[3].toLowerCase().replace(/\./g,'');
+      if(ampm === 'pm' && h !== 12) h += 12;
+      if(ampm === 'am' && h === 12) h = 0;
+      return {h, min};
+    }
+    const ini = parseUna(parts[0]);
+    const fin = parseUna(parts[1]);
+    if(!ini || !fin) return null;
+    return [ini, fin];
+  }
+
+  function pad2(n){ return String(n).padStart(2,'0'); }
+  function fmtICSDateTime(year, month, day, h, min){
+    return `${year}${pad2(month+1)}${pad2(day)}T${pad2(h)}${pad2(min)}00`;
+  }
+  function icsEscape(s){
+    return String(s || '').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+  }
+  function foldLine(line){
+    let out = '';
+    let i = 0;
+    while(line.length - i > 74){
+      out += line.slice(i, i+74) + '\r\n ';
+      i += 74;
+    }
+    return out + line.slice(i);
+  }
+  function slugify(s){
+    return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'charlas';
+  }
+
+  function exportPanelToICS(panel){
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    const gradeName = panel.querySelector('.panel-head h3');
+    const gradeText = gradeName ? gradeName.textContent.trim() : 'Calendario';
+    const now = new Date();
+    const dtstamp = fmtICSDateTime(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes());
+    const rows = [...panel.querySelectorAll('.grade-table tbody tr')];
+    const events = [];
+
+    rows.forEach((row, idx)=>{
+      const fechaCell = row.querySelector('.col-fecha');
+      const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
+      const horaText = row.querySelector('.col-hora')?.textContent.trim();
+      const tituloEl = row.querySelector('.col-tema strong');
+      const descEl = row.querySelector('.col-tema .desc');
+      const titulo = tituloEl ? tituloEl.textContent.trim() : '';
+      const desc = descEl ? descEl.textContent.trim() : '';
+      const fecha = parseFecha(fechaText);
+      const horas = parseHoraRango(horaText);
+      if(!fecha || !horas) return;
+
+      const dtstart = fmtICSDateTime(fecha.year, fecha.month, fecha.day, horas[0].h, horas[0].min);
+      const dtend = fmtICSDateTime(fecha.year, fecha.month, fecha.day, horas[1].h, horas[1].min);
+      const uid = `${panel.id}-${idx+1}-${fecha.year}${pad2(fecha.month+1)}${pad2(fecha.day)}@calendario-anrl`;
+      const summary = `${ICS_PREFIX[lang]} — ${gradeText}: ${titulo}`;
+
+      events.push(
+        'BEGIN:VEVENT',
+        `UID:${uid}`,
+        `DTSTAMP:${dtstamp}`,
+        `DTSTART:${dtstart}`,
+        `DTEND:${dtend}`,
+        foldLine(`SUMMARY:${icsEscape(summary)}`),
+        foldLine(`DESCRIPTION:${icsEscape(desc)}`),
+        'LOCATION:Escuela Arianys Nicole Rosa Luquis',
+        'END:VEVENT'
+      );
+    });
+
+    if(!events.length) return;
+
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//ANRL//Calendario de Charlas de Alfabetizacion Digital//ES',
+      'CALSCALE:GREGORIAN',
+      ...events,
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([ics], {type:'text/calendar;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `charlas-${slugify(gradeText)}.ics`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  }
+
+  const buttons = [];
+  document.querySelectorAll('.tab-panel').forEach(panel=>{
+    const head = panel.querySelector('.panel-head');
+    if(!head || !panel.querySelector('.grade-table')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ics-btn';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="ics-btn-label"></span>';
+    head.appendChild(btn);
+    btn.addEventListener('click', ()=> exportPanelToICS(panel));
+    buttons.push(btn);
+  });
+
+  function syncLabels(){
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    buttons.forEach(b=>{ b.querySelector('.ics-btn-label').textContent = ICS_LABEL[lang]; });
+  }
+  syncLabels();
+  window.I18N_RERENDER_HOOKS.push(syncLabels);
+})();
+
 /* ---------- 00b · Idioma ES / EN ---------- */
-window.I18N_RERENDER_HOOKS = [];
 (function(){
   const btn = document.getElementById('lang-toggle');
   if(!btn || typeof i18nSetLang !== 'function') return;
@@ -208,4 +354,17 @@ function activarTab(tabId, grupo){
   btn.addEventListener('click', buscar);
   input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ buscar(); } });
   window.I18N_RERENDER_HOOKS.push(buscar);
+})();
+
+/* ---------- 05 · Abrir detalles del almanaque al imprimir ---------- */
+(function(){
+  let closedBeforePrint = [];
+  window.addEventListener('beforeprint', ()=>{
+    closedBeforePrint = [...document.querySelectorAll('.month-detail:not([open])')];
+    closedBeforePrint.forEach(d=> d.open = true);
+  });
+  window.addEventListener('afterprint', ()=>{
+    closedBeforePrint.forEach(d=> d.open = false);
+    closedBeforePrint = [];
+  });
 })();

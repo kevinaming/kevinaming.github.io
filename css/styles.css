@@ -309,6 +309,14 @@ em.pending{color:var(--mango-deep); font-style:italic; font-size:.86rem;}
 .panel-head h3{color:var(--tab-fg); margin-bottom:2px;}
 .panel-head p{margin:2px 0; opacity:.92;}
 .panel-meta{font-size:.85rem;}
+.ics-btn{
+  margin-top:14px; display:inline-flex; align-items:center; gap:7px;
+  font-family:'IBM Plex Mono',monospace; font-size:.78rem; font-weight:600;
+  color:var(--tab-fg); background:rgba(255,255,255,.55); border:1px solid currentColor;
+  border-radius:999px; padding:7px 14px 7px 12px; cursor:pointer; transition:.15s;
+}
+.ics-btn:hover{background:rgba(255,255,255,.9);}
+.ics-btn svg{width:15px; height:15px; flex:none;}
 .table-wrap{overflow-x:auto; border-radius:var(--radius); box-shadow:var(--shadow); background:var(--card); border:1px solid var(--line);}
 table.grade-table{border-collapse:collapse; width:100%; min-width:720px;}
 table.grade-table th{
@@ -418,3 +426,27 @@ footer .copyright{margin-top:18px; padding-top:14px; border-top:1px solid var(--
 .search-result .hit-btn:hover{background:var(--teal-btn); color:#fff; border-color:var(--teal-btn);}
 .search-result .no-hit{color:var(--mango-deep);}
 @media (max-width:600px){ .search-row{flex-direction:column;} }
+
+/* ---------- Impresión ---------- */
+@media print{
+  :root, :root[data-theme="dark"]{
+    --paper:#ffffff; --paper-alt:#f4f4f4; --ink:#111111; --ink-soft:#444444;
+    --line:#cccccc; --card:#ffffff; --shadow:none;
+    --teal:#1f6f78; --teal-deep:#154f56; --teal-btn:#1f6f78; --teal-btn-hover:#154f56;
+    --mango:#e8a33d; --mango-deep:#b97c22;
+  }
+  .topnav, .toolbar-buttons, .search-box, .filter-bar, .filter-count,
+  .spotlight, .month-nav, .ics-btn, .hero-chipfield{
+    display:none !important;
+  }
+  a{text-decoration:none; color:inherit;}
+  .hero{background:none; padding:24px 0;}
+  section.block{padding:24px 0;}
+  .table-scroll, .table-wrap{overflow:visible; box-shadow:none;}
+  .hero-meta .item, .method-list li, .spot-card, .search-box{box-shadow:none;}
+  table.grade-table thead th, table.maestros-table thead th, table.weekly-table thead th{
+    position:static;
+  }
+  .grade-table tbody tr, .month-detail-list li, .wk-cell{break-inside:avoid;}
+  .wrap{max-width:100%;}
+}
