@@ -44,49 +44,69 @@ window.I18N_RERENDER_HOOKS = [];
   }
 })();
 
+/* ---------- Utilidades compartidas de fecha/hora (ES/EN) ---------- */
+const MESES_ES = {enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,octubre:9,noviembre:10,diciembre:11};
+const MESES_EN = {january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11};
+const MESES_ES_ARR = Object.keys(MESES_ES);
+const MESES_EN_ARR = Object.keys(MESES_EN).map(m => m[0].toUpperCase() + m.slice(1));
+const DIAS_ES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const DIAS_EN = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function parseFecha(text){
+  if(!text) return null;
+  let m = text.match(/(\d{1,2}) de (\p{L}+) de (\d{4})/iu);
+  if(m){
+    const month = MESES_ES[m[2].toLowerCase()];
+    if(month !== undefined) return {day:+m[1], month, year:+m[3]};
+  }
+  m = text.match(/(\p{L}+) (\d{1,2}),\s*(\d{4})/iu);
+  if(m){
+    const month = MESES_EN[m[1].toLowerCase()];
+    if(month !== undefined) return {day:+m[2], month, year:+m[3]};
+  }
+  return null;
+}
+
+function parseHoraRango(text){
+  if(!text) return null;
+  const parts = text.split(/[–-]/).map(s=>s.trim());
+  if(parts.length < 2) return null;
+  function parseUna(s){
+    const m = s.match(/(\d{1,2}):(\d{2})\s*(a\.m\.|p\.m\.|am|pm)/i);
+    if(!m) return null;
+    let h = parseInt(m[1],10);
+    const min = parseInt(m[2],10);
+    const ampm = m[3].toLowerCase().replace(/\./g,'');
+    if(ampm === 'pm' && h !== 12) h += 12;
+    if(ampm === 'am' && h === 12) h = 0;
+    return {h, min};
+  }
+  const ini = parseUna(parts[0]);
+  const fin = parseUna(parts[1]);
+  if(!ini || !fin) return null;
+  return [ini, fin];
+}
+
+function pad2(n){ return String(n).padStart(2,'0'); }
+
+function fmtHora12(h, min, lang){
+  const ampmEs = h >= 12 ? 'p.m.' : 'a.m.';
+  const ampmEn = h >= 12 ? 'PM' : 'AM';
+  let h12 = h % 12; if(h12 === 0) h12 = 12;
+  return `${h12}:${pad2(min)} ${lang === 'en' ? ampmEn : ampmEs}`;
+}
+
+function fmtFechaLarga(year, month, day, lang){
+  const dow = new Date(year, month, day).getDay();
+  if(lang === 'en') return `${DIAS_EN[dow]}, ${MESES_EN_ARR[month]} ${day}`;
+  return `${DIAS_ES[dow]}, ${day} de ${MESES_ES_ARR[month]}`;
+}
+
 /* ---------- 00c · Exportar charlas a .ics (Google Calendar / Outlook / Apple) ---------- */
 (function(){
-  const MESES_ES = {enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,octubre:9,noviembre:10,diciembre:11};
-  const MESES_EN = {january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11};
   const ICS_LABEL = { es: 'Agregar al calendario (.ics)', en: 'Add to calendar (.ics)' };
   const ICS_PREFIX = { es: 'Charla de Alfabetización Digital', en: 'Digital Literacy Session' };
 
-  function parseFecha(text){
-    if(!text) return null;
-    let m = text.match(/(\d{1,2}) de (\p{L}+) de (\d{4})/iu);
-    if(m){
-      const month = MESES_ES[m[2].toLowerCase()];
-      if(month !== undefined) return {day:+m[1], month, year:+m[3]};
-    }
-    m = text.match(/(\p{L}+) (\d{1,2}),\s*(\d{4})/iu);
-    if(m){
-      const month = MESES_EN[m[1].toLowerCase()];
-      if(month !== undefined) return {day:+m[2], month, year:+m[3]};
-    }
-    return null;
-  }
-
-  function parseHoraRango(text){
-    if(!text) return null;
-    const parts = text.split(/[–-]/).map(s=>s.trim());
-    if(parts.length < 2) return null;
-    function parseUna(s){
-      const m = s.match(/(\d{1,2}):(\d{2})\s*(a\.m\.|p\.m\.|am|pm)/i);
-      if(!m) return null;
-      let h = parseInt(m[1],10);
-      const min = parseInt(m[2],10);
-      const ampm = m[3].toLowerCase().replace(/\./g,'');
-      if(ampm === 'pm' && h !== 12) h += 12;
-      if(ampm === 'am' && h === 12) h = 0;
-      return {h, min};
-    }
-    const ini = parseUna(parts[0]);
-    const fin = parseUna(parts[1]);
-    if(!ini || !fin) return null;
-    return [ini, fin];
-  }
-
-  function pad2(n){ return String(n).padStart(2,'0'); }
   function fmtICSDateTime(year, month, day, h, min){
     return `${year}${pad2(month+1)}${pad2(day)}T${pad2(h)}${pad2(min)}00`;
   }
@@ -187,6 +207,85 @@ window.I18N_RERENDER_HOOKS = [];
   }
   syncLabels();
   window.I18N_RERENDER_HOOKS.push(syncLabels);
+})();
+
+/* ---------- 00d · Hoy / próxima charla + resaltar hoy en el almanaque ---------- */
+(function(){
+  function getAllSessions(){
+    const sessions = [];
+    document.querySelectorAll('.tab-panel').forEach(panel=>{
+      const gradeEl = panel.querySelector('.panel-head h3');
+      const gradeText = gradeEl ? gradeEl.textContent.trim() : '';
+      panel.querySelectorAll('.grade-table tbody tr').forEach(row=>{
+        const fechaCell = row.querySelector('.col-fecha');
+        const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
+        const horaText = row.querySelector('.col-hora')?.textContent.trim();
+        const tituloEl = row.querySelector('.col-tema strong');
+        const titulo = tituloEl ? tituloEl.textContent.trim() : '';
+        const fecha = parseFecha(fechaText);
+        const horas = parseHoraRango(horaText);
+        if(!fecha || !horas) return;
+        sessions.push({
+          start: new Date(fecha.year, fecha.month, fecha.day, horas[0].h, horas[0].min),
+          grade: gradeText, title: titulo,
+        });
+      });
+    });
+    sessions.sort((a,b)=> a.start - b.start);
+    return sessions;
+  }
+
+  function renderBanner(){
+    const el = document.getElementById('today-banner');
+    if(!el) return;
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    const sessions = getAllSessions();
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+    const todaySessions = sessions.filter(s => s.start >= startOfToday && s.start <= endOfToday);
+    const upcoming = sessions.filter(s => s.start > now);
+
+    if(todaySessions.length){
+      const items = todaySessions
+        .map(s => `${s.grade} · ${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)} — ${s.title}`)
+        .join(' &nbsp;·&nbsp; ');
+      const label = lang === 'en'
+        ? (todaySessions.length === 1 ? 'Today’s session:' : `Today’s sessions (${todaySessions.length}):`)
+        : (todaySessions.length === 1 ? 'Charla de hoy:' : `Charlas de hoy (${todaySessions.length}):`);
+      el.innerHTML = `<span class="today-banner-dot"></span><strong>${label}</strong> ${items}`;
+      el.hidden = false;
+      el.classList.add('is-today');
+    } else if(upcoming.length){
+      const next = upcoming[0];
+      const dateStr = fmtFechaLarga(next.start.getFullYear(), next.start.getMonth(), next.start.getDate(), lang);
+      const timeStr = fmtHora12(next.start.getHours(), next.start.getMinutes(), lang);
+      const label = lang === 'en' ? 'Next session:' : 'Próxima charla:';
+      el.innerHTML = `<span class="today-banner-dot"></span><strong>${label}</strong> ${dateStr}, ${next.grade} · ${timeStr} — ${next.title}`;
+      el.hidden = false;
+      el.classList.remove('is-today');
+    } else {
+      el.hidden = true;
+      el.innerHTML = '';
+    }
+  }
+
+  renderBanner();
+  window.I18N_RERENDER_HOOKS.push(renderBanner);
+
+  const now = new Date();
+  const monthId = `mes-${now.getFullYear()}-${pad2(now.getMonth()+1)}`;
+  const monthBlock = document.getElementById(monthId);
+  if(monthBlock){
+    const dayNum = String(now.getDate());
+    monthBlock.querySelectorAll('td.cal-day:not(.out-month)').forEach(td=>{
+      const daynum = td.querySelector('.daynum');
+      if(daynum && daynum.textContent.trim() === dayNum){
+        td.classList.add('is-today');
+        td.setAttribute('aria-label', typeof i18nGetLang === 'function' && i18nGetLang() === 'en' ? 'Today' : 'Hoy');
+      }
+    });
+  }
 })();
 
 /* ---------- 00b · Idioma ES / EN ---------- */

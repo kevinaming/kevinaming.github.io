@@ -169,6 +169,20 @@ a{color:var(--teal);}
 }
 .hero-meta .item .label{font-family:'IBM Plex Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft);}
 .hero-meta .item .value{font-weight:600; margin-top:4px; color:var(--teal-deep);}
+.today-banner{
+  margin-top:18px; max-width:900px; background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); padding:12px 18px; font-size:.88rem; box-shadow:var(--shadow);
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.today-banner-dot{width:8px; height:8px; border-radius:50%; background:var(--mango); flex:none; align-self:center;}
+.today-banner strong{color:var(--teal-deep);}
+.today-banner.is-today{
+  border-color:var(--teal);
+  background:linear-gradient(135deg, rgba(31,111,120,0.08), rgba(232,163,61,0.1));
+}
+.today-banner.is-today .today-banner-dot{background:var(--teal);}
+td.cal-day.is-today{border:2px solid var(--teal); box-shadow:0 0 0 3px rgba(31,111,120,0.15);}
+td.cal-day.is-today .daynum{color:var(--teal-deep); font-weight:700;}
 
 /* ---------- SECTIONS ---------- */
 section.block{padding:56px 0;}
