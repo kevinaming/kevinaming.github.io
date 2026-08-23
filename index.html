@@ -14,6 +14,15 @@
     document.documentElement.setAttribute('data-theme', theme);
   } catch (e) {}
 })();
+(function(){
+  try {
+    var stored = localStorage.getItem('lang');
+    var lang = (stored === 'en' || stored === 'es')
+      ? stored
+      : (navigator.language && navigator.language.toLowerCase().indexOf('en') === 0 ? 'en' : 'es');
+    document.documentElement.setAttribute('lang', lang);
+  } catch (e) {}
+})();
 </script>
 <title>Calendario de Charlas de Alfabetización Digital — Escuela Arianys Nicole Rosa Luquis</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -32,32 +41,35 @@
 
 <div class="topnav">
   <div class="wrap">
-    <span class="brand">Alfabetización Digital · ANRL</span>
+    <span class="brand" data-i18n="nav.brand">Alfabetización Digital · ANRL</span>
     <nav>
-      <a href="#portada">Portada</a>
-      <a href="#metodologia">Metodología</a>
-      <a href="#horario">Horario</a>
-      <a href="#maestros">Maestros</a>
-      <a href="#grados">Charlas por grado</a>
-      <a href="#almanaque">Almanaque</a>
+      <a href="#portada" data-i18n="nav.portada">Portada</a>
+      <a href="#metodologia" data-i18n="nav.metodologia">Metodología</a>
+      <a href="#horario" data-i18n="nav.horario">Horario</a>
+      <a href="#maestros" data-i18n="nav.maestros">Maestros</a>
+      <a href="#grados" data-i18n="nav.grados">Charlas por grado</a>
+      <a href="#almanaque" data-i18n="nav.almanaque">Almanaque</a>
     </nav>
-    <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
-      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.4"/><path d="M12 19.1v2.4"/><path d="M4.2 4.2l1.7 1.7"/><path d="M18.1 18.1l1.7 1.7"/><path d="M2.5 12h2.4"/><path d="M19.1 12h2.4"/><path d="M4.2 19.8l1.7-1.7"/><path d="M18.1 5.9l1.7-1.7"/></g></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.8A8.6 8.6 0 1 1 9.2 3.8a7 7 0 0 0 11 11z" fill="currentColor"/></svg>
-    </button>
+    <div class="toolbar-buttons">
+      <button type="button" id="lang-toggle" class="lang-toggle" aria-pressed="false" aria-label="Switch to English" title="Switch to English">EN</button>
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.4"/><path d="M12 19.1v2.4"/><path d="M4.2 4.2l1.7 1.7"/><path d="M18.1 18.1l1.7 1.7"/><path d="M2.5 12h2.4"/><path d="M19.1 12h2.4"/><path d="M4.2 19.8l1.7-1.7"/><path d="M18.1 5.9l1.7-1.7"/></g></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.8A8.6 8.6 0 1 1 9.2 3.8a7 7 0 0 0 11 11z" fill="currentColor"/></svg>
+      </button>
+    </div>
   </div>
 </div>
 
 <header class="hero" id="portada">
   <div class="wrap">
-    <span class="eyebrow"><span class="dot"></span> Año escolar 2026&ndash;2027</span>
-    <h1>Calendario de Charlas de<br>Alfabetización Digital</h1>
-    <p class="subtitle">Plan de charlas semanales de PK a 8vo grado, organizado a partir de la organización escolar y el calendario oficial del Departamento de Educación.</p>
+    <span class="eyebrow"><span class="dot"></span> <span data-i18n="hero.eyebrow">Año escolar 2026&ndash;2027</span></span>
+    <h1 data-i18n="hero.h1">Calendario de Charlas de<br>Alfabetización Digital</h1>
+    <p class="subtitle" data-i18n="hero.subtitle">Plan de charlas semanales de PK a 8vo grado, organizado a partir de la organización escolar y el calendario oficial del Departamento de Educación.</p>
     <div class="hero-meta">
-      <div class="item"><div class="label">Escuela</div><div class="value">Arianys Nicole Rosa Luquis</div></div>
-      <div class="item"><div class="label">Directora</div><div class="value">Dra. Rebecca López Morell</div></div>
-      <div class="item"><div class="label">Maestro Recurso — Uso de la Computadora</div><div class="value">Kevin García</div></div>
-      <div class="item"><div class="label">Vigencia</div><div class="value">24 de agosto de 2026 – 28 de mayo de 2027</div></div>
+      <div class="item"><div class="label" data-i18n="hero.escuela">Escuela</div><div class="value">Arianys Nicole Rosa Luquis</div></div>
+      <div class="item"><div class="label" data-i18n="hero.directora">Directora</div><div class="value">Dra. Rebecca López Morell</div></div>
+      <div class="item"><div class="label" data-i18n="hero.recurso">Maestro Recurso — Uso de la Computadora</div><div class="value">Kevin García</div></div>
+      <div class="item"><div class="label" data-i18n="hero.vigencia">Vigencia</div><div class="value">24 de agosto de 2026 – 28 de mayo de 2027</div></div>
     </div>
   </div>
 </header>
@@ -65,26 +77,26 @@
 <section class="block" id="metodologia">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Metodología</span>
-      <h2>Cómo se organizó este calendario</h2>
+      <span class="kicker" data-i18n="metodologia.kicker">Metodología</span>
+      <h2 data-i18n="metodologia.h2">Cómo se organizó este calendario</h2>
     </div>
     <div class="method-grid">
       <div class="method-text">
-        <p>Para construir este calendario se partió del horario de trabajo semanal del Maestro Recurso en el Uso de la Computadora y de la organización escolar de la escuela, cruzándolos con el Calendario Escolar 2026&ndash;2027 del Departamento de Educación para identificar únicamente los días con clases para los estudiantes.</p>
-        <p>Se utilizaron exclusivamente los períodos de <strong>Integrado PK-8vo</strong>, ya que son los espacios disponibles para ofrecer estas charlas; los períodos de 7-3 y de Ruta 2 y 3 (6to, 7mo y 8vo) no se incluyeron porque esos grupos ya se atienden a diario en los períodos regulares.</p>
-        <p>A cada grado se le asignó un día y un período fijo dentro de los tres bloques semanales de Integrado, de modo que cada grupo reciba su charla en el mismo horario todas las semanas, siguiendo el orden secuencial PK, K, 1ro, 2do, 3ro, 4to, 5to, 6to, 7mo y 8vo.</p>
-        <p>El contenido de cada charla sigue el orden de las unidades del temario correspondiente &mdash;Introducción a la Alfabetización Digital para PK-2do, y Fundamentos de la Alfabetización Digital para 3ro-8vo&mdash; adaptando la profundidad y el vocabulario al nivel de cada grupo, incluyendo los grupos de acomodo razonable y las Rutas de autismo donde aplique. Cuando un grupo termina su temario antes de finalizar el año, las semanas restantes se dedican a repaso y refuerzo de destrezas.</p>
-        <p>Se excluyeron del calendario todos los días festivos, los recesos académicos, la semana completa de Acción de Gracias (23 al 27 de noviembre de 2026) y la semana completa de Semana Santa (22 al 26 de marzo de 2027), conforme al Calendario Escolar oficial.</p>
-        <p>Para impactar a toda la escuela, se incorporaron también los 13 grupos de Educación Especial y Rutas de Autismo identificados en la Organización Escolar (PK EE Autismo, PK EE No Categorizado, y las Rutas 1, 2 y 3 combinadas por edades). Como solo quedaban 5 períodos de Integrado sin asignar en la semana, cada uno de esos períodos rota entre 2 o 3 de estos grupos, alternando semana a semana, de modo que todos reciban su charla de forma periódica con el temario adaptado a su nivel y necesidades.</p>
-        <p>Además, se cruzó cada horario con la Organización Escolar para identificar exactamente qué maestro/a y qué materia quedan reemplazados en cada grado y grupo durante estas charlas (sección "Maestros que se cruzan" más abajo), para que cada docente pueda confirmar su propio horario.</p>
+        <p data-i18n="metodologia.p1">Para construir este calendario se partió del horario de trabajo semanal del Maestro Recurso en el Uso de la Computadora y de la organización escolar de la escuela, cruzándolos con el Calendario Escolar 2026&ndash;2027 del Departamento de Educación para identificar únicamente los días con clases para los estudiantes.</p>
+        <p data-i18n="metodologia.p2">Se utilizaron exclusivamente los períodos de <strong>Integrado PK-8vo</strong>, ya que son los espacios disponibles para ofrecer estas charlas; los períodos de 7-3 y de Ruta 2 y 3 (6to, 7mo y 8vo) no se incluyeron porque esos grupos ya se atienden a diario en los períodos regulares.</p>
+        <p data-i18n="metodologia.p3">A cada grado se le asignó un día y un período fijo dentro de los tres bloques semanales de Integrado, de modo que cada grupo reciba su charla en el mismo horario todas las semanas, siguiendo el orden secuencial PK, K, 1ro, 2do, 3ro, 4to, 5to, 6to, 7mo y 8vo.</p>
+        <p data-i18n="metodologia.p4">El contenido de cada charla sigue el orden de las unidades del temario correspondiente &mdash;Introducción a la Alfabetización Digital para PK-2do, y Fundamentos de la Alfabetización Digital para 3ro-8vo&mdash; adaptando la profundidad y el vocabulario al nivel de cada grupo, incluyendo los grupos de acomodo razonable y las Rutas de autismo donde aplique. Cuando un grupo termina su temario antes de finalizar el año, las semanas restantes se dedican a repaso y refuerzo de destrezas.</p>
+        <p data-i18n="metodologia.p5">Se excluyeron del calendario todos los días festivos, los recesos académicos, la semana completa de Acción de Gracias (23 al 27 de noviembre de 2026) y la semana completa de Semana Santa (22 al 26 de marzo de 2027), conforme al Calendario Escolar oficial.</p>
+        <p data-i18n="metodologia.p6">Para impactar a toda la escuela, se incorporaron también los 13 grupos de Educación Especial y Rutas de Autismo identificados en la Organización Escolar (PK EE Autismo, PK EE No Categorizado, y las Rutas 1, 2 y 3 combinadas por edades). Como solo quedaban 5 períodos de Integrado sin asignar en la semana, cada uno de esos períodos rota entre 2 o 3 de estos grupos, alternando semana a semana, de modo que todos reciban su charla de forma periódica con el temario adaptado a su nivel y necesidades.</p>
+        <p data-i18n="metodologia.p7">Además, se cruzó cada horario con la Organización Escolar para identificar exactamente qué maestro/a y qué materia quedan reemplazados en cada grado y grupo durante estas charlas (sección "Maestros que se cruzan" más abajo), para que cada docente pueda confirmar su propio horario.</p>
       </div>
       <ul class="method-list">
-        <li><span class="num">1</span><span class="txt">Solo períodos de <strong>Integrado PK-8vo</strong> — nunca 7-3 ni Ruta 2 y 3.</span></li>
-        <li><span class="num">2</span><span class="txt">Un día y hora fija por grado, toda la semana, todo el año.</span></li>
-        <li><span class="num">3</span><span class="txt">Orden secuencial PK &rarr; 8vo, respetando primaria (1ro-5to) e intermedia (6to-8vo).</span></li>
-        <li><span class="num">4</span><span class="txt">Contenido alineado al temario oficial de cada nivel, en el orden de sus unidades.</span></li>
-        <li><span class="num">5</span><span class="txt">Excluidos: festivos, recesos, la semana de Acción de Gracias y la semana de Semana Santa.</span></li>
-        <li><span class="num">6</span><span class="txt">Primera charla: lunes, 24 de agosto de 2026.</span></li>
+        <li><span class="num">1</span><span class="txt" data-i18n="metodologia.li1">Solo períodos de <strong>Integrado PK-8vo</strong> — nunca 7-3 ni Ruta 2 y 3.</span></li>
+        <li><span class="num">2</span><span class="txt" data-i18n="metodologia.li2">Un día y hora fija por grado, toda la semana, todo el año.</span></li>
+        <li><span class="num">3</span><span class="txt" data-i18n="metodologia.li3">Orden secuencial PK &rarr; 8vo, respetando primaria (1ro-5to) e intermedia (6to-8vo).</span></li>
+        <li><span class="num">4</span><span class="txt" data-i18n="metodologia.li4">Contenido alineado al temario oficial de cada nivel, en el orden de sus unidades.</span></li>
+        <li><span class="num">5</span><span class="txt" data-i18n="metodologia.li5">Excluidos: festivos, recesos, la semana de Acción de Gracias y la semana de Semana Santa.</span></li>
+        <li><span class="num">6</span><span class="txt" data-i18n="metodologia.li6">Primera charla: lunes, 24 de agosto de 2026.</span></li>
       </ul>
     </div>
   </div>
@@ -93,13 +105,13 @@
 <section class="block alt" id="horario">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Rotación semanal</span>
-      <h2>Horario semanal de charlas</h2>
-      <p>Cada grado ocupa un período fijo de Integrado PK-8vo durante toda la semana. Los períodos sin grado asignado quedan disponibles para repaso, proyectos especiales o servicios de transportación alterna.</p>
+      <span class="kicker" data-i18n="horario.kicker">Rotación semanal</span>
+      <h2 data-i18n="horario.h2">Horario semanal de charlas</h2>
+      <p data-i18n="horario.p">Cada grado ocupa un período fijo de Integrado PK-8vo durante toda la semana. Los períodos sin grado asignado quedan disponibles para repaso, proyectos especiales o servicios de transportación alterna.</p>
     </div>
     <div class="table-scroll">
       <table class="weekly-table">
-<thead><tr><th scope="col">Hora</th><th scope="col">Lunes</th><th scope="col">Martes</th><th scope="col">Miércoles</th><th scope="col">Jueves</th><th scope="col">Viernes</th></tr></thead>
+<thead><tr><th scope="col" data-i18n="horario.th.hora">Hora</th><th scope="col">Lunes</th><th scope="col">Martes</th><th scope="col">Miércoles</th><th scope="col">Jueves</th><th scope="col">Viernes</th></tr></thead>
 <tbody><tr><td class='wk-slotlabel'>Período A</td><td class="wk-cell c-pk"><span class="wk-hora">8:30–9:20 a.m.</span><span class="wk-grade">Pre-Kínder</span></td><td class="wk-cell c-2"><span class="wk-hora">8:30–9:20 a.m.</span><span class="wk-grade">2do Grado</span></td><td class="wk-cell c-5"><span class="wk-hora">8:30–9:15 a.m.</span><span class="wk-grade">5to Grado</span></td><td class="wk-cell c-8"><span class="wk-hora">8:30–9:20 a.m.</span><span class="wk-grade">8vo Grado</span></td><td class="wk-cell wk-rotation">
                 <span class="wk-hora">8:30–9:20 a.m.</span>
                 <span class="wk-grade">Rotación EE/Autismo</span>
@@ -134,33 +146,33 @@
 <section class="block" id="maestros">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Coordinación docente</span>
-      <h2>Maestros que se cruzan</h2>
-      <p>Esta tabla se extrajo de la Organización Escolar 2026&ndash;2027: para cada grado y grupo, quién da clase normalmente en <strong>cada uno</strong> de los tres bloques posibles de Integrado (8:30, 12:50 y 1:40), y qué materia queda cubierta esa hora. Los grupos autocontenidos (PK, K, 1.º, 2.º, 3.º, 4-3 y los grupos de EE/Autismo) tienen un solo maestro/a titular todo el día. Los grupos departamentalizados (4.º a 8.º) muestran los tres especialistas, uno por bloque &mdash; el que lleva la etiqueta <span class="real-badge">★ horario real</span> es el que realmente pierde su período con esta charla; los otros dos quedan como referencia. Cada maestro/a puede filtrar por su nombre o por grado para confirmar exactamente cuándo se ve afectado.</p>
+      <span class="kicker" data-i18n="maestros.kicker">Coordinación docente</span>
+      <h2 data-i18n="maestros.h2">Maestros que se cruzan</h2>
+      <p data-i18n="maestros.p">Esta tabla se extrajo de la Organización Escolar 2026&ndash;2027: para cada grado y grupo, quién da clase normalmente en <strong>cada uno</strong> de los tres bloques posibles de Integrado (8:30, 12:50 y 1:40), y qué materia queda cubierta esa hora. Los grupos autocontenidos (PK, K, 1.º, 2.º, 3.º, 4-3 y los grupos de EE/Autismo) tienen un solo maestro/a titular todo el día. Los grupos departamentalizados (4.º a 8.º) muestran los tres especialistas, uno por bloque &mdash; el que lleva la etiqueta <span class="real-badge">★ horario real</span> es el que realmente pierde su período con esta charla; los otros dos quedan como referencia. Cada maestro/a puede filtrar por su nombre o por grado para confirmar exactamente cuándo se ve afectado.</p>
     </div>
     <div class="filter-bar">
       <div class="filter-field">
-        <label for="mf-grado">Filtrar por grado</label>
+        <label for="mf-grado" data-i18n="maestros.filtrar-grado">Filtrar por grado</label>
         <select id="mf-grado">
-          <option value="">Todos los grados</option>
-          <option value="Pre-Kínder">Pre-Kínder</option><option value="Kindergarten">Kindergarten</option><option value="1er Grado">1er Grado</option><option value="2do Grado">2do Grado</option><option value="3er Grado">3er Grado</option><option value="4to Grado">4to Grado</option><option value="5to Grado">5to Grado</option><option value="6to Grado">6to Grado</option><option value="7mo Grado">7mo Grado</option><option value="8vo Grado">8vo Grado</option><option value="Educación Especial">Educación Especial / Autismo (todos)</option>
+          <option value="" data-i18n="maestros.todos-grados">Todos los grados</option>
+          <option value="Pre-Kínder">Pre-Kínder</option><option value="Kindergarten">Kindergarten</option><option value="1er Grado">1er Grado</option><option value="2do Grado">2do Grado</option><option value="3er Grado">3er Grado</option><option value="4to Grado">4to Grado</option><option value="5to Grado">5to Grado</option><option value="6to Grado">6to Grado</option><option value="7mo Grado">7mo Grado</option><option value="8vo Grado">8vo Grado</option><option value="Educación Especial" data-i18n="maestros.ee-todos">Educación Especial / Autismo (todos)</option>
         </select>
       </div>
       <div class="filter-field">
-        <label for="mf-maestro">Filtrar por maestro/a</label>
+        <label for="mf-maestro" data-i18n="maestros.filtrar-maestro">Filtrar por maestro/a</label>
         <select id="mf-maestro">
-          <option value="">Todos los maestros/as</option>
+          <option value="" data-i18n="maestros.todos-maestros">Todos los maestros/as</option>
           <option value="Ada Santiago Otero">Ada Santiago Otero</option><option value="Agnes Miranda Suárez">Agnes Miranda Suárez</option><option value="Ailene M. Del Río García">Ailene M. Del Río García</option><option value="Brenda Virella Rosado">Brenda Virella Rosado</option><option value="Carmen Pagán Ayala">Carmen Pagán Ayala</option><option value="Christian Marrero Ortega">Christian Marrero Ortega</option><option value="Cruz M. Trinidad Otero">Cruz M. Trinidad Otero</option><option value="E. Rivera Rique">E. Rivera Rique</option><option value="Eduardo Calderón Cordero">Eduardo Calderón Cordero</option><option value="Esnelin">Esnelin</option><option value="Fiordaliza Torres Santa">Fiordaliza Torres Santa</option><option value="Gladys Pagán Cosme">Gladys Pagán Cosme</option><option value="Ilka Figueroa Rivera">Ilka Figueroa Rivera</option><option value="Iris Zayas González">Iris Zayas González</option><option value="Jacmir Tirado Cintrón">Jacmir Tirado Cintrón</option><option value="Janzel Cruz Otero">Janzel Cruz Otero</option><option value="Jenyfer Albelo Oliveras">Jenyfer Albelo Oliveras</option><option value="Karla Maldonado García">Karla Maldonado García</option><option value="Kassandra Rivera Rodríguez">Kassandra Rivera Rodríguez</option><option value="Keila De Jesús Román">Keila De Jesús Román</option><option value="Luzmarie Cotto Morales">Luzmarie Cotto Morales</option><option value="Maribel Ortega Santos">Maribel Ortega Santos</option><option value="Marta Reyes Afanador">Marta Reyes Afanador</option><option value="María Rivera Robles">María Rivera Robles</option><option value="Melanie K. Olmeda Pagán">Melanie K. Olmeda Pagán</option><option value="Mildred I. Negrón">Mildred I. Negrón</option><option value="Miriam Arocho Repollet">Miriam Arocho Repollet</option><option value="Nora Náter Nieves">Nora Náter Nieves</option><option value="Norma Aponte Concepción">Norma Aponte Concepción</option><option value="Olga Colón Santiago">Olga Colón Santiago</option><option value="Olga Rivera La Luz">Olga Rivera La Luz</option><option value="Perer Vacante Lope">Perer Vacante Lope</option><option value="Raúl Lugo Rosa">Raúl Lugo Rosa</option><option value="Stephanie Vargas Maldonado">Stephanie Vargas Maldonado</option><option value="Tomasita Rivas Laureano">Tomasita Rivas Laureano</option><option value="Yaznery Santos Figueroa">Yaznery Santos Figueroa</option><option value="Yesenia Méndez Hernández">Yesenia Méndez Hernández</option><option value="Vacante">Vacante</option><option value="Vacante (Barrios)">Vacante (Barrios)</option>
         </select>
       </div>
-      <button type="button" class="filter-clear" id="mf-clear">Limpiar filtros</button>
+      <button type="button" class="filter-clear" id="mf-clear" data-i18n="maestros.limpiar">Limpiar filtros</button>
     </div>
     <p class="filter-count" id="mf-count"></p>
 
     <div class="spotlight" id="spotlight">
       <div class="spotlight-head">
         <h3 id="spot-name"></h3>
-        <button type="button" class="spotlight-close" id="spot-close">Quitar enfoque ✕</button>
+        <button type="button" class="spotlight-close" id="spot-close" data-i18n="maestros.spotlight-close">Quitar enfoque ✕</button>
       </div>
       <p class="spotlight-sub" id="spot-sub"></p>
       <div class="spotlight-cards" id="spot-cards"></div>
@@ -168,7 +180,7 @@
 
     <div class="table-wrap">
       <table class="maestros-table" id="tabla-maestros">
-        <thead><tr><th scope="col">Grado / grupo</th><th scope="col">Sección</th><th scope="col">Día</th><th scope="col">Hora</th><th scope="col">Maestro/a</th><th scope="col">Materia / actividad reemplazada</th></tr></thead>
+        <thead><tr><th scope="col" data-i18n="maestros.th.grado">Grado / grupo</th><th scope="col" data-i18n="maestros.th.seccion">Sección</th><th scope="col" data-i18n="maestros.th.dia">Día</th><th scope="col" data-i18n="maestros.th.hora">Hora</th><th scope="col" data-i18n="maestros.th.maestro">Maestro/a</th><th scope="col" data-i18n="maestros.th.materia">Materia / actividad reemplazada</th></tr></thead>
         <tbody>
           <tr data-grado="Pre-Kínder" data-maestro="Melanie K. Olmeda Pagán" data-real="1">
               <td><span class="grade-dot c-pk"></span>Pre-Kínder</td>
@@ -176,7 +188,7 @@
               <td>Lunes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>Melanie K. Olmeda Pagán</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="Kindergarten" data-maestro="Jacmir Tirado Cintrón" data-real="1">
               <td><span class="grade-dot c-k"></span>Kindergarten</td>
@@ -184,7 +196,7 @@
               <td>Lunes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>Jacmir Tirado Cintrón</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="Kindergarten" data-maestro="Agnes Miranda Suárez" data-real="1">
               <td><span class="grade-dot c-k"></span>Kindergarten</td>
@@ -192,7 +204,7 @@
               <td>Lunes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>Agnes Miranda Suárez</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="1er Grado" data-maestro="Yaznery Santos Figueroa" data-real="1">
               <td><span class="grade-dot c-1"></span>1er Grado</td>
@@ -200,7 +212,7 @@
               <td>Lunes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>Yaznery Santos Figueroa</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="1er Grado" data-maestro="Luzmarie Cotto Morales" data-real="1">
               <td><span class="grade-dot c-1"></span>1er Grado</td>
@@ -208,7 +220,7 @@
               <td>Lunes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>Luzmarie Cotto Morales</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="2do Grado" data-maestro="María Rivera Robles" data-real="1">
               <td><span class="grade-dot c-2"></span>2do Grado</td>
@@ -216,7 +228,7 @@
               <td>Martes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>María Rivera Robles</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="2do Grado" data-maestro="Norma Aponte Concepción" data-real="1">
               <td><span class="grade-dot c-2"></span>2do Grado</td>
@@ -224,7 +236,7 @@
               <td>Martes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>Norma Aponte Concepción</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="3er Grado" data-maestro="Brenda Virella Rosado" data-real="1">
               <td><span class="grade-dot c-3"></span>3er Grado</td>
@@ -232,7 +244,7 @@
               <td>Martes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>Brenda Virella Rosado</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="3er Grado" data-maestro="Ailene M. Del Río García" data-real="1">
               <td><span class="grade-dot c-3"></span>3er Grado</td>
@@ -240,7 +252,7 @@
               <td>Martes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>Ailene M. Del Río García</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="4to Grado" data-maestro="Olga Rivera La Luz" data-real="0">
               <td><span class="grade-dot c-4"></span>4to Grado</td>
@@ -296,7 +308,7 @@
               <td>Martes</td>
               <td class="mono">Todo el día <span class="real-badge" title="Coincide con el horario real de la charla">★ horario real</span></td>
               <td><strong>Christian Marrero Ortega</strong><span class="role">Maestro/a titular</span></td>
-              <td>Titular (grupo autocontenido)</td>
+              <td data-i18n="maestros.titular-auto">Titular (grupo autocontenido)</td>
             </tr>
 <tr data-grado="5to Grado" data-maestro="Ilka Figueroa Rivera" data-real="1">
               <td><span class="grade-dot c-5"></span>5to Grado</td>
@@ -674,21 +686,21 @@
 <section class="block" id="grados">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Calendario detallado</span>
-      <h2>Charlas por grado y por grupo</h2>
-      <p>Selecciona un grado o un grupo para ver la fecha, hora y tema de cada charla programada durante el año escolar.</p>
+      <span class="kicker" data-i18n="grados.kicker">Calendario detallado</span>
+      <h2 data-i18n="grados.h2">Charlas por grado y por grupo</h2>
+      <p data-i18n="grados.p">Selecciona un grado o un grupo para ver la fecha, hora y tema de cada charla programada durante el año escolar.</p>
     </div>
 
     <div class="search-box">
-      <label for="buscador" class="search-label">Buscador &mdash; por salón, grado o maestro/a</label>
+      <label for="buscador" class="search-label" data-i18n="grados.buscador-label">Buscador &mdash; por salón, grado o maestro/a</label>
       <div class="search-row">
         <input type="text" id="buscador" placeholder="Ej. 8-1 · 8vo · nombre del maestro..." autocomplete="off">
-        <button type="button" id="buscador-btn">Buscar</button>
+        <button type="button" id="buscador-btn" data-i18n="grados.buscador-btn">Buscar</button>
       </div>
       <div id="buscador-resultado" class="search-result"></div>
     </div>
 
-    <h3 class="subsection-title">Grados generales <span class="tag">PK – 8vo</span></h3>
+    <h3 class="subsection-title"><span data-i18n="grados.sub-generales">Grados generales</span> <span class="tag" data-i18n="grados.sub-generales-tag">PK – 8vo</span></h3>
     <div class="tabs-nav tabs-group" data-group="grados">
       <button class="grade-tab active" data-tab="tab-PK" style="--tab-bg:#f1cfcf;--tab-fg:#9b3a3a">Pre-Kínder</button>
 <button class="grade-tab" data-tab="tab-K" style="--tab-bg:#f1e3cf;--tab-fg:#9b743a">Kindergarten</button>
@@ -711,7 +723,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -913,7 +925,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -1115,7 +1127,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -1317,7 +1329,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -1537,7 +1549,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -1757,7 +1769,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -1977,7 +1989,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -2197,7 +2209,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -2417,7 +2429,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -2637,7 +2649,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -2850,7 +2862,7 @@
     </div>
     </div>
 
-    <h3 class="subsection-title">Grupos de Educación Especial y Rutas de Autismo <span class="tag">Toda la escuela</span></h3>
+    <h3 class="subsection-title"><span data-i18n="grados.sub-ee">Grupos de Educación Especial y Rutas de Autismo</span> <span class="tag" data-i18n="grados.sub-ee-tag">Toda la escuela</span></h3>
     <div class="rotation-note">Estos 13 grupos autocontenidos comparten los 5 períodos de Integrado que quedaban libres en el horario. Cada período rota entre 2 o 3 grupos semana por semana (ver el horario semanal arriba), por lo que cada grupo recibe una charla aproximadamente cada 2 o 3 semanas, siguiendo el mismo temario adaptado a su nivel.</div>
     <div class="tabs-nav tabs-group" data-group="ee">
       <button class="grade-tab ee-tab" data-tab="tab-E1" style="--tab-bg:#c8e8e8;--tab-fg:#287a7a">PK EE Autismo</button>
@@ -2877,7 +2889,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -2965,7 +2977,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3047,7 +3059,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3135,7 +3147,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3217,7 +3229,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3299,7 +3311,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3381,7 +3393,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3499,7 +3511,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3617,7 +3629,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3705,7 +3717,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3787,7 +3799,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3869,7 +3881,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -3987,7 +3999,7 @@
       </div>
       <div class="table-wrap">
         <table class="grade-table">
-          <thead><tr><th scope="col">#</th><th scope="col">Fecha</th><th scope="col">Hora</th><th scope="col">Unidad</th><th scope="col">Tema de la charla</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="grados.th.num">#</th><th scope="col" data-i18n="grados.th.fecha">Fecha</th><th scope="col" data-i18n="grados.th.hora">Hora</th><th scope="col" data-i18n="grados.th.unidad">Unidad</th><th scope="col" data-i18n="grados.th.tema">Tema de la charla</th></tr></thead>
           <tbody>
           <tr>
           <td class="col-num">1</td>
@@ -4103,9 +4115,9 @@
 <section class="block alt" id="almanaque">
   <div class="wrap">
     <div class="section-head">
-      <span class="kicker">Vista de almanaque</span>
-      <h2>Almanaque del año escolar</h2>
-      <p>Cada ficha muestra el grado abreviado y el número de charla (por ejemplo, <span class="mono">3·07</span> = 3er grado, charla #7). Despliega el detalle debajo de cada mes para ver el tema completo de cada sesión.</p>
+      <span class="kicker" data-i18n="almanaque.kicker">Vista de almanaque</span>
+      <h2 data-i18n="almanaque.h2">Almanaque del año escolar</h2>
+      <p data-i18n="almanaque.p">Cada ficha muestra el grado abreviado y el número de charla (por ejemplo, <span class="mono">3·07</span> = 3er grado, charla #7). Despliega el detalle debajo de cada mes para ver el tema completo de cada sesión.</p>
     </div>
     <div class="legend">
       <span class="lg-item"><span class="sw c-pk"></span>Pre-Kínder</span>
@@ -4260,12 +4272,13 @@
 
 <footer>
   <div class="wrap">
-    <p>Calendario preparado por Kevin García, Maestro Recurso en el Uso de la Computadora, para la Escuela Arianys Nicole Rosa Luquis, dirigido a la Dra. Rebecca López Morell. Elaborado a partir de la Organización Escolar 2026&ndash;2027 y el Calendario Escolar 2026&ndash;2027 del Departamento de Educación de Puerto Rico.</p>
-    <p class="sig">Educación Bilingüe · Dos idiomas, infinitas posibilidades</p>
+    <p data-i18n="footer.p1">Calendario preparado por Kevin García, Maestro Recurso en el Uso de la Computadora, para la Escuela Arianys Nicole Rosa Luquis, dirigido a la Dra. Rebecca López Morell. Elaborado a partir de la Organización Escolar 2026&ndash;2027 y el Calendario Escolar 2026&ndash;2027 del Departamento de Educación de Puerto Rico.</p>
+    <p class="sig" data-i18n="footer.sig">Educación Bilingüe · Dos idiomas, infinitas posibilidades</p>
   </div>
 </footer>
 
 <script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
