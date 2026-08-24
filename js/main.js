@@ -108,6 +108,13 @@ function fmtHora12(h, min, lang){
   return `${h12}:${pad2(min)} ${lang === 'en' ? ampmEn : ampmEs}`;
 }
 
+function fmtHora12ConSegundos(h, min, sec, lang){
+  const ampmEs = h >= 12 ? 'p.m.' : 'a.m.';
+  const ampmEn = h >= 12 ? 'PM' : 'AM';
+  let h12 = h % 12; if(h12 === 0) h12 = 12;
+  return `${h12}:${pad2(min)}:${pad2(sec)} ${lang === 'en' ? ampmEn : ampmEs}`;
+}
+
 function fmtFechaLarga(year, month, day, lang){
   const dow = new Date(year, month, day).getDay();
   if(lang === 'en') return `${DIAS_EN[dow]}, ${MESES_EN_ARR[month]} ${day}`;
@@ -347,7 +354,8 @@ function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClas
     const isCurrent = s.start <= now && now < s.end;
     const cls = isDone ? doneClass : (isCurrent ? currentClass : '');
     const badge = isCurrent ? `<span class="${nowTag}">${nowLabel}</span>` : '';
-    return `<li class="${cls}"><span class="${nowClass}-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="${nowClass}-grade">${s.grade}</span><span class="${nowClass}-title">${s.title}</span>${badge}</li>`;
+    const rango = `${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)} – ${fmtHora12(s.end.getHours(), s.end.getMinutes(), lang)}`;
+    return `<li class="${cls}"><span class="${nowClass}-time">${rango}</span><span class="${nowClass}-grade">${s.grade}</span><span class="${nowClass}-title">${s.title}</span>${badge}</li>`;
   }).join('');
 }
 
@@ -407,13 +415,14 @@ function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClas
   if(!overlay || !openBtn || !closeBtn) return;
 
   let clockInterval = null;
+  let contentInterval = null;
 
   function renderClock(){
     const el = document.getElementById('pizarra-clock');
     if(!el) return;
     const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
     const now = new Date();
-    el.textContent = fmtHora12(now.getHours(), now.getMinutes(), lang);
+    el.textContent = fmtHora12ConSegundos(now.getHours(), now.getMinutes(), now.getSeconds(), lang);
   }
 
   function renderPizarra(){
@@ -447,12 +456,15 @@ function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClas
     renderPizarra();
     renderClock();
     if(clockInterval) clearInterval(clockInterval);
-    clockInterval = setInterval(()=>{ renderClock(); renderPizarra(); }, 30000);
+    clockInterval = setInterval(renderClock, 1000);
+    if(contentInterval) clearInterval(contentInterval);
+    contentInterval = setInterval(renderPizarra, 15000);
     if(overlay.requestFullscreen){ overlay.requestFullscreen().catch(()=>{}); }
   }
   function closePizarra(){
     overlay.hidden = true;
     if(clockInterval){ clearInterval(clockInterval); clockInterval = null; }
+    if(contentInterval){ clearInterval(contentInterval); contentInterval = null; }
     if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); }
   }
 
