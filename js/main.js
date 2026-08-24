@@ -198,7 +198,7 @@ function fmtFechaLarga(year, month, day, lang){
       const horaText = row.querySelector('.col-hora')?.textContent.trim();
       const tituloEl = row.querySelector('.col-tema strong');
       const descEl = row.querySelector('.col-tema .desc');
-      const titulo = tituloEl ? tituloEl.textContent.trim() : '';
+      const titulo = tituloEl ? tituloEl.childNodes[0].textContent.trim() : '';
       const desc = descEl ? descEl.textContent.trim() : '';
       const fecha = parseFecha(fechaText);
       const horas = parseHoraRango(horaText);
@@ -347,7 +347,7 @@ function getAllSessions(){
       const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
       const horaText = row.querySelector('.col-hora')?.textContent.trim();
       const tituloEl = row.querySelector('.col-tema strong');
-      const titulo = tituloEl ? tituloEl.textContent.trim() : '';
+      const titulo = tituloEl ? tituloEl.childNodes[0].textContent.trim() : '';
       const fecha = parseFecha(fechaText);
       const horas = parseHoraRango(horaText);
       if(!fecha || !horas) return;
