@@ -89,6 +89,18 @@ function parseHoraRango(text){
 
 function pad2(n){ return String(n).padStart(2,'0'); }
 
+function fadeIn(el){
+  el.style.opacity = '0';
+  el.style.transition = 'none';
+  el.hidden = false;
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      el.style.transition = 'opacity .4s ease';
+      el.style.opacity = '1';
+    });
+  });
+}
+
 function fmtHora12(h, min, lang){
   const ampmEs = h >= 12 ? 'p.m.' : 'a.m.';
   const ampmEn = h >= 12 ? 'PM' : 'AM';
@@ -344,6 +356,8 @@ function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClas
   function renderBanner(){
     const el = document.getElementById('today-banner');
     if(!el) return;
+    const pzBtn = document.getElementById('pizarra-open');
+    const firstReveal = el.hidden || (pzBtn && pzBtn.hidden);
     const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
     const info = getTargetDaySessions();
     if(!info){ el.hidden = true; el.innerHTML = ''; return; }
@@ -356,8 +370,14 @@ function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClas
     const items = sessionItemsHTML(targetSessions, lang, 'tb', 'is-current', 'is-done', 'tb-now');
 
     el.innerHTML = `<div class="today-banner-head"><span class="today-banner-dot"></span><strong>${label} — ${dateStr}</strong></div><ul class="today-banner-list">${items}</ul>`;
-    el.hidden = false;
     el.classList.toggle('is-today', isToday);
+    if(firstReveal){
+      fadeIn(el);
+      if(pzBtn) fadeIn(pzBtn);
+    } else {
+      el.hidden = false;
+      if(pzBtn) pzBtn.hidden = false;
+    }
   }
 
   renderBanner();
