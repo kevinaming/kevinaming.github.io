@@ -69,9 +69,20 @@
       <div class="item"><div class="label" data-i18n="hero.recurso">Maestro Recurso — Uso de la Computadora</div><div class="value">Kevin García</div></div>
       <div class="item"><div class="label" data-i18n="hero.vigencia">Vigencia</div><div class="value">24 de agosto de 2026 – 28 de mayo de 2027</div></div>
     </div>
-    <p class="today-banner" id="today-banner" hidden></p>
+    <div class="today-banner-row">
+      <div class="today-banner" id="today-banner" hidden></div>
+      <button type="button" class="pizarra-open" id="pizarra-open" aria-label="Modo pizarra" title="Modo pizarra">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="19" height="12.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 20.5h6M12 17v3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
   </div>
 </header>
+
+<div class="pizarra" id="pizarra" hidden>
+  <div class="pizarra-clock" id="pizarra-clock"></div>
+  <button type="button" class="pizarra-close" id="pizarra-close" aria-label="Salir del modo pizarra" title="Salir del modo pizarra">&times;</button>
+  <div class="pizarra-content" id="pizarra-content"></div>
+</div>
 
 <section class="block" id="metodologia">
   <div class="wrap">

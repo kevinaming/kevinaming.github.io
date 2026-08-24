@@ -209,69 +209,80 @@ function fmtFechaLarga(year, month, day, lang){
   window.I18N_RERENDER_HOOKS.push(syncLabels);
 })();
 
-/* ---------- 00d · Hoy / próxima charla + resaltar hoy en el almanaque ---------- */
-(function(){
-  function getAllSessions(){
-    const sessions = [];
-    document.querySelectorAll('.tab-panel').forEach(panel=>{
-      const gradeEl = panel.querySelector('.panel-head h3');
-      const gradeText = gradeEl ? gradeEl.textContent.trim() : '';
-      panel.querySelectorAll('.grade-table tbody tr').forEach(row=>{
-        const fechaCell = row.querySelector('.col-fecha');
-        const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
-        const horaText = row.querySelector('.col-hora')?.textContent.trim();
-        const tituloEl = row.querySelector('.col-tema strong');
-        const titulo = tituloEl ? tituloEl.textContent.trim() : '';
-        const fecha = parseFecha(fechaText);
-        const horas = parseHoraRango(horaText);
-        if(!fecha || !horas) return;
-        sessions.push({
-          start: new Date(fecha.year, fecha.month, fecha.day, horas[0].h, horas[0].min),
-          end: new Date(fecha.year, fecha.month, fecha.day, horas[1].h, horas[1].min),
-          grade: gradeText, title: titulo,
-        });
+/* ---------- Sesiones del día (compartido por el aviso y el modo pizarra) ---------- */
+function getAllSessions(){
+  const sessions = [];
+  document.querySelectorAll('.tab-panel').forEach(panel=>{
+    const gradeEl = panel.querySelector('.panel-head h3');
+    const gradeText = gradeEl ? gradeEl.textContent.trim() : '';
+    panel.querySelectorAll('.grade-table tbody tr').forEach(row=>{
+      const fechaCell = row.querySelector('.col-fecha');
+      const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
+      const horaText = row.querySelector('.col-hora')?.textContent.trim();
+      const tituloEl = row.querySelector('.col-tema strong');
+      const titulo = tituloEl ? tituloEl.textContent.trim() : '';
+      const fecha = parseFecha(fechaText);
+      const horas = parseHoraRango(horaText);
+      if(!fecha || !horas) return;
+      sessions.push({
+        start: new Date(fecha.year, fecha.month, fecha.day, horas[0].h, horas[0].min),
+        end: new Date(fecha.year, fecha.month, fecha.day, horas[1].h, horas[1].min),
+        grade: gradeText, title: titulo,
       });
     });
-    sessions.sort((a,b)=> a.start - b.start);
-    return sessions;
+  });
+  sessions.sort((a,b)=> a.start - b.start);
+  return sessions;
+}
+
+function dayKey(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
+
+function getTargetDaySessions(){
+  const sessions = getAllSessions();
+  const now = new Date();
+  const todayKey = dayKey(now);
+  let todaySessions = sessions.filter(s => dayKey(s.start) === todayKey);
+  const allTodayDone = todaySessions.length > 0 && todaySessions.every(s => s.end <= now);
+
+  let targetSessions = todaySessions;
+  let isToday = true;
+  if(!todaySessions.length || allTodayDone){
+    const future = sessions.filter(s => s.start > now);
+    if(!future.length) return null;
+    const nextKey = dayKey(future[0].start);
+    targetSessions = future.filter(s => dayKey(s.start) === nextKey);
+    isToday = false;
   }
+  return { targetSessions, isToday };
+}
 
-  function dayKey(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
+function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClass, nowTag){
+  const now = new Date();
+  const nowLabel = lang === 'en' ? 'NOW' : 'AHORA';
+  return targetSessions.map(s=>{
+    const isDone = s.end <= now;
+    const isCurrent = s.start <= now && now < s.end;
+    const cls = isDone ? doneClass : (isCurrent ? currentClass : '');
+    const badge = isCurrent ? `<span class="${nowTag}">${nowLabel}</span>` : '';
+    return `<li class="${cls}"><span class="${nowClass}-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="${nowClass}-grade">${s.grade}</span><span class="${nowClass}-title">${s.title}</span>${badge}</li>`;
+  }).join('');
+}
 
+/* ---------- 00d · Hoy / próxima charla + resaltar hoy en el almanaque ---------- */
+(function(){
   function renderBanner(){
     const el = document.getElementById('today-banner');
     if(!el) return;
     const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
-    const sessions = getAllSessions();
-    const now = new Date();
-    const todayKey = dayKey(now);
-
-    let todaySessions = sessions.filter(s => dayKey(s.start) === todayKey);
-    const allTodayDone = todaySessions.length > 0 && todaySessions.every(s => s.end <= now);
-
-    let targetSessions = todaySessions;
-    let isToday = true;
-    if(!todaySessions.length || allTodayDone){
-      const future = sessions.filter(s => s.start > now);
-      if(!future.length){ el.hidden = true; el.innerHTML = ''; return; }
-      const nextKey = dayKey(future[0].start);
-      targetSessions = future.filter(s => dayKey(s.start) === nextKey);
-      isToday = false;
-    }
+    const info = getTargetDaySessions();
+    if(!info){ el.hidden = true; el.innerHTML = ''; return; }
+    const { targetSessions, isToday } = info;
 
     const label = isToday
       ? (lang === 'en' ? 'Today’s sessions' : 'Charlas de hoy')
       : (lang === 'en' ? 'Upcoming sessions' : 'Próximas charlas');
     const dateStr = fmtFechaLarga(targetSessions[0].start.getFullYear(), targetSessions[0].start.getMonth(), targetSessions[0].start.getDate(), lang);
-    const nowLabel = lang === 'en' ? 'NOW' : 'AHORA';
-
-    const items = targetSessions.map(s=>{
-      const isDone = s.end <= now;
-      const isCurrent = s.start <= now && now < s.end;
-      const cls = isDone ? 'is-done' : (isCurrent ? 'is-current' : '');
-      const badge = isCurrent ? `<span class="tb-now">${nowLabel}</span>` : '';
-      return `<li class="${cls}"><span class="tb-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="tb-grade">${s.grade}</span><span class="tb-title">${s.title}</span>${badge}</li>`;
-    }).join('');
+    const items = sessionItemsHTML(targetSessions, lang, 'tb', 'is-current', 'is-done', 'tb-now');
 
     el.innerHTML = `<div class="today-banner-head"><span class="today-banner-dot"></span><strong>${label} — ${dateStr}</strong></div><ul class="today-banner-list">${items}</ul>`;
     el.hidden = false;
@@ -295,6 +306,75 @@ function fmtFechaLarga(year, month, day, lang){
       }
     });
   }
+})();
+
+/* ---------- 00e · Modo pizarra (vista de proyector) ---------- */
+(function(){
+  const overlay = document.getElementById('pizarra');
+  const openBtn = document.getElementById('pizarra-open');
+  const closeBtn = document.getElementById('pizarra-close');
+  if(!overlay || !openBtn || !closeBtn) return;
+
+  let clockInterval = null;
+
+  function renderClock(){
+    const el = document.getElementById('pizarra-clock');
+    if(!el) return;
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    const now = new Date();
+    el.textContent = fmtHora12(now.getHours(), now.getMinutes(), lang);
+  }
+
+  function renderPizarra(){
+    const content = document.getElementById('pizarra-content');
+    if(!content) return;
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    const info = getTargetDaySessions();
+    if(!info){
+      content.innerHTML = `<div class="pizarra-date">${lang === 'en' ? 'No more sessions this school year' : 'No quedan más charlas este año escolar'}</div>`;
+      return;
+    }
+    const { targetSessions, isToday } = info;
+    const label = isToday
+      ? (lang === 'en' ? 'Today’s sessions' : 'Charlas de hoy')
+      : (lang === 'en' ? 'Upcoming sessions' : 'Próximas charlas');
+    const dateStr = fmtFechaLarga(targetSessions[0].start.getFullYear(), targetSessions[0].start.getMonth(), targetSessions[0].start.getDate(), lang);
+    const items = sessionItemsHTML(targetSessions, lang, 'pz', 'is-current', 'is-done', 'pz-now');
+    content.innerHTML = `<div class="pizarra-date">${label} — ${dateStr}</div><ul class="pizarra-list">${items}</ul>`;
+  }
+
+  function syncOpenLabel(){
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    const label = lang === 'en' ? 'Projector mode' : 'Modo pizarra';
+    openBtn.setAttribute('aria-label', label);
+    openBtn.setAttribute('title', label);
+    closeBtn.setAttribute('aria-label', lang === 'en' ? 'Exit projector mode' : 'Salir del modo pizarra');
+  }
+
+  function openPizarra(){
+    overlay.hidden = false;
+    renderPizarra();
+    renderClock();
+    if(clockInterval) clearInterval(clockInterval);
+    clockInterval = setInterval(()=>{ renderClock(); renderPizarra(); }, 30000);
+    if(overlay.requestFullscreen){ overlay.requestFullscreen().catch(()=>{}); }
+  }
+  function closePizarra(){
+    overlay.hidden = true;
+    if(clockInterval){ clearInterval(clockInterval); clockInterval = null; }
+    if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); }
+  }
+
+  openBtn.addEventListener('click', openPizarra);
+  closeBtn.addEventListener('click', closePizarra);
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && !overlay.hidden) closePizarra(); });
+  document.addEventListener('fullscreenchange', ()=>{ if(!document.fullscreenElement && !overlay.hidden) closePizarra(); });
+
+  syncOpenLabel();
+  window.I18N_RERENDER_HOOKS.push(()=>{
+    syncOpenLabel();
+    if(!overlay.hidden){ renderPizarra(); renderClock(); }
+  });
 })();
 
 /* ---------- 00b · Idioma ES / EN ---------- */
