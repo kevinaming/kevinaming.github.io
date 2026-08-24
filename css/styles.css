@@ -249,6 +249,49 @@ a{color:var(--teal);}
   color:#fff; background:var(--teal-btn); padding:5px 14px; border-radius:999px; flex:none;
 }
 @media print{ .pizarra{ display:none !important; } }
+
+/* ---------- Botón y modal de código QR ---------- */
+.qr-btn{
+  margin-top:14px; margin-left:8px; display:inline-flex; align-items:center; gap:7px;
+  font-family:'IBM Plex Mono',monospace; font-size:.78rem; font-weight:600;
+  color:var(--tab-fg); background:rgba(255,255,255,.55); border:1px solid currentColor;
+  border-radius:999px; padding:7px 14px 7px 12px; cursor:pointer; transition:.15s;
+}
+.qr-btn:hover{background:rgba(255,255,255,.9);}
+.qr-btn svg{width:15px; height:15px; flex:none;}
+
+.qr-modal{
+  position:fixed; inset:0; z-index:998; background:rgba(38,51,60,0.6);
+  display:flex; align-items:center; justify-content:center; padding:24px;
+}
+.qr-modal[hidden]{display:none;}
+.qr-modal-card{
+  background:var(--card); border-radius:var(--radius); padding:32px; max-width:380px; width:100%;
+  text-align:center; box-shadow:var(--shadow); position:relative;
+}
+.qr-modal-close{
+  position:absolute; top:12px; right:12px; width:36px; height:36px; border-radius:50%;
+  border:1px solid var(--line); background:var(--paper); color:var(--ink-soft); cursor:pointer;
+  font-size:1.3rem; line-height:1; display:flex; align-items:center; justify-content:center;
+}
+.qr-modal-close:hover{border-color:var(--teal); color:var(--teal-deep);}
+.qr-modal-canvas{
+  background:#fff; padding:16px; border-radius:12px; display:inline-flex; margin-bottom:16px;
+}
+.qr-modal-canvas svg{display:block; width:220px; height:220px;}
+.qr-modal-grade{font-family:'Fraunces',serif; font-size:1.3rem; color:var(--teal-deep); margin-bottom:6px;}
+.qr-modal-url{font-family:'IBM Plex Mono',monospace; font-size:.78rem; color:var(--ink-soft); word-break:break-all; margin-bottom:18px;}
+.qr-modal-print{
+  font-family:'IBM Plex Mono',monospace; font-size:.82rem; font-weight:600; color:#fff; background:var(--teal-btn);
+  border:none; border-radius:9px; padding:10px 20px; cursor:pointer;
+}
+.qr-modal-print:hover{background:var(--teal-btn-hover);}
+@media print{
+  body.qr-print-mode > *:not(.qr-modal){ display:none !important; }
+  body.qr-print-mode .qr-modal{ position:static; background:none; padding:0; }
+  body.qr-print-mode .qr-modal-card{ box-shadow:none; border:none; max-width:100%; }
+  body.qr-print-mode .qr-modal-close, body.qr-print-mode .qr-modal-print{ display:none !important; }
+}
 td.cal-day.is-today{border:2px solid var(--teal); box-shadow:0 0 0 3px rgba(31,111,120,0.15);}
 td.cal-day.is-today .daynum{color:var(--teal-deep); font-weight:700;}
 

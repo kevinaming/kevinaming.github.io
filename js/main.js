@@ -209,6 +209,77 @@ function fmtFechaLarga(year, month, day, lang){
   window.I18N_RERENDER_HOOKS.push(syncLabels);
 })();
 
+/* ---------- 00f · Código QR por grado/grupo ---------- */
+(function(){
+  const modal = document.getElementById('qr-modal');
+  const closeBtn = document.getElementById('qr-modal-close');
+  const printBtn = document.getElementById('qr-modal-print');
+  const canvasEl = document.getElementById('qr-modal-canvas');
+  const gradeEl = document.getElementById('qr-modal-grade');
+  const urlEl = document.getElementById('qr-modal-url');
+  if(!modal || typeof qrcode !== 'function') return;
+
+  const QR_LABEL = { es: 'Código QR', en: 'QR code' };
+  const PRINT_LABEL = { es: 'Imprimir', en: 'Print' };
+  let currentPanelId = null;
+
+  function openQrModal(panel){
+    currentPanelId = panel.id;
+    const gradeHead = panel.querySelector('.panel-head h3');
+    const gradeText = gradeHead ? gradeHead.textContent.trim() : '';
+    const url = location.origin + '/#' + panel.id;
+
+    gradeEl.textContent = gradeText;
+    urlEl.textContent = url;
+    canvasEl.innerHTML = '';
+    const qr = qrcode(0, 'M');
+    qr.addData(url);
+    qr.make();
+    canvasEl.innerHTML = qr.createSvgTag(6, 4);
+
+    modal.hidden = false;
+    document.body.classList.add('qr-print-mode');
+  }
+
+  function closeQrModal(){
+    modal.hidden = true;
+    document.body.classList.remove('qr-print-mode');
+    currentPanelId = null;
+  }
+
+  function syncLabels(){
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    printBtn.textContent = PRINT_LABEL[lang];
+    buttons.forEach(b=>{ b.querySelector('.qr-btn-label').textContent = QR_LABEL[lang]; });
+    if(currentPanelId){
+      const panel = document.getElementById(currentPanelId);
+      const gradeHead = panel && panel.querySelector('.panel-head h3');
+      if(gradeHead) gradeEl.textContent = gradeHead.textContent.trim();
+    }
+  }
+
+  const buttons = [];
+  document.querySelectorAll('.tab-panel').forEach(panel=>{
+    const head = panel.querySelector('.panel-head');
+    if(!head || !panel.querySelector('.grade-table')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'qr-btn';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="qr-btn-label"></span>';
+    head.appendChild(btn);
+    btn.addEventListener('click', ()=> openQrModal(panel));
+    buttons.push(btn);
+  });
+
+  closeBtn.addEventListener('click', closeQrModal);
+  printBtn.addEventListener('click', ()=> window.print());
+  modal.addEventListener('click', e=>{ if(e.target === modal) closeQrModal(); });
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && !modal.hidden) closeQrModal(); });
+
+  syncLabels();
+  window.I18N_RERENDER_HOOKS.push(syncLabels);
+})();
+
 /* ---------- Sesiones del día (compartido por el aviso y el modo pizarra) ---------- */
 function getAllSessions(){
   const sessions = [];
