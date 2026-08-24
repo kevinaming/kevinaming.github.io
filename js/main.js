@@ -12,23 +12,35 @@ window.I18N_RERENDER_HOOKS = [];
   const sections = navLinks
     .map(a => document.querySelector(a.getAttribute('href')))
     .filter(Boolean);
-  if(!sections.length || typeof IntersectionObserver !== 'function') return;
+  if(!sections.length) return;
 
   function setActive(id){
     navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
   }
 
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting) setActive(entry.target.id);
-    });
-  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+  let ticking = false;
+  function updateActive(){
+    ticking = false;
+    const triggerY = window.innerHeight * 0.35;
+    let current = sections[0].id;
+    for(const sec of sections){
+      if(sec.getBoundingClientRect().top <= triggerY) current = sec.id;
+    }
+    setActive(current);
+  }
 
-  sections.forEach(sec => observer.observe(sec));
+  window.addEventListener('scroll', ()=>{
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateActive);
+  }, { passive: true });
+  window.addEventListener('hashchange', updateActive);
 
   navLinks.forEach(a=>{
     a.addEventListener('click', ()=> setActive(a.getAttribute('href').slice(1)));
   });
+
+  updateActive();
 })();
 
 /* ---------- 00 · Modo claro / oscuro ---------- */
