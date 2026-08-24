@@ -354,8 +354,7 @@ function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClas
     const isCurrent = s.start <= now && now < s.end;
     const cls = isDone ? doneClass : (isCurrent ? currentClass : '');
     const badge = isCurrent ? `<span class="${nowTag}">${nowLabel}</span>` : '';
-    const rango = `${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)} – ${fmtHora12(s.end.getHours(), s.end.getMinutes(), lang)}`;
-    return `<li class="${cls}"><span class="${nowClass}-time">${rango}</span><span class="${nowClass}-grade">${s.grade}</span><span class="${nowClass}-title">${s.title}</span>${badge}</li>`;
+    return `<li class="${cls}"><span class="${nowClass}-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="${nowClass}-grade">${s.grade}</span><span class="${nowClass}-title">${s.title}</span>${badge}</li>`;
   }).join('');
 }
 
