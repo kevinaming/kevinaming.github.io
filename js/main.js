@@ -6,6 +6,31 @@ window.I18N_RERENDER_HOOKS = [];
   if(el) el.textContent = new Date().getFullYear();
 })();
 
+/* ---------- 00a2 · Resaltar sección activa en el menú al hacer scroll ---------- */
+(function(){
+  const navLinks = [...document.querySelectorAll('.topnav nav a')];
+  const sections = navLinks
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+  if(!sections.length || typeof IntersectionObserver !== 'function') return;
+
+  function setActive(id){
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+  }
+
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting) setActive(entry.target.id);
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+  sections.forEach(sec => observer.observe(sec));
+
+  navLinks.forEach(a=>{
+    a.addEventListener('click', ()=> setActive(a.getAttribute('href').slice(1)));
+  });
+})();
+
 /* ---------- 00 · Modo claro / oscuro ---------- */
 (function(){
   const btn = document.getElementById('theme-toggle');
