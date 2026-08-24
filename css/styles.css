@@ -137,10 +137,6 @@ a{color:var(--teal);}
 }
 .topnav nav a:hover{background:var(--paper-alt); color:var(--teal-deep);}
 .topnav nav a.active{background:var(--paper-alt); color:var(--teal-deep); font-weight:700;}
-.topnav nav a.active::before{
-  content:''; display:inline-block; width:5px; height:5px; border-radius:50%;
-  background:var(--teal); margin-right:7px; vertical-align:middle;
-}
 
 /* ---------- HERO / PORTADA ---------- */
 .hero{
