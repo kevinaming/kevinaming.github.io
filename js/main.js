@@ -383,15 +383,28 @@ function getTargetDaySessions(){
   return { targetSessions, isToday };
 }
 
-function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClass, nowTag){
+function sessionItemsHTML(targetSessions, lang, prefix){
   const now = new Date();
   const nowLabel = lang === 'en' ? 'NOW' : 'AHORA';
+  const nextLabel = lang === 'en' ? 'NEXT' : 'PRÓXIMA';
+  let nextMarked = false;
   return targetSessions.map(s=>{
     const isDone = s.end <= now;
     const isCurrent = s.start <= now && now < s.end;
-    const cls = isDone ? doneClass : (isCurrent ? currentClass : '');
-    const badge = isCurrent ? `<span class="${nowTag}">${nowLabel}</span>` : '';
-    return `<li class="${cls}"><span class="${nowClass}-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="${nowClass}-grade">${s.grade}</span><span class="${nowClass}-title">${s.title}</span>${badge}</li>`;
+    let cls, badge = '';
+    if(isDone){
+      cls = 'is-done';
+    } else if(isCurrent){
+      cls = 'is-current';
+      badge = `<span class="${prefix}-now">${nowLabel}</span>`;
+    } else if(!nextMarked){
+      cls = 'is-next';
+      badge = `<span class="${prefix}-next-badge">${nextLabel}</span>`;
+      nextMarked = true;
+    } else {
+      cls = 'is-later';
+    }
+    return `<li class="${cls}"><span class="${prefix}-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="${prefix}-grade">${s.grade}</span><span class="${prefix}-title">${s.title}</span>${badge}</li>`;
   }).join('');
 }
 
@@ -411,7 +424,7 @@ function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClas
       ? (lang === 'en' ? 'Today’s sessions' : 'Charlas de hoy')
       : (lang === 'en' ? 'Upcoming sessions' : 'Próximas charlas');
     const dateStr = fmtFechaLarga(targetSessions[0].start.getFullYear(), targetSessions[0].start.getMonth(), targetSessions[0].start.getDate(), lang);
-    const items = sessionItemsHTML(targetSessions, lang, 'tb', 'is-current', 'is-done', 'tb-now');
+    const items = sessionItemsHTML(targetSessions, lang, 'tb');
 
     el.innerHTML = `<div class="today-banner-head"><span class="today-banner-dot"></span><strong>${label} — ${dateStr}</strong></div><ul class="today-banner-list">${items}</ul>`;
     el.classList.toggle('is-today', isToday);
@@ -528,7 +541,7 @@ function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClas
       ? (lang === 'en' ? 'Today’s sessions' : 'Charlas de hoy')
       : (lang === 'en' ? 'Upcoming sessions' : 'Próximas charlas');
     const dateStr = fmtFechaLarga(targetSessions[0].start.getFullYear(), targetSessions[0].start.getMonth(), targetSessions[0].start.getDate(), lang);
-    const items = sessionItemsHTML(targetSessions, lang, 'pz', 'is-current', 'is-done', 'pz-now');
+    const items = sessionItemsHTML(targetSessions, lang, 'pz');
     content.innerHTML = `<div class="pizarra-date">${label} — ${dateStr}</div><ul class="pizarra-list">${items}</ul>`;
   }
 
