@@ -180,6 +180,7 @@ a{color:var(--teal);}
   width:38px; height:38px; border-radius:50%; border:1px solid var(--line);
   background:var(--card); color:var(--ink-soft); cursor:pointer; flex:none; padding:0; transition:.15s;
 }
+.pizarra-open[hidden]{display:none;}
 .pizarra-open:hover{border-color:var(--teal); color:var(--teal-deep);}
 .pizarra-open svg{width:18px; height:18px;}
 .today-banner-head{display:flex; align-items:center; gap:9px; margin-bottom:10px;}
