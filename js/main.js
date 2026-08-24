@@ -431,6 +431,59 @@ function sessionItemsHTML(targetSessions, lang, nowClass, currentClass, doneClas
   }
 })();
 
+/* ---------- 00d2 · Resaltar la próxima charla dentro de cada tabla de grado ---------- */
+(function(){
+  const NEXT_LABEL = { es: 'PRÓXIMA', en: 'NEXT' };
+  const NOW_LABEL = { es: 'AHORA', en: 'NOW' };
+
+  function markNextSessions(){
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    const now = new Date();
+    document.querySelectorAll('.grade-table tbody').forEach(tbody=>{
+      let marked = false;
+      tbody.querySelectorAll('tr').forEach(row=>{
+        row.classList.remove('session-past', 'session-next', 'session-current');
+        const oldBadge = row.querySelector('.session-badge');
+        if(oldBadge) oldBadge.remove();
+
+        const fechaCell = row.querySelector('.col-fecha');
+        const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
+        const horaText = row.querySelector('.col-hora')?.textContent.trim();
+        const fecha = parseFecha(fechaText);
+        const horas = parseHoraRango(horaText);
+        if(!fecha || !horas) return;
+        const start = new Date(fecha.year, fecha.month, fecha.day, horas[0].h, horas[0].min);
+        const end = new Date(fecha.year, fecha.month, fecha.day, horas[1].h, horas[1].min);
+
+        if(end <= now){
+          row.classList.add('session-past');
+          return;
+        }
+        if(marked) return;
+
+        const tituloEl = row.querySelector('.col-tema strong');
+        const badge = document.createElement('span');
+        badge.className = 'session-badge';
+        if(start <= now && now < end){
+          row.classList.add('session-current');
+          badge.classList.add('current');
+          badge.textContent = NOW_LABEL[lang];
+        } else {
+          row.classList.add('session-next');
+          badge.classList.add('next');
+          badge.textContent = NEXT_LABEL[lang];
+        }
+        if(tituloEl) tituloEl.appendChild(badge);
+        marked = true;
+      });
+    });
+  }
+
+  markNextSessions();
+  window.I18N_RERENDER_HOOKS.push(markNextSessions);
+  setInterval(markNextSessions, 60000);
+})();
+
 /* ---------- 00e · Modo pizarra (vista de proyector) ---------- */
 (function(){
   const overlay = document.getElementById('pizarra');

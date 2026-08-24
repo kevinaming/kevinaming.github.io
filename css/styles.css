@@ -461,6 +461,17 @@ table.grade-table tr:hover td{background:var(--paper-alt);}
 .col-tema strong{display:block;}
 .col-tema .desc{display:block; color:var(--ink-soft); font-size:.85rem; margin-top:2px;}
 tr.repaso-row td{opacity:.7; font-style:italic;}
+tr.session-past td{opacity:.45;}
+tr.session-next td{background:linear-gradient(135deg, rgba(31,111,120,0.08), rgba(232,163,61,0.08));}
+tr.session-next td:first-child{box-shadow:inset 3px 0 0 var(--teal);}
+tr.session-current td{background:linear-gradient(135deg, rgba(31,111,120,0.18), rgba(232,163,61,0.16));}
+tr.session-current td:first-child{box-shadow:inset 3px 0 0 var(--teal-deep);}
+.session-badge{
+  display:inline-block; margin-left:8px; font-family:'IBM Plex Mono',monospace; font-size:.62rem; font-weight:700;
+  letter-spacing:.04em; padding:2px 8px; border-radius:999px; vertical-align:middle; white-space:nowrap;
+}
+.session-badge.next{background:var(--teal-btn); color:#fff;}
+.session-badge.current{background:var(--mango); color:#fff;}
 
 /* Almanac */
 .month-nav{
