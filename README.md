@@ -1,6 +1,6 @@
 # Calendario de Charlas de Alfabetización Digital 2026–2027
 
-Sitio web estático — sin backend, sin base de datos, sin servicios que requieran autenticación. Todo el contenido (calendario, horario, tabla de maestros, buscador) vive en archivos HTML, CSS y JavaScript planos.
+Sitio web estático — sin backend, sin base de datos, sin servicios que requieran autenticación. Todo el contenido (calendario, horario, almanaque, buscador) vive en archivos HTML, CSS y JavaScript planos.
 
 ## Estructura del proyecto
 
@@ -10,8 +10,10 @@ charlas-alfabetizacion-digital/
 ├── css/
 │   └── styles.css      ← todos los estilos
 ├── js/
-│   ├── data.js          ← datos del calendario, maestros y buscador (constantes JS)
-│   └── main.js          ← lógica de pestañas, filtros, spotlight y buscador
+│   ├── data.js          ← índice de búsqueda (constantes JS)
+│   ├── i18n.js           ← diccionario y traductor ES/EN
+│   ├── qrcode.js          ← generador de códigos QR (vendored)
+│   └── main.js          ← lógica de pestañas, buscador, almanaque, pizarra, QR e ICS
 └── README.md
 ```
 
@@ -49,8 +51,10 @@ y visitar `http://localhost:8000` en el navegador.
 
 ## Actualizar el contenido
 
-- **Fechas, temas y rotaciones**: se generan en `js/data.js` (las constantes `TEACHER_INDEX` y `SEARCH_INDEX`) y en el propio `index.html` (las tablas y el almanaque ya están renderizados como HTML estático).
+- **Fechas, temas y rotaciones**: viven directamente en `index.html` (la tabla semanal, las pestañas/paneles de cada grupo y el almanaque ya están renderizados como HTML estático).
+- **Índice del buscador**: `js/data.js` (constante `SEARCH_INDEX`).
+- **Traducciones ES/EN**: `js/i18n.js`.
 - **Estilos, colores, tipografía**: `css/styles.css`.
-- **Comportamiento de pestañas, filtros y buscador**: `js/main.js`.
+- **Comportamiento de pestañas, buscador, almanaque, modo pizarra y exportación a calendario**: `js/main.js`.
 
 No hay build step ni compilación: cualquier edición a estos archivos se refleja de inmediato al recargar la página.

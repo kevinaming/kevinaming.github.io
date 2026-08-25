@@ -640,90 +640,6 @@ function activarTab(tabId, grupo){
   window.addEventListener('hashchange', ()=> activarDesdeHash(true));
 })();
 
-/* ---------- 03 · Filtro Maestros que se cruzan + Spotlight ---------- */
-(function(){
-  const selGrado = document.getElementById('mf-grado');
-  const selMaestro = document.getElementById('mf-maestro');
-  const btnClear = document.getElementById('mf-clear');
-  const tbody = document.querySelector('#tabla-maestros tbody');
-  const rows = Array.from(tbody.querySelectorAll('tr'));
-  const countEl = document.getElementById('mf-count');
-  const teacherIndex = TEACHER_INDEX;
-  const spotlight = document.getElementById('spotlight');
-  const spotName = document.getElementById('spot-name');
-  const spotSub = document.getElementById('spot-sub');
-  const spotCards = document.getElementById('spot-cards');
-  const spotClose = document.getElementById('spot-close');
-
-  function applyFilter(){
-    const g = selGrado.value;
-    const m = selMaestro.value;
-    let visible = 0;
-    rows.forEach(r=>{
-      const rg = r.dataset.grado || '';
-      const rm = r.dataset.maestro || '';
-      const okG = !g || rg === g;
-      const okM = !m || rm === m;
-      const show = okG && okM;
-      r.classList.toggle('row-hidden', !show);
-      if(show) visible++;
-    });
-    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
-    if(!g && !m){
-      countEl.textContent = lang === 'en' ? `${rows.length} rows in total.` : `${rows.length} filas en total.`;
-    } else {
-      countEl.textContent = lang === 'en' ? `Showing ${visible} of ${rows.length} rows.` : `Mostrando ${visible} de ${rows.length} filas.`;
-    }
-    renderSpotlight(m);
-  }
-
-  function renderSpotlight(maestro){
-    if(!maestro){ spotlight.classList.remove('active'); spotCards.innerHTML=''; return; }
-    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
-    const crossings = teacherIndex[maestro] || [];
-    spotName.textContent = maestro;
-    if(crossings.length === 0){
-      spotSub.textContent = lang === 'en'
-        ? 'This teacher appears in the table as a reference for another block, but none of them match the session’s actual schedule — their period is not affected.'
-        : 'Este maestro/a aparece en la tabla como referencia de otro bloque, pero ninguno coincide con el horario real de la charla — su período no se ve afectado.';
-      spotCards.innerHTML = '';
-      spotlight.classList.add('active');
-      return;
-    }
-    const totalFechas = crossings.reduce((s,c)=>s+c.num_fechas,0);
-    spotSub.textContent = lang === 'en'
-      ? `This session affects them in ${crossings.length} grade(s)/group(s), a total of ${totalFechas} date(s) during the school year.`
-      : `Esta charla lo(a) afecta en ${crossings.length} grado(s)/grupo(s), un total de ${totalFechas} fecha(s) durante el año escolar.`;
-    const t = s => lang === 'en' && typeof i18nTranslateText === 'function' ? i18nTranslateText(s) : s;
-    spotCards.innerHTML = crossings.map((c,i)=>{
-      const fechaChips = c.fechas.map(f=>`<span class="fecha-chip">${t(f)}</span>`).join('');
-      const verFechas = lang === 'en' ? `See ${c.num_fechas} date(s)` : `Ver ${c.num_fechas} fecha(s)`;
-      const verGrupo = lang === 'en' ? 'See this group’s sessions →' : 'Ver charlas de este grupo →';
-      return `<div class="spot-card">
-        <div class="sc-title">${t(c.label)}</div>
-        <div class="sc-when">${t(c.weekday)} · ${t(c.hora)}</div>
-        <div class="sc-materia">${t(c.materia)}<span class="rol">${t(c.rol)}</span></div>
-        <details><summary>${verFechas}</summary><div class="fecha-list">${fechaChips}</div></details>
-        <button type="button" class="sc-jump" data-tab="${c.tabId}" data-group="${c.tipo==='grado'?'grados':'ee'}">${verGrupo}</button>
-      </div>`;
-    }).join('');
-    spotCards.querySelectorAll('.sc-jump').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        document.getElementById('grados').scrollIntoView({behavior:'smooth', block:'start'});
-        setTimeout(()=>activarTab(btn.dataset.tab, btn.dataset.group), 300);
-      });
-    });
-    spotlight.classList.add('active');
-  }
-
-  selGrado.addEventListener('change', applyFilter);
-  selMaestro.addEventListener('change', applyFilter);
-  btnClear.addEventListener('click', ()=>{ selGrado.value=''; selMaestro.value=''; applyFilter(); });
-  spotClose.addEventListener('click', ()=>{ selMaestro.value=''; applyFilter(); });
-  applyFilter();
-  window.I18N_RERENDER_HOOKS.push(applyFilter);
-})();
-
 /* ---------- 04 · Buscador por salón, grado o maestro/a ---------- */
 (function(){
   const data = SEARCH_INDEX;
@@ -750,8 +666,8 @@ function activarTab(tabId, grupo){
     });
     if(hits.length === 0){
       resultDiv.innerHTML = lang === 'en'
-        ? '<span class="no-hit">I couldn’t find a matching classroom, grade, or teacher. Check the "Teachers affected" section if you were searching by teacher name.</span>'
-        : '<span class="no-hit">No encontré ningún salón, grado o maestro/a que coincida. Revisa la sección "Maestros que se cruzan" si buscabas por nombre de maestro.</span>';
+        ? '<span class="no-hit">I couldn’t find a matching classroom, grade, or group. Try a group code (e.g. G7) or a teacher’s name.</span>'
+        : '<span class="no-hit">No encontré ningún salón, grado o grupo que coincida. Prueba con un código de grupo (por ejemplo, G7) o el nombre de un maestro/a.</span>';
       return;
     }
     const t = s => lang === 'en' && typeof i18nTranslateText === 'function' ? i18nTranslateText(s) : s;

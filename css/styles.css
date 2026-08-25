@@ -52,34 +52,37 @@
     color-scheme:dark;
   }
 }
-/* Colores por grado (PK-8vo) y grupo de Educación Especial/Autismo (E1-E13),
-   usados en el horario semanal, la tabla de maestros, las pestañas y el almanaque. */
-.c-pk{--gc-bg:#f1cfcf;--gc-fg:#9b3a3a}
-.c-k{--gc-bg:#f1e3cf;--gc-fg:#9b743a}
-.c-1{--gc-bg:#eaf1cf;--gc-fg:#889b3a}
-.c-2{--gc-bg:#d6f1cf;--gc-fg:#4e9b3a}
-.c-3{--gc-bg:#cff1dd;--gc-fg:#3a9b61}
-.c-4{--gc-bg:#cff1f1;--gc-fg:#3a9b9b}
-.c-5{--gc-bg:#cfddf1;--gc-fg:#3a619b}
-.c-6{--gc-bg:#d6cff1;--gc-fg:#4e3a9b}
-.c-7{--gc-bg:#eacff1;--gc-fg:#883a9b}
-.c-8{--gc-bg:#f1cfe3;--gc-fg:#9b3a74}
-.c-e1{--gc-bg:#c8e8e8;--gc-fg:#287a7a}
-.c-e2{--gc-bg:#c8d9e8;--gc-fg:#28547a}
-.c-e3{--gc-bg:#c8cbe8;--gc-fg:#282f7a}
-.c-e4{--gc-bg:#d5c8e8;--gc-fg:#48287a}
-.c-e5{--gc-bg:#e3c8e8;--gc-fg:#6d287a}
-.c-e6{--gc-bg:#e8c8de;--gc-fg:#7a2861}
-.c-e7{--gc-bg:#e8c8d0;--gc-fg:#7a283b}
-.c-e8{--gc-bg:#e8d0c8;--gc-fg:#7a3b28}
-.c-e9{--gc-bg:#e8dec8;--gc-fg:#7a6128}
-.c-e10{--gc-bg:#e3e8c8;--gc-fg:#6d7a28}
-.c-e11{--gc-bg:#d5e8c8;--gc-fg:#487a28}
-.c-e12{--gc-bg:#c8e8cb;--gc-fg:#287a2f}
-.c-e13{--gc-bg:#c8e8d9;--gc-fg:#287a54}
+/* Colores por grupo de charla (G1-G26), usados en el horario semanal,
+   las pestañas y el almanaque. */
+.c-g1{--gc-bg:#e8c8c8;--gc-fg:#7a2828}
+.c-g2{--gc-bg:#e8cfc8;--gc-fg:#7a3b28}
+.c-g3{--gc-bg:#e8d7c8;--gc-fg:#7a4e28}
+.c-g4{--gc-bg:#e8dec8;--gc-fg:#7a6128}
+.c-g5{--gc-bg:#e8e6c8;--gc-fg:#7a7428}
+.c-g6{--gc-bg:#e3e8c8;--gc-fg:#6d7a28}
+.c-g7{--gc-bg:#dce8c8;--gc-fg:#5b7a28}
+.c-g8{--gc-bg:#d4e8c8;--gc-fg:#487a28}
+.c-g9{--gc-bg:#cde8c8;--gc-fg:#357a28}
+.c-g10{--gc-bg:#c8e8ca;--gc-fg:#287a2e}
+.c-g11{--gc-bg:#c8e8d2;--gc-fg:#287a41}
+.c-g12{--gc-bg:#c8e8d9;--gc-fg:#287a54}
+.c-g13{--gc-bg:#c8e8e1;--gc-fg:#287a67}
+.c-g14{--gc-bg:#c8e8e8;--gc-fg:#287a7a}
+.c-g15{--gc-bg:#c8e1e8;--gc-fg:#28677a}
+.c-g16{--gc-bg:#c8d9e8;--gc-fg:#28547a}
+.c-g17{--gc-bg:#c8d2e8;--gc-fg:#28417a}
+.c-g18{--gc-bg:#c8cae8;--gc-fg:#282e7a}
+.c-g19{--gc-bg:#cdc8e8;--gc-fg:#35287a}
+.c-g20{--gc-bg:#d4c8e8;--gc-fg:#48287a}
+.c-g21{--gc-bg:#dcc8e8;--gc-fg:#5b287a}
+.c-g22{--gc-bg:#e3c8e8;--gc-fg:#6d287a}
+.c-g23{--gc-bg:#e8c8e6;--gc-fg:#7a2874}
+.c-g24{--gc-bg:#e8c8de;--gc-fg:#7a2861}
+.c-g25{--gc-bg:#e8c8d7;--gc-fg:#7a284e}
+.c-g26{--gc-bg:#e8c8cf;--gc-fg:#7a283b}
 .chip, .wk-cell, .wk-rot-chip{ background:var(--gc-bg); color:var(--gc-fg); }
 .dot{ background:var(--gc-bg); border-color:var(--gc-fg); }
-.grade-dot, .sw{ background:var(--gc-bg); }
+.sw{ background:var(--gc-bg); }
 
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -370,75 +373,6 @@ table.weekly-table thead th{
 .subsection-title .tag{font-family:'IBM Plex Mono',monospace; font-size:.7rem; background:var(--mango); color:#fff; padding:3px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:.04em;}
 .rotation-note{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:20px; font-size:.88rem; color:var(--ink-soft);}
 
-/* Maestros que se cruzan */
-.filter-bar{
-  display:flex; flex-wrap:wrap; gap:14px; align-items:flex-end;
-  background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px; box-shadow:var(--shadow);
-}
-.filter-field{display:flex; flex-direction:column; gap:6px;}
-.filter-field label{font-family:'IBM Plex Mono',monospace; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);}
-.filter-field select{
-  font-family:'Work Sans',sans-serif; font-size:.9rem; padding:9px 12px; border-radius:9px; border:1px solid var(--line);
-  background:var(--paper); color:var(--ink); min-width:220px;
-}
-.filter-clear{
-  font-family:'IBM Plex Mono',monospace; font-size:.78rem; color:var(--teal); background:none; border:1px solid var(--teal);
-  border-radius:999px; padding:8px 14px; cursor:pointer; align-self:flex-end;
-}
-.filter-clear:hover{background:var(--teal-btn); color:#fff;}
-.filter-count{font-size:.82rem; color:var(--ink-soft); margin-bottom:14px;}
-table.maestros-table{border-collapse:collapse; width:100%; min-width:760px;}
-table.maestros-table th{
-  text-align:left; padding:12px 14px; font-family:'IBM Plex Mono',monospace; font-size:.72rem;
-  text-transform:uppercase; letter-spacing:.05em; color:var(--teal-deep); background:var(--paper-alt);
-  border-bottom:2px solid var(--line);
-}
-table.maestros-table td{padding:12px 14px; border-bottom:1px solid var(--line); font-size:.9rem; vertical-align:top;}
-table.maestros-table tr.row-hidden{display:none;}
-table.maestros-table tr:hover td{background:var(--paper-alt);}
-.grade-dot{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:8px;}
-.role{display:block; font-size:.78rem; color:var(--ink-soft); margin-top:2px;}
-em.pending{color:var(--mango-deep); font-style:italic; font-size:.86rem;}
-.no-results-row td{text-align:center; color:var(--ink-soft); font-style:italic; padding:24px;}
-.real-badge{
-  display:inline-block; margin-left:6px; font-family:'IBM Plex Mono',monospace; font-size:.62rem; font-weight:700;
-  background:var(--mango); color:#fff; padding:2px 6px; border-radius:999px; white-space:nowrap; vertical-align:middle;
-}
-
-/* Spotlight maestro/a */
-.spotlight{
-  display:none; margin-bottom:22px; background:linear-gradient(135deg, rgba(31,111,120,0.06), rgba(232,163,61,0.08));
-  border:1.5px solid var(--teal); border-radius:var(--radius); padding:22px 24px;
-}
-.spotlight.active{display:block; animation:fadein .25s ease;}
-.spotlight-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; flex-wrap:wrap;}
-.spotlight-head h3{margin:0; font-size:1.2rem;}
-.spotlight-close{
-  font-family:'IBM Plex Mono',monospace; font-size:.76rem; color:var(--ink-soft); background:var(--card);
-  border:1px solid var(--line); border-radius:999px; padding:5px 12px; cursor:pointer;
-}
-.spotlight-close:hover{border-color:var(--teal); color:var(--teal-deep);}
-.spotlight-sub{color:var(--ink-soft); font-size:.9rem; margin-bottom:16px;}
-.spotlight-cards{display:grid; gap:12px; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
-.spot-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow);}
-.spot-card .sc-title{font-weight:600; color:var(--teal-deep); margin-bottom:4px;}
-.spot-card .sc-when{font-family:'IBM Plex Mono',monospace; font-size:.78rem; color:var(--ink-soft); margin-bottom:6px;}
-.spot-card .sc-materia{font-size:.86rem; margin-bottom:10px;}
-.spot-card .sc-materia .rol{display:block; font-size:.76rem; color:var(--ink-soft);}
-.spot-card details{margin-bottom:10px;}
-.spot-card summary{cursor:pointer; font-size:.8rem; color:var(--teal); font-family:'IBM Plex Mono',monospace;}
-.spot-card .fecha-list{display:flex; flex-wrap:wrap; gap:5px; margin-top:8px;}
-.spot-card .fecha-chip{
-  font-family:'IBM Plex Mono',monospace; font-size:.68rem; background:var(--paper-alt); color:var(--ink-soft);
-  padding:3px 7px; border-radius:6px;
-}
-.spot-card .sc-jump{
-  font-family:'IBM Plex Mono',monospace; font-size:.78rem; font-weight:600; color:#fff; background:var(--teal-btn);
-  border:none; border-radius:8px; padding:7px 12px; cursor:pointer; width:100%;
-}
-.spot-card .sc-jump:hover{background:var(--teal-btn-hover);}
-.spotlight-empty{color:var(--ink-soft); font-style:italic; font-size:.9rem;}
-
 /* Grade tabs */
 .tabs-nav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
 .grade-tab{
@@ -595,16 +529,16 @@ footer .copyright{margin-top:18px; padding-top:14px; border-top:1px solid var(--
     --teal:#1f6f78; --teal-deep:#154f56; --teal-btn:#1f6f78; --teal-btn-hover:#154f56;
     --mango:#e8a33d; --mango-deep:#b97c22;
   }
-  .topnav, .toolbar-buttons, .search-box, .filter-bar, .filter-count,
-  .spotlight, .month-nav, .ics-btn, .hero-chipfield{
+  .topnav, .toolbar-buttons, .search-box,
+  .month-nav, .ics-btn, .hero-chipfield{
     display:none !important;
   }
   a{text-decoration:none; color:inherit;}
   .hero{background:none; padding:24px 0;}
   section.block{padding:24px 0;}
   .table-scroll, .table-wrap{overflow:visible; box-shadow:none;}
-  .hero-meta .item, .method-list li, .spot-card, .search-box{box-shadow:none;}
-  table.grade-table thead th, table.maestros-table thead th, table.weekly-table thead th{
+  .hero-meta .item, .method-list li, .search-box{box-shadow:none;}
+  table.grade-table thead th, table.weekly-table thead th{
     position:static;
   }
   .grade-table tbody tr, .month-detail-list li, .wk-cell{break-inside:avoid;}
