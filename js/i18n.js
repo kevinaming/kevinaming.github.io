@@ -60,7 +60,7 @@ const I18N_UI = {
 
     'almanaque.kicker': 'Vista de almanaque',
     'almanaque.h2': 'Almanaque del año escolar',
-    'almanaque.p': 'Cada ficha muestra el salón (o el código del grupo, si es combinado) y el número de charla — por ejemplo, <span class="mono">8-1·07</span> = salón 8-1, charla #7, y <span class="mono">G22·07</span> = Grupo G22, charla #7. Despliega el detalle debajo de cada mes para ver el tema completo de cada sesión.',
+    'almanaque.p': 'Cada ficha muestra el salón y el número de charla —por ejemplo, <span class="mono">3-1·07</span> = salón 3-1, charla #7. Despliega el detalle debajo de cada mes para ver el tema completo de cada sesión.',
 
     'footer.p1': 'Calendario preparado por Kevin García, Maestro Recurso en el Uso de la Computadora, para la Escuela Arianys Nicole Rosa Luquis, dirigido a la Dra. Rebecca López Morell. Elaborado a partir de la Organización Escolar 2026–2027 y el Calendario Escolar 2026–2027 del Departamento de Educación de Puerto Rico.',
     'footer.sig': 'Educación Bilingüe · Dos idiomas, infinitas posibilidades',
@@ -121,7 +121,7 @@ const I18N_UI = {
 
     'almanaque.kicker': 'Calendar view',
     'almanaque.h2': 'School year calendar',
-    'almanaque.p': 'Each tile shows the classroom (or the group code, if it’s a combined group) and the session number — for example, <span class="mono">8-1·07</span> = classroom 8-1, session #7, and <span class="mono">G22·07</span> = Group G22, session #7. Expand the detail below each month to see the full topic of each session.',
+    'almanaque.p': 'Each tile shows the classroom and the session number —for example, <span class="mono">3-1·07</span> = classroom 3-1, session #7. Expand the detail below each month to see the full topic of each session.',
 
     'footer.p1': 'Calendar prepared by Kevin García, Resource Teacher for Computer Use, for Arianys Nicole Rosa Luquis School, addressed to Dr. Rebecca López Morell. Built from the 2026–2027 school master schedule and the Puerto Rico Department of Education’s 2026–2027 School Calendar.',
     'footer.sig': 'Bilingual Education · Two languages, endless possibilities',
