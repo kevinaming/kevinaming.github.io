@@ -36,7 +36,7 @@ const I18N_UI = {
 
     'horario.kicker': 'Rotación semanal',
     'horario.h2': 'Horario semanal de charlas',
-    'horario.p': 'Cada período fijo de Integrado PK-8vo rota quincenalmente entre uno o dos grupos (semana A / semana B), salvo los períodos marcados como "solo semana A" o "solo semana B", que atienden a un único grupo cada dos semanas.',
+    'horario.p': 'Cada período rota entre uno o dos grupos en semanas alternas —semana A y semana B—; así, cada grupo recibe su charla cada dos semanas, el mismo día y a la misma hora.',
     'horario.th.hora': 'Hora',
 
     'grados.kicker': 'Calendario detallado',
@@ -97,7 +97,7 @@ const I18N_UI = {
 
     'horario.kicker': 'Weekly rotation',
     'horario.h2': 'Weekly session schedule',
-    'horario.p': 'Each fixed PK-8th Integrated period rotates biweekly between one or two groups (week A / week B), except the periods marked "only week A" or "only week B", which serve a single group every other week.',
+    'horario.p': 'Each period rotates between one or two groups on alternating weeks —week A and week B—; that way, each group gets its session every two weeks, on the same day and at the same time.',
     'horario.th.hora': 'Time',
 
     'grados.kicker': 'Detailed calendar',
