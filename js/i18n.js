@@ -17,7 +17,7 @@ const I18N_UI = {
 
     'hero.eyebrow': 'Año escolar 2026–2027',
     'hero.h1': 'Calendario de Charlas de<br>Alfabetización Digital',
-    'hero.subtitle': 'Plan de charlas semanales de PK a 8vo grado, organizado a partir de la organización escolar y el calendario oficial del Departamento de Educación.',
+    'hero.subtitle': 'Simple. Organizado. Para todos.',
     'hero.escuela': 'Escuela',
     'hero.directora': 'Directora',
     'hero.recurso': 'Maestro Recurso — Uso de la Computadora',
@@ -82,7 +82,7 @@ const I18N_UI = {
 
     'hero.eyebrow': 'School year 2026–2027',
     'hero.h1': 'Digital Literacy<br>Session Calendar',
-    'hero.subtitle': 'Weekly session plan from Pre-K through 8th grade, built from the school’s master schedule and the official Department of Education calendar.',
+    'hero.subtitle': 'Simple. Organized. For everyone.',
     'hero.escuela': 'School',
     'hero.directora': 'Principal',
     'hero.recurso': 'Resource Teacher — Computer Use',
