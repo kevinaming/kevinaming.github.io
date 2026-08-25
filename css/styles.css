@@ -372,6 +372,10 @@ table.weekly-table thead th{
 .subsection-title{font-size:1.05rem; margin:34px 0 14px; color:var(--teal-deep); display:flex; align-items:center; gap:10px;}
 .subsection-title .tag{font-family:'IBM Plex Mono',monospace; font-size:.7rem; background:var(--mango); color:#fff; padding:3px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:.04em;}
 .rotation-note{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:20px; font-size:.88rem; color:var(--ink-soft);}
+.rotation-note strong{color:var(--teal-deep);}
+.combo-glossary{list-style:none; margin:10px 0 0; padding:0; display:grid; gap:6px;}
+.combo-glossary li{font-size:.86rem;}
+.combo-glossary strong{color:var(--teal-deep); margin-right:4px;}
 
 /* Grade tabs */
 .tabs-nav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
