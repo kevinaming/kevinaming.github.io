@@ -25,7 +25,7 @@ const I18N_UI = {
 
     'metodologia.kicker': 'Metodología',
     'metodologia.h2': 'Cómo se organizó este calendario',
-    'metodologia.p1': 'Hay un máximo de 24 estudiantes por charla, por lo que algunas secciones con pocos estudiantes se combinaron entre sí, formando 26 grupos de charla, cada uno con su día, período y frecuencia fijos.',
+    'metodologia.p1': 'Habrá un máximo de 24 estudiantes por charla, por lo que algunas secciones con pocos estudiantes se combinaron entre sí, formando 26 grupos de charla, cada uno con su día, período y frecuencia fijos.',
     'metodologia.p2': 'Cada día hay tres períodos disponibles, que se reparten entre dos grupos en semanas alternas —semana A y semana B—; así, cada grupo recibe su charla cada dos semanas, el mismo día y a la misma hora.',
     'metodologia.p3': 'El contenido sigue el temario oficial: Introducción a la Alfabetización Digital para PK–2do, y Fundamentos de la Alfabetización Digital para 3ro–8vo, adaptado al nivel de cada grupo. El calendario respeta además los días festivos y recesos oficiales del Departamento de Educación.',
     'metodologia.li1': 'Máximo 24 estudiantes por charla — combinación de secciones pequeñas.',
