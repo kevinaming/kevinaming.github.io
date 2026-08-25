@@ -253,7 +253,7 @@ const I18N_PHRASES = [
   ['Fundamentos de la Alfabetización Digital (adaptado)', 'Digital Literacy Fundamentals (adapted)'],
   ['Unidad', 'Unit'],
   ['Ver detalle de charlas de', 'See session details for'],
-  ['Disponible', 'Available'],
+  ['Preparación de recursos', 'Resource preparation'],
 ];
 
 /* ---------- 3. Motor de traducción de patrones ---------- */
