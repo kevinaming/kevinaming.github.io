@@ -686,6 +686,16 @@ function activarTab(tabId, grupo){
   window.I18N_RERENDER_HOOKS.push(buscar);
 })();
 
+/* ---------- 04b · Saltar al grupo desde la leyenda del almanaque ---------- */
+(function(){
+  document.querySelectorAll('.legend .lg-item').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.getElementById('grados').scrollIntoView({behavior:'smooth', block:'start'});
+      setTimeout(()=>activarTab(btn.dataset.tab, btn.dataset.group), 300);
+    });
+  });
+})();
+
 /* ---------- 05 · Abrir detalles del almanaque al imprimir ---------- */
 (function(){
   let closedBeforePrint = [];
