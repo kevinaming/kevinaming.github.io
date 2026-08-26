@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<script>
+(function(){
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored === 'light' || stored === 'dark'
+      ? stored
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+</script>
+<title>Grupos y Grados — Kevin García</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="description" content="Organización de grados, grupos y grupos de charla, año escolar 2026-2027. Escuela Arianys Nicole Rosa Luquis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.lock-screen{
+  min-height:calc(100vh - 61px);
+  display:flex; align-items:center; justify-content:center;
+  padding:64px 24px;
+}
+.lock-card{
+  max-width:360px; width:100%; background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); box-shadow:var(--shadow); padding:28px 26px; text-align:center;
+}
+.lock-card .lock-icon{
+  width:40px; height:40px; margin:0 auto 14px; color:var(--teal-deep);
+}
+.lock-card h1{font-size:1.3rem; margin-bottom:6px;}
+.lock-card p{color:var(--ink-soft); font-size:.88rem; margin:0 0 20px;}
+.lock-pin-row{display:flex; gap:8px; justify-content:center; margin-bottom:14px;}
+.lock-pin-row input{
+  width:44px; height:52px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:1.3rem;
+  border:1.5px solid var(--line); border-radius:9px; background:var(--paper); color:var(--ink);
+}
+.lock-pin-row input:focus{outline:none; border-color:var(--teal);}
+.lock-card button{
+  width:100%; font-family:'IBM Plex Mono',monospace; font-size:.88rem; font-weight:600; color:#fff;
+  background:var(--teal-btn); border:none; border-radius:9px; padding:11px 18px; cursor:pointer; transition:.15s;
+}
+.lock-card button:hover{background:var(--teal-btn-hover);}
+.lock-error{color:var(--mango-deep); font-size:.82rem; margin-top:12px; min-height:1.2em;}
+#protected-root[hidden], .lock-screen[hidden]{display:none;}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Alfabetización Digital · ANRL</a>
+    <div class="toolbar-buttons">
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.4"/><path d="M12 19.1v2.4"/><path d="M4.2 4.2l1.7 1.7"/><path d="M18.1 18.1l1.7 1.7"/><path d="M2.5 12h2.4"/><path d="M19.1 12h2.4"/><path d="M4.2 19.8l1.7-1.7"/><path d="M18.1 5.9l1.7-1.7"/></g></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.8A8.6 8.6 0 1 1 9.2 3.8a7 7 0 0 0 11 11z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="lock-screen" id="lock-screen">
+  <div class="lock-card">
+    <svg class="lock-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><rect x="4.5" y="10.5" width="15" height="10" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.7"/></svg>
+    <h1>Contenido protegido</h1>
+    <p>Ingresa el PIN para ver y editar los grupos.</p>
+    <form id="lock-form" autocomplete="off">
+      <div class="lock-pin-row">
+        <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="lock-digit" aria-label="Dígito 1">
+        <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="lock-digit" aria-label="Dígito 2">
+        <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="lock-digit" aria-label="Dígito 3">
+        <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="lock-digit" aria-label="Dígito 4">
+      </div>
+      <button type="submit">Desbloquear</button>
+      <div class="lock-error" id="lock-error"></div>
+    </form>
+  </div>
+</div>
+
+<div id="protected-root" hidden>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> Uso interno · Año escolar 2026&ndash;2027</span>
+    <h1>Grupos y Grados</h1>
+    <p class="subtitle">Organización de salones, maestros(as) y grupos de charla — editable.</p>
+    <div class="hero-meta">
+      <div class="item"><div class="label">Maestro</div><div class="value">Kevin García</div></div>
+      <div class="item"><div class="label">Puesto</div><div class="value">Maestro Recurso — Uso de la Computadora</div></div>
+      <div class="item"><div class="label">Escuela</div><div class="value">Arianys Nicole Rosa Luquis</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="grupos">
+  <div class="wrap">
+    <a class="sch-back" href="index.html">&larr; Volver al calendario de charlas</a>
+    <div class="section-head">
+      <span class="kicker">Organización</span>
+      <h2>Grados, salones y grupos de charla</h2>
+      <p>Edita cualquier celda directamente. Usa las flechas para reordenar filas y la papelera para eliminarlas. Los cambios se guardan automáticamente en este navegador.</p>
+    </div>
+    <div class="grp-toolbar">
+      <span class="grp-summary" id="grp-summary"></span>
+      <button type="button" class="grp-btn" id="grp-export-json">Exportar JSON</button>
+      <button type="button" class="grp-btn" id="grp-export-csv">Exportar CSV</button>
+      <button type="button" class="grp-btn grp-btn-danger" id="grp-reset">Restablecer datos originales</button>
+    </div>
+    <div class="table-scroll">
+      <table class="grp-table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Clasificación</th>
+            <th scope="col">Grado/Grupo</th>
+            <th scope="col">Maestro(a) Salón Hogar</th>
+            <th scope="col">Salón</th>
+            <th scope="col">Est.</th>
+            <th scope="col">Grupo de Charla</th>
+            <th scope="col">Nivel</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="grp-tbody"></tbody>
+      </table>
+    </div>
+    <button type="button" class="grp-btn grp-btn-primary grp-add-row" id="grp-add-row">+ Agregar fila</button>
+    <div class="grp-save-note" id="grp-save-note">Guardado.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; <span id="copyright-year">2026</span> Escuela Arianys Nicole Rosa Luquis. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+</div>
+
+<script type="application/json" id="enc-payload">{"salt":"kAmkuXe1xJf5UAo0Q2XMpw==","iv":"nCgODqL40vT5FCYc","iterations":200000,"cipher":"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"}</script>
+
+<script>
+(function(){
+  var payload = JSON.parse(document.getElementById('enc-payload').textContent);
+  var lockScreen = document.getElementById('lock-screen');
+  var root = document.getElementById('protected-root');
+  var form = document.getElementById('lock-form');
+  var errorEl = document.getElementById('lock-error');
+  var digits = Array.prototype.slice.call(document.querySelectorAll('.lock-digit'));
+  var KEY_STORAGE = 'grp-key-v1';
+  var DATA_STORAGE = 'grp-data-v1';
+  var cryptoKey = null;
+  var rows = [];
+
+  function b64ToBytes(b64){
+    var bin = atob(b64);
+    var arr = new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++) arr[i] = bin.charCodeAt(i);
+    return arr;
+  }
+  function bytesToB64(bytes){
+    var bin = '';
+    var arr = new Uint8Array(bytes);
+    for(var i=0;i<arr.length;i++) bin += String.fromCharCode(arr[i]);
+    return btoa(bin);
+  }
+
+  async function decryptOriginal(key){
+    var iv = b64ToBytes(payload.iv);
+    var cipher = b64ToBytes(payload.cipher);
+    var buf = await crypto.subtle.decrypt({name:'AES-GCM', iv: iv}, key, cipher);
+    return JSON.parse(new TextDecoder().decode(buf));
+  }
+
+  async function decryptSaved(key){
+    var raw = null;
+    try { raw = localStorage.getItem(DATA_STORAGE); } catch(e) {}
+    if(!raw) return null;
+    try {
+      var obj = JSON.parse(raw);
+      var iv = b64ToBytes(obj.iv);
+      var cipher = b64ToBytes(obj.cipher);
+      var buf = await crypto.subtle.decrypt({name:'AES-GCM', iv: iv}, key, cipher);
+      return JSON.parse(new TextDecoder().decode(buf));
+    } catch(e) {
+      return null;
+    }
+  }
+
+  async function saveRows(){
+    if(!cryptoKey) return;
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    var plainBuf = new TextEncoder().encode(JSON.stringify(rows));
+    var cipherBuf = await crypto.subtle.encrypt({name:'AES-GCM', iv: iv}, cryptoKey, plainBuf);
+    try {
+      localStorage.setItem(DATA_STORAGE, JSON.stringify({iv: bytesToB64(iv), cipher: bytesToB64(cipherBuf)}));
+    } catch(e) {}
+    var note = document.getElementById('grp-save-note');
+    if(note){
+      note.textContent = 'Guardado ' + new Date().toLocaleTimeString('es-PR');
+      note.classList.add('show');
+      clearTimeout(note._t);
+      note._t = setTimeout(function(){ note.classList.remove('show'); }, 2000);
+    }
+  }
+
+  async function deriveKeyFromPin(pin){
+    var salt = b64ToBytes(payload.salt);
+    var keyMaterial = await crypto.subtle.importKey('raw', new TextEncoder().encode(pin), {name:'PBKDF2'}, false, ['deriveKey']);
+    return crypto.subtle.deriveKey(
+      {name:'PBKDF2', salt: salt, iterations: payload.iterations, hash:'SHA-256'},
+      keyMaterial,
+      {name:'AES-GCM', length:256},
+      true,
+      ['decrypt', 'encrypt']
+    );
+  }
+
+  function updateSummary(){
+    var total = rows.reduce(function(sum, r){ return sum + (parseInt(r.estudiantes,10) || 0); }, 0);
+    var grupos = rows.filter(function(r){ return r.grupo && r.grupo.trim(); }).length;
+    document.getElementById('grp-summary').textContent = rows.length + ' filas · ' + grupos + ' grupos de charla · ' + total + ' estudiantes';
+  }
+
+  function renderTable(){
+    var tbody = document.getElementById('grp-tbody');
+    tbody.innerHTML = '';
+    rows.forEach(function(row, idx){
+      var tr = document.createElement('tr');
+
+      var tdIdx = document.createElement('td');
+      tdIdx.className = 'grp-idx';
+      tdIdx.textContent = String(idx + 1);
+      tr.appendChild(tdIdx);
+
+      function textCell(field, type){
+        var td = document.createElement('td');
+        var input = document.createElement('input');
+        input.type = type || 'text';
+        input.value = row[field] == null ? '' : row[field];
+        input.addEventListener('input', function(){
+          row[field] = type === 'number' ? input.value.replace(/[^0-9]/g,'') : input.value;
+          updateSummary();
+          saveRows();
+        });
+        td.appendChild(input);
+        return td;
+      }
+
+      tr.appendChild(textCell('clasificacion'));
+      tr.appendChild(textCell('grado'));
+      tr.appendChild(textCell('maestro'));
+      tr.appendChild(textCell('salon'));
+      tr.appendChild(textCell('estudiantes', 'number'));
+      tr.appendChild(textCell('grupo'));
+
+      var tdNivel = document.createElement('td');
+      var select = document.createElement('select');
+      ['', 'Elemental', 'Intermedia'].forEach(function(opt){
+        var o = document.createElement('option');
+        o.value = opt;
+        o.textContent = opt || '—';
+        if(row.nivel === opt) o.selected = true;
+        select.appendChild(o);
+      });
+      select.addEventListener('change', function(){
+        row.nivel = select.value;
+        saveRows();
+      });
+      tdNivel.appendChild(select);
+      tr.appendChild(tdNivel);
+
+      var tdActions = document.createElement('td');
+      var actionsWrap = document.createElement('div');
+      actionsWrap.className = 'grp-row-actions';
+
+      var upBtn = document.createElement('button');
+      upBtn.type = 'button'; upBtn.className = 'grp-btn-icon'; upBtn.title = 'Mover arriba'; upBtn.textContent = '↑';
+      upBtn.disabled = idx === 0;
+      upBtn.addEventListener('click', function(){
+        if(idx === 0) return;
+        var tmp = rows[idx-1]; rows[idx-1] = rows[idx]; rows[idx] = tmp;
+        renderTable(); saveRows();
+      });
+
+      var downBtn = document.createElement('button');
+      downBtn.type = 'button'; downBtn.className = 'grp-btn-icon'; downBtn.title = 'Mover abajo'; downBtn.textContent = '↓';
+      downBtn.disabled = idx === rows.length - 1;
+      downBtn.addEventListener('click', function(){
+        if(idx === rows.length - 1) return;
+        var tmp = rows[idx+1]; rows[idx+1] = rows[idx]; rows[idx] = tmp;
+        renderTable(); saveRows();
+      });
+
+      var delBtn = document.createElement('button');
+      delBtn.type = 'button'; delBtn.className = 'grp-btn-icon grp-del'; delBtn.title = 'Eliminar fila'; delBtn.textContent = '×';
+      delBtn.addEventListener('click', function(){
+        if(!confirm('¿Eliminar esta fila?')) return;
+        rows.splice(idx, 1);
+        renderTable(); updateSummary(); saveRows();
+      });
+
+      actionsWrap.appendChild(upBtn);
+      actionsWrap.appendChild(downBtn);
+      actionsWrap.appendChild(delBtn);
+      tdActions.appendChild(actionsWrap);
+      tr.appendChild(tdActions);
+
+      tbody.appendChild(tr);
+    });
+    updateSummary();
+  }
+
+  function downloadBlob(content, mime, filename){
+    var blob = new Blob([content], {type: mime});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function csvEscape(v){
+    v = v == null ? '' : String(v);
+    if(/[",\n]/.test(v)) return '"' + v.replace(/"/g,'""') + '"';
+    return v;
+  }
+
+  function attachControls(){
+    document.getElementById('grp-add-row').addEventListener('click', function(){
+      rows.push({clasificacion:'', grado:'', maestro:'', salon:'', estudiantes:'', grupo:'', nivel:''});
+      renderTable(); saveRows();
+    });
+
+    document.getElementById('grp-reset').addEventListener('click', async function(){
+      if(!confirm('¿Restablecer a los datos originales? Se perderán los cambios guardados en este navegador.')) return;
+      try { localStorage.removeItem(DATA_STORAGE); } catch(e) {}
+      rows = await decryptOriginal(cryptoKey);
+      renderTable(); saveRows();
+    });
+
+    document.getElementById('grp-export-json').addEventListener('click', function(){
+      downloadBlob(JSON.stringify(rows, null, 2), 'application/json', 'grupos-2026-2027.json');
+    });
+
+    document.getElementById('grp-export-csv').addEventListener('click', function(){
+      var header = ['Clasificación','Grado/Grupo','Maestro(a) Salón Hogar','Salón','Núm. de Estudiantes','Grupos de Charlas','Nivel'];
+      var lines = [header.join(',')];
+      rows.forEach(function(r){
+        lines.push([r.clasificacion, r.grado, r.maestro, r.salon, r.estudiantes, r.grupo, r.nivel].map(csvEscape).join(','));
+      });
+      downloadBlob(lines.join('\n'), 'text/csv', 'grupos-2026-2027.csv');
+    });
+  }
+
+  function reveal(){
+    root.hidden = false;
+    lockScreen.hidden = true;
+    var cy = document.getElementById('copyright-year');
+    if(cy) cy.textContent = new Date().getFullYear();
+    var btn = document.getElementById('theme-toggle');
+    if(btn){
+      var rootEl = document.documentElement;
+      function syncButton(theme){
+        var isDark = theme === 'dark';
+        btn.setAttribute('aria-pressed', String(isDark));
+        var label = isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+        btn.setAttribute('aria-label', label);
+        btn.setAttribute('title', label);
+      }
+      syncButton(rootEl.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+      btn.addEventListener('click', function(){
+        var next = rootEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        rootEl.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+        syncButton(next);
+      });
+    }
+    attachControls();
+    renderTable();
+  }
+
+  async function tryStoredKey(){
+    var stored = null;
+    try { stored = localStorage.getItem(KEY_STORAGE); } catch(e) {}
+    if(!stored) return false;
+    try {
+      var raw = b64ToBytes(stored);
+      var key = await crypto.subtle.importKey('raw', raw, {name:'AES-GCM'}, false, ['decrypt', 'encrypt']);
+      var saved = await decryptSaved(key);
+      rows = saved || await decryptOriginal(key);
+      cryptoKey = key;
+      reveal();
+      return true;
+    } catch(e) {
+      try { localStorage.removeItem(KEY_STORAGE); } catch(err) {}
+      return false;
+    }
+  }
+
+  digits.forEach(function(input, idx){
+    input.addEventListener('input', function(){
+      input.value = input.value.replace(/[^0-9]/g, '');
+      if(input.value && idx < digits.length - 1) digits[idx+1].focus();
+    });
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Backspace' && !input.value && idx > 0) digits[idx-1].focus();
+    });
+  });
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var pin = digits.map(function(d){ return d.value; }).join('');
+    errorEl.textContent = '';
+    if(pin.length !== 4){
+      errorEl.textContent = 'Ingresa los 4 dígitos.';
+      return;
+    }
+    try {
+      var key = await deriveKeyFromPin(pin);
+      var original = await decryptOriginal(key);
+      var saved = await decryptSaved(key);
+      rows = saved || original;
+      cryptoKey = key;
+      try {
+        var rawKey = await crypto.subtle.exportKey('raw', key);
+        localStorage.setItem(KEY_STORAGE, bytesToB64(rawKey));
+      } catch(err) {}
+      reveal();
+    } catch(err){
+      errorEl.textContent = 'PIN incorrecto.';
+      digits.forEach(function(d){ d.value = ''; });
+      digits[0].focus();
+    }
+  });
+
+  tryStoredKey().then(function(ok){
+    if(!ok) digits[0].focus();
+  });
+})();
+</script>
+</body>
+</html>

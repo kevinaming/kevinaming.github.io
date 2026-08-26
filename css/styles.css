@@ -585,3 +585,57 @@ table.sch-table tr.sch-break td{opacity:.75;}
 @media (max-width:600px){
   table.sch-table{min-width:0;}
 }
+
+/* ---------- Página: Grupos y Grados (groups.html) ---------- */
+.grp-toolbar{
+  display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin-bottom:18px;
+}
+.grp-summary{
+  font-family:'IBM Plex Mono',monospace; font-size:.8rem; color:var(--ink-soft);
+  background:var(--card); border:1px solid var(--line); border-radius:999px; padding:6px 14px;
+}
+.grp-btn{
+  font-family:'IBM Plex Mono',monospace; font-size:.8rem; font-weight:600; cursor:pointer;
+  border-radius:999px; padding:8px 16px; border:1px solid var(--line); background:var(--card);
+  color:var(--ink-soft); transition:.15s;
+}
+.grp-btn:hover{border-color:var(--teal); color:var(--teal-deep);}
+.grp-btn.grp-btn-primary{background:var(--teal-btn); border-color:var(--teal-btn); color:#fff;}
+.grp-btn.grp-btn-primary:hover{background:var(--teal-btn-hover); border-color:var(--teal-btn-hover); color:#fff;}
+.grp-btn.grp-btn-danger:hover{border-color:var(--mango-deep); color:var(--mango-deep);}
+table.grp-table{border-collapse:separate; border-spacing:0 6px; width:100%; min-width:920px;}
+table.grp-table th, table.grp-table td{padding:6px 6px; text-align:left; vertical-align:middle;}
+table.grp-table thead th{
+  font-family:'IBM Plex Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--ink-soft); padding:0 6px 6px;
+}
+table.grp-table tbody tr{background:var(--paper); border:1.5px solid var(--line);}
+table.grp-table tbody td:first-child{border-radius:10px 0 0 10px;}
+table.grp-table tbody td:last-child{border-radius:0 10px 10px 0;}
+table.grp-table input, table.grp-table select{
+  width:100%; border:1.5px solid transparent; background:transparent; font:inherit; color:inherit;
+  padding:7px 6px; border-radius:7px; font-size:.86rem;
+}
+table.grp-table input[type="number"]{width:64px;}
+table.grp-table input:hover, table.grp-table select:hover{border-color:var(--line);}
+table.grp-table input:focus, table.grp-table select:focus{
+  outline:none; border-color:var(--teal); background:var(--card);
+}
+table.grp-table .grp-idx{font-family:'IBM Plex Mono',monospace; font-size:.76rem; color:var(--ink-soft); text-align:center; width:28px;}
+.grp-row-actions{display:flex; gap:4px; flex-wrap:nowrap;}
+.grp-btn-icon{
+  width:26px; height:26px; flex:none; display:inline-flex; align-items:center; justify-content:center;
+  border-radius:7px; border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
+  cursor:pointer; font-size:.85rem; line-height:1; padding:0;
+}
+.grp-btn-icon:hover{border-color:var(--teal); color:var(--teal-deep);}
+.grp-btn-icon.grp-del:hover{border-color:var(--mango-deep); color:var(--mango-deep);}
+.grp-add-row{margin-top:16px;}
+.grp-save-note{
+  font-family:'IBM Plex Mono',monospace; font-size:.74rem; color:var(--ink-soft); margin-top:10px;
+  min-height:1.2em; opacity:0; transition:opacity .3s;
+}
+.grp-save-note.show{opacity:1;}
+@media (max-width:600px){
+  table.grp-table{min-width:0;}
+}
