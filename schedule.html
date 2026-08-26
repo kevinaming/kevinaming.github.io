@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<script>
+(function(){
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored === 'light' || stored === 'dark'
+      ? stored
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+</script>
+<title>Mi Horario — Kevin García</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="description" content="Horario semanal personal de Kevin García, Maestro Recurso de Uso de la Computadora, Escuela Arianys Nicole Rosa Luquis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="topnav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Alfabetización Digital · ANRL</a>
+    <div class="toolbar-buttons">
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.4"/><path d="M12 19.1v2.4"/><path d="M4.2 4.2l1.7 1.7"/><path d="M18.1 18.1l1.7 1.7"/><path d="M2.5 12h2.4"/><path d="M19.1 12h2.4"/><path d="M4.2 19.8l1.7-1.7"/><path d="M18.1 5.9l1.7-1.7"/></g></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.8A8.6 8.6 0 1 1 9.2 3.8a7 7 0 0 0 11 11z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> Uso interno · Año escolar 2026&ndash;2027</span>
+    <h1>Mi Horario</h1>
+    <p class="subtitle">Horario semanal de período, preparación y Ruta 2&ndash;3.</p>
+    <div class="hero-meta">
+      <div class="item"><div class="label">Maestro</div><div class="value">Kevin García</div></div>
+      <div class="item"><div class="label">Puesto</div><div class="value">Maestro Recurso — Uso de la Computadora</div></div>
+      <div class="item"><div class="label">Escuela</div><div class="value">Arianys Nicole Rosa Luquis</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="lmjv">
+  <div class="wrap">
+    <a class="sch-back" href="index.html">&larr; Volver al calendario de charlas</a>
+    <div class="section-head">
+      <span class="kicker">Días regulares</span>
+      <h2>Lunes, martes, jueves y viernes</h2>
+    </div>
+    <div class="table-scroll">
+      <table class="sch-table">
+        <thead><tr><th scope="col">Período</th><th scope="col">Horario</th><th scope="col">Actividad</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="sch-hora">7:30–8:30 a.m.</td><td class="sch-act">CP</td></tr>
+          <tr class="sch-class"><td>2</td><td class="sch-hora">8:30–9:20 a.m.</td><td class="sch-act">Charla Elemental</td></tr>
+          <tr class="sch-class"><td>3</td><td class="sch-hora">9:20–10:10 a.m.</td><td class="sch-act">7-3</td></tr>
+          <tr class="sch-break"><td>4</td><td class="sch-hora">10:10–10:30 a.m.</td><td class="sch-act">TADO</td></tr>
+          <tr class="sch-class"><td>5</td><td class="sch-hora">10:30–11:30 a.m.</td><td class="sch-act">Ruta 2-3 (6to, 7mo y 8vo)</td></tr>
+          <tr class="sch-break"><td>6</td><td class="sch-hora">11:30–11:50 a.m.</td><td class="sch-act">TADO</td></tr>
+          <tr class="sch-lunch"><td>7</td><td class="sch-hora">11:50 a.m.–12:50 p.m.</td><td class="sch-act">Almuerzo</td></tr>
+          <tr class="sch-class"><td>8</td><td class="sch-hora">12:50–1:40 p.m.</td><td class="sch-act">Charla Intermedia</td></tr>
+          <tr class="sch-class"><td>9</td><td class="sch-hora">1:40–2:30 p.m.</td><td class="sch-act">Charla Elemental</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="miercoles">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Día especial</span>
+      <h2>Miércoles</h2>
+    </div>
+    <div class="table-scroll">
+      <table class="sch-table">
+        <thead><tr><th scope="col">Período</th><th scope="col">Horario</th><th scope="col">Actividad</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="sch-hora">7:30–8:15 a.m.</td><td class="sch-act">Salón Hogar</td></tr>
+          <tr><td>2</td><td class="sch-hora">8:15–9:00 a.m.</td><td class="sch-act">CP</td></tr>
+          <tr class="sch-class"><td>3</td><td class="sch-hora">9:00–9:45 a.m.</td><td class="sch-act">Charla Elemental</td></tr>
+          <tr class="sch-class"><td>4</td><td class="sch-hora">9:45–10:30 a.m.</td><td class="sch-act">7-3</td></tr>
+          <tr class="sch-break"><td>5</td><td class="sch-hora">10:30–11:05 a.m.</td><td class="sch-act">TADO</td></tr>
+          <tr class="sch-lunch"><td>6</td><td class="sch-hora">11:05 a.m.–12:05 p.m.</td><td class="sch-act">Almuerzo</td></tr>
+          <tr class="sch-class"><td>7</td><td class="sch-hora">12:05–12:50 p.m.</td><td class="sch-act">Ruta 2-3 (6to, 7mo y 8vo)</td></tr>
+          <tr class="sch-break"><td>8</td><td class="sch-hora">12:50–1:00 p.m.</td><td class="sch-act">TADO</td></tr>
+          <tr class="sch-class"><td>9</td><td class="sch-hora">1:00–1:45 p.m.</td><td class="sch-act">Charla Intermedia</td></tr>
+          <tr class="sch-class"><td>10</td><td class="sch-hora">1:45–2:30 p.m.</td><td class="sch-act">Charla Elemental</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sch-legend">
+      <span class="lg"><span class="sw sch-sw-class"></span> Clase / ruta / charla</span>
+      <span class="lg"><span class="sw sch-sw-lunch"></span> Almuerzo</span>
+      <span class="lg"><span class="sw sch-sw-break"></span> TADO</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; <span id="copyright-year">2026</span> Escuela Arianys Nicole Rosa Luquis. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('copyright-year').textContent = new Date().getFullYear();
+  (function(){
+    var btn = document.getElementById('theme-toggle');
+    var root = document.documentElement;
+    function syncButton(theme){
+      var isDark = theme === 'dark';
+      btn.setAttribute('aria-pressed', String(isDark));
+      var label = isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+      btn.setAttribute('aria-label', label);
+      btn.setAttribute('title', label);
+    }
+    syncButton(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    btn.addEventListener('click', function(){
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch(e) {}
+      syncButton(next);
+    });
+  })();
+</script>
+</body>
+</html>

@@ -550,3 +550,38 @@ footer .copyright{margin-top:18px; padding-top:14px; border-top:1px solid var(--
   .grade-table tbody tr, .month-detail-list li, .wk-cell{break-inside:avoid;}
   .wrap{max-width:100%;}
 }
+
+/* ---------- Página: Mi Horario (schedule.html) ---------- */
+.sch-back{
+  display:inline-flex; align-items:center; gap:6px; font-family:'IBM Plex Mono',monospace;
+  font-size:.82rem; font-weight:600; color:var(--teal-deep); text-decoration:none; margin-bottom:18px;
+}
+.sch-back:hover{color:var(--teal);}
+table.sch-table{border-collapse:separate; border-spacing:0 8px; width:100%; min-width:520px;}
+table.sch-table th, table.sch-table td{padding:12px 14px; text-align:left; vertical-align:top;}
+table.sch-table thead th{
+  font-family:'IBM Plex Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--ink-soft); padding-bottom:4px;
+}
+table.sch-table tbody tr{background:var(--paper); border:1.5px solid var(--line);}
+table.sch-table tbody td:first-child{border-radius:10px 0 0 10px; font-family:'IBM Plex Mono',monospace; font-size:.8rem; color:var(--ink-soft); white-space:nowrap;}
+table.sch-table tbody td:last-child{border-radius:0 10px 10px 0;}
+table.sch-table .sch-hora{font-family:'IBM Plex Mono',monospace; font-size:.82rem; white-space:nowrap;}
+table.sch-table .sch-act{font-weight:600;}
+table.sch-table tr.sch-free td{color:var(--ink-soft); font-style:italic;}
+table.sch-table tr.sch-free td:first-child, table.sch-table tr.sch-free .sch-act{font-style:normal;}
+table.sch-table tr.sch-class{background:rgba(31,111,120,0.08); border-color:var(--teal);}
+table.sch-table tr.sch-class .sch-act{color:var(--teal-deep);}
+table.sch-table tr.sch-lunch{background:rgba(232,163,61,0.1); border-color:var(--mango);}
+table.sch-table tr.sch-lunch .sch-act{color:var(--mango-deep);}
+table.sch-table tr.sch-break td{opacity:.75;}
+.sch-legend{display:flex; flex-wrap:wrap; gap:10px 18px; margin-top:18px; font-size:.82rem; color:var(--ink-soft);}
+.sch-legend .lg{display:inline-flex; align-items:center; gap:6px;}
+.sch-legend .sw{width:12px; height:12px; border-radius:4px; flex:none;}
+.sch-legend .sw.sch-sw-class{background:var(--teal);}
+.sch-legend .sw.sch-sw-lunch{background:var(--mango);}
+.sch-legend .sw.sch-sw-free{background:var(--line);}
+.sch-legend .sw.sch-sw-break{background:var(--ink-soft); opacity:.6;}
+@media (max-width:600px){
+  table.sch-table{min-width:0;}
+}
