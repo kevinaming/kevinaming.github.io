@@ -54,32 +54,32 @@
 }
 /* Colores por grupo de charla (G1-G26), usados en el horario semanal,
    las pestañas y el almanaque. */
-.c-g1{--gc-bg:#eab8b8;--gc-fg:#5a1616}
-.c-g2{--gc-bg:#b8eac7;--gc-fg:#165a2a}
-.c-g3{--gc-bg:#d5b8ea;--gc-fg:#3e165a}
-.c-g4{--gc-bg:#eae4b8;--gc-fg:#5a5116}
-.c-g5{--gc-bg:#b8e2ea;--gc-fg:#164f5a}
-.c-g6{--gc-bg:#eab8d3;--gc-fg:#5a163b}
-.c-g7{--gc-bg:#c4eab8;--gc-fg:#275a16}
-.c-g8{--gc-bg:#bab8ea;--gc-fg:#19165a}
-.c-g9{--gc-bg:#eac9b8;--gc-fg:#5a2d16}
-.c-g10{--gc-bg:#b8ead7;--gc-fg:#165a41}
-.c-g11{--gc-bg:#e6b8ea;--gc-fg:#54165a}
-.c-g12{--gc-bg:#e0eab8;--gc-fg:#4c5a16}
-.c-g13{--gc-bg:#b8d1ea;--gc-fg:#16385a}
-.c-g14{--gc-bg:#eab8c2;--gc-fg:#5a1624}
-.c-g15{--gc-bg:#b8eabc;--gc-fg:#165a1c}
-.c-g16{--gc-bg:#cbb8ea;--gc-fg:#30165a}
-.c-g17{--gc-bg:#eadab8;--gc-fg:#5a4316}
-.c-g18{--gc-bg:#b8eae8;--gc-fg:#165a57}
-.c-g19{--gc-bg:#eab8de;--gc-fg:#5a1649}
-.c-g20{--gc-bg:#cfeab8;--gc-fg:#355a16}
-.c-g21{--gc-bg:#b8c0ea;--gc-fg:#16215a}
-.c-g22{--gc-bg:#eabeb8;--gc-fg:#5a1f16}
-.c-g23{--gc-bg:#b8eacd;--gc-fg:#165a33}
-.c-g24{--gc-bg:#dcb8ea;--gc-fg:#46165a}
-.c-g25{--gc-bg:#eaeab8;--gc-fg:#5a5a16}
-.c-g26{--gc-bg:#b8dbea;--gc-fg:#16465a}
+.c-g1{--gc-bg:#eba2a2;--gc-fg:#541212}
+.c-g2{--gc-bg:#a2ebdb;--gc-fg:#125445}
+.c-g3{--gc-bg:#eba2c4;--gc-fg:#541230}
+.c-g4{--gc-bg:#a2ebb9;--gc-fg:#125426}
+.c-g5{--gc-bg:#eba2e6;--gc-fg:#54124f}
+.c-g6{--gc-bg:#aeeba2;--gc-fg:#1c5412}
+.c-g7{--gc-bg:#cfa2eb;--gc-fg:#3b1254}
+.c-g8{--gc-bg:#cfeba2;--gc-fg:#3b5412}
+.c-g9{--gc-bg:#aea2eb;--gc-fg:#1c1254}
+.c-g10{--gc-bg:#ebe6a2;--gc-fg:#544f12}
+.c-g11{--gc-bg:#a2b9eb;--gc-fg:#122654}
+.c-g12{--gc-bg:#ebc4a2;--gc-fg:#543012}
+.c-g13{--gc-bg:#a2dbeb;--gc-fg:#124554}
+.c-g14{--gc-bg:#e56c6c;--gc-fg:#220707}
+.c-g15{--gc-bg:#6ce5c9;--gc-fg:#07221c}
+.c-g16{--gc-bg:#e56ca4;--gc-fg:#220713}
+.c-g17{--gc-bg:#6ce591;--gc-fg:#07220f}
+.c-g18{--gc-bg:#e56cdc;--gc-fg:#220720}
+.c-g19{--gc-bg:#7ee56c;--gc-fg:#0b2207}
+.c-g20{--gc-bg:#b66ce5;--gc-fg:#170722}
+.c-g21{--gc-bg:#b6e56c;--gc-fg:#172207}
+.c-g22{--gc-bg:#7e6ce5;--gc-fg:#0b0722}
+.c-g23{--gc-bg:#e5dc6c;--gc-fg:#222007}
+.c-g24{--gc-bg:#6c91e5;--gc-fg:#070f22}
+.c-g25{--gc-bg:#e5a46c;--gc-fg:#221307}
+.c-g26{--gc-bg:#6cc9e5;--gc-fg:#071c22}
 .chip, .wk-cell, .wk-rot-chip{ background:var(--gc-bg); color:var(--gc-fg); }
 .dot{ background:var(--gc-bg); border-color:var(--gc-fg); }
 .sw{ background:var(--gc-bg); }
