@@ -54,32 +54,40 @@
 }
 /* Colores por grupo de charla (G1-G26), usados en el horario semanal,
    las pestañas y el almanaque. */
-.c-g1{--gc-bg:#e8c8c8;--gc-fg:#7a2828}
-.c-g2{--gc-bg:#c8e8e1;--gc-fg:#287a67}
-.c-g3{--gc-bg:#e8c8d7;--gc-fg:#7a284e}
-.c-g4{--gc-bg:#c8e8d2;--gc-fg:#287a41}
-.c-g5{--gc-bg:#e8c8e6;--gc-fg:#7a2874}
-.c-g6{--gc-bg:#cde8c8;--gc-fg:#357a28}
-.c-g7{--gc-bg:#dcc8e8;--gc-fg:#5b287a}
-.c-g8{--gc-bg:#dce8c8;--gc-fg:#5b7a28}
-.c-g9{--gc-bg:#cdc8e8;--gc-fg:#35287a}
-.c-g10{--gc-bg:#e8e6c8;--gc-fg:#7a7428}
-.c-g11{--gc-bg:#c8d2e8;--gc-fg:#28417a}
-.c-g12{--gc-bg:#e8d7c8;--gc-fg:#7a4e28}
-.c-g13{--gc-bg:#c8e1e8;--gc-fg:#28677a}
-.c-g14{--gc-bg:#d08b8b;--gc-fg:#4b1b1b}
-.c-g15{--gc-bg:#8bd0c0;--gc-fg:#1b4b40}
-.c-g16{--gc-bg:#d08bab;--gc-fg:#4b1b31}
-.c-g17{--gc-bg:#8bd0a0;--gc-fg:#1b4b2a}
-.c-g18{--gc-bg:#d08bca;--gc-fg:#4b1b48}
-.c-g19{--gc-bg:#96d08b;--gc-fg:#224b1b}
-.c-g20{--gc-bg:#b58bd0;--gc-fg:#391b4b}
-.c-g21{--gc-bg:#b5d08b;--gc-fg:#394b1b}
-.c-g22{--gc-bg:#968bd0;--gc-fg:#221b4b}
-.c-g23{--gc-bg:#d0ca8b;--gc-fg:#4b481b}
-.c-g24{--gc-bg:#8ba0d0;--gc-fg:#1b2a4b}
-.c-g25{--gc-bg:#d0ab8b;--gc-fg:#4b311b}
-.c-g26{--gc-bg:#8bc0d0;--gc-fg:#1b404b}
+.c-s-pk{--gc-bg:#e8d7c8;--gc-fg:#7a4e29}
+.c-s-k-1{--gc-bg:#c8e1e8;--gc-fg:#29677a}
+.c-s-k-2{--gc-bg:#d09f9f;--gc-fg:#4d1919}
+.c-s-1-1{--gc-bg:#9fd0c5;--gc-fg:#194d41}
+.c-s-1-2{--gc-bg:#d09fb6;--gc-fg:#4d1931}
+.c-s-2-1{--gc-bg:#9fd0ae;--gc-fg:#194d29}
+.c-s-2-2{--gc-bg:#d09fcc;--gc-fg:#4d1949}
+.c-s-3-1{--gc-bg:#a7d09f;--gc-fg:#214d19}
+.c-s-3-2{--gc-bg:#bd9fd0;--gc-fg:#39194d}
+.c-s-4-1{--gc-bg:#bdd09f;--gc-fg:#394d19}
+.c-s-4-2{--gc-bg:#a79fd0;--gc-fg:#21194d}
+.c-s-4-3{--gc-bg:#d0cc9f;--gc-fg:#4d4919}
+.c-s-5-1{--gc-bg:#9faed0;--gc-fg:#19294d}
+.c-s-5-2{--gc-bg:#d0b69f;--gc-fg:#4d3119}
+.c-s-6-1{--gc-bg:#9fc5d0;--gc-fg:#19414d}
+.c-s-6-2{--gc-bg:#b87a7a;--gc-fg:#341313}
+.c-s-6-3{--gc-bg:#7ab8a9;--gc-fg:#13342d}
+.c-s-7-1{--gc-bg:#b87a97;--gc-fg:#341322}
+.c-s-7-2{--gc-bg:#7ab88d;--gc-fg:#13341d}
+.c-s-7-4{--gc-bg:#b87ab3;--gc-fg:#341332}
+.c-s-8-1{--gc-bg:#84b87a;--gc-fg:#183413}
+.c-s-8-2{--gc-bg:#a07ab8;--gc-fg:#271334}
+.c-s-8-3{--gc-bg:#a0b87a;--gc-fg:#273413}
+.c-s-pk-ee-autismo{--gc-bg:#e8c8c8;--gc-fg:#7a2929}
+.c-s-pk-ee-no-cat{--gc-bg:#c8e8e1;--gc-fg:#297a67}
+.c-s-ee-r1-1x1{--gc-bg:#e8c8d7;--gc-fg:#7a294e}
+.c-s-ee-r1-kinder{--gc-bg:#c8e8d2;--gc-fg:#297a41}
+.c-s-ee-r1-1ro-red{--gc-bg:#e8c8e6;--gc-fg:#7a2973}
+.c-s-ee-r1-1-2{--gc-bg:#cde8c8;--gc-fg:#357a29}
+.c-s-ee-r1-3-4{--gc-bg:#dcc8e8;--gc-fg:#5a297a}
+.c-s-ee-r1-5-6{--gc-bg:#dce8c8;--gc-fg:#5a7a29}
+.c-s-ee-r23-1-2-3{--gc-bg:#cdc8e8;--gc-fg:#35297a}
+.c-s-ee-r23-3-4-5{--gc-bg:#e8e6c8;--gc-fg:#7a7329}
+.c-s-ee-r1-7-8{--gc-bg:#c8d2e8;--gc-fg:#29417a}
 .chip, .wk-cell, .wk-rot-chip{ background:var(--gc-bg); color:var(--gc-fg); }
 .dot{ background:var(--gc-bg); border-color:var(--gc-fg); }
 .sw{ background:var(--gc-bg); }
