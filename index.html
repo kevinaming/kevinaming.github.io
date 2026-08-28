@@ -123,7 +123,13 @@
       <h2 data-i18n="horario.h2">Horario semanal de charlas</h2>
       <p data-i18n="horario.p">Cada semana del ciclo dedica los tres períodos diarios a un solo bloque de salones; los períodos sin salón asignado esa semana quedan como preparación de recursos.</p>
     </div>
-    <div class="table-scroll">
+    <div class="tabs-nav tabs-group" data-group="horario">
+      <button class="grade-tab active" data-tab="tab-week-a" style="--tab-bg:#c8dde8;--tab-fg:#285f7a" data-i18n="horario.tab-a">Semana A</button>
+      <button class="grade-tab" data-tab="tab-week-b" style="--tab-bg:#e8ddc8;--tab-fg:#7a5f28" data-i18n="horario.tab-b">Semana B</button>
+      <button class="grade-tab" data-tab="tab-week-c" style="--tab-bg:#e8c8cd;--tab-fg:#7a2836" data-i18n="horario.tab-c">Semana C</button>
+    </div>
+    <div data-panels="horario">
+    <div class="tab-panel table-scroll active" id="tab-week-a">
       <h3 class="subsection-title"><span data-i18n="horario.semana-a">Semana A &mdash; Intermedia (6to-8vo) y 5to</span> <span class="tag" data-i18n="horario.semana-a-tag">Cada 3 semanas</span></h3>
       <table class="weekly-table">
 <thead><tr><th scope="col" data-i18n="horario.th.hora">Hora</th><th scope="col">Lunes</th><th scope="col">Martes</th><th scope="col">Miércoles</th><th scope="col">Jueves</th><th scope="col">Viernes</th></tr></thead>
@@ -174,7 +180,7 @@
 </td><td class="wk-cell wk-free"><span class="wk-hora">1:40–2:30 p.m.</span><span class="wk-grade" title="Preparación de materiales para Elemental (Semana B): Kindergarten (K-1 y K-2)">Preparación &mdash; Kindergarten (K-1 y K-2)</span></td><td class="wk-cell wk-free"><span class="wk-hora">1:40–2:30 p.m.</span><span class="wk-grade" title="Preparación de materiales para Elemental (Semana B): 3er Grado y 4to Grado">Preparación &mdash; 3er y 4to Grado</span></td></tr></tbody>
 </table>
     </div>
-    <div class="table-scroll">
+    <div class="tab-panel table-scroll" id="tab-week-b">
       <h3 class="subsection-title"><span data-i18n="horario.semana-b">Semana B &mdash; Elemental (PK-4to)</span> <span class="tag" data-i18n="horario.semana-b-tag">Cada 3 semanas</span></h3>
       <table class="weekly-table">
 <thead><tr><th scope="col" data-i18n="horario.th.hora">Hora</th><th scope="col">Lunes</th><th scope="col">Martes</th><th scope="col">Miércoles</th><th scope="col">Jueves</th><th scope="col">Viernes</th></tr></thead>
@@ -229,7 +235,7 @@
 </td><td class="wk-cell wk-free"><span class="wk-hora">1:40–2:30 p.m.</span><span class="wk-grade" title="Preparación de materiales para Educación Especial (Semana C): EE Ruta 1 (1ro y 2do), EE Ruta 1 (3ro y 4to), EE Ruta 1 (5to y 6to), EE Ruta 1 (7mo y 8vo)">Preparación (EE) &mdash; R1-12, R1-34, R1-56 y R1-78</span></td></tr></tbody>
 </table>
     </div>
-    <div class="table-scroll">
+    <div class="tab-panel table-scroll" id="tab-week-c">
       <h3 class="subsection-title"><span data-i18n="horario.semana-c">Semana C &mdash; Educación Especial y Rutas de Autismo</span> <span class="tag" data-i18n="horario.semana-c-tag">Cada 3 semanas</span></h3>
       <table class="weekly-table">
 <thead><tr><th scope="col" data-i18n="horario.th.hora">Hora</th><th scope="col">Lunes</th><th scope="col">Martes</th><th scope="col">Miércoles</th><th scope="col">Jueves</th><th scope="col">Viernes</th></tr></thead>
@@ -279,6 +285,7 @@
   <div class="wk-rot-chips"><span class="wk-rot-chip c-s-pk-ee-autismo">PK-A</span></div>
 </td><td class="wk-cell wk-free"><span class="wk-hora">1:40–2:30 p.m.</span><span class="wk-grade" title="Preparación de materiales para Intermedia (Semana A): 5to Grado">Preparación &mdash; 5to Grado</span></td><td class="wk-cell wk-free"><span class="wk-hora">1:40–2:30 p.m.</span><span class="wk-grade" title="Preparación de materiales para Intermedia (Semana A): 8vo Grado">Preparación &mdash; 8vo Grado</span></td></tr></tbody>
 </table>
+    </div>
     </div>
   </div>
 </section>

@@ -610,6 +610,46 @@ document.querySelectorAll('.tabs-group').forEach(group=>{
   if(panels.length){ panels[0].classList.add('active'); }
 });
 
+/* ---------- 01b · Preseleccionar en Horario la semana vigente (A/B/C) ---------- */
+(function(){
+  const group = document.querySelector('.tabs-group[data-group="horario"]');
+  const panelsContainer = document.querySelector('[data-panels="horario"]');
+  if(!group || !panelsContainer || typeof WEEK_TYPE_BY_MONDAY === 'undefined') return;
+
+  // Si la URL ya apunta a una pestaña de Horario (#tab-week-x), respeta ese enlace.
+  const hashId = location.hash.slice(1);
+  if(hashId && group.querySelector(`.grade-tab[data-tab="${hashId}"]`)) return;
+
+  function lunesDe(d){
+    const dia = d.getDay(); // 0=domingo … 6=sábado
+    const diff = (dia === 0) ? -6 : (1 - dia);
+    const m = new Date(d);
+    m.setDate(d.getDate() + diff);
+    m.setHours(0, 0, 0, 0);
+    return m;
+  }
+  function iso(d){
+    return d.toISOString().slice(0, 10);
+  }
+
+  let cursor = lunesDe(new Date());
+  let tipo = null;
+  for(let i = 0; i < 60; i++){
+    const clave = iso(cursor);
+    if(WEEK_TYPE_BY_MONDAY[clave]){ tipo = WEEK_TYPE_BY_MONDAY[clave]; break; }
+    cursor.setDate(cursor.getDate() - 7);
+  }
+  if(!tipo) tipo = 'A';
+
+  const tabId = 'tab-week-' + tipo.toLowerCase();
+  const btn = group.querySelector(`.grade-tab[data-tab="${tabId}"]`);
+  const panel = document.getElementById(tabId);
+  if(btn && panel){
+    group.querySelectorAll('.grade-tab').forEach(b=>b.classList.toggle('active', b===btn));
+    panelsContainer.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p===panel));
+  }
+})();
+
 function activarTab(tabId, grupo){
   const group = document.querySelector(`.tabs-group[data-group="${grupo}"]`);
   const panelsContainer = document.querySelector(`[data-panels="${grupo}"]`);
