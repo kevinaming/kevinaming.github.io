@@ -257,7 +257,17 @@ const I18N_PHRASES = [
   ['Fundamentos de la Alfabetización Digital (adaptado)', 'Digital Literacy Fundamentals (adapted)'],
   ['Unidad', 'Unit'],
   ['Ver detalle de charlas de', 'See session details for'],
-  ['Preparación de recursos', 'Resource preparation'],
+  ['Preparación — 2do y 1er Grado', 'Preparation — 2nd and 1st Grade'],
+  ['Preparación — Kindergarten (K-1 y K-2)', 'Preparation — Kindergarten (K-1 and K-2)'],
+  ['Preparación — 4to y 3er Grado', 'Preparation — 4th and 3rd Grade'],
+  ['Preparación — Pre-Kínder (PK)', 'Preparation — Pre-K (PK)'],
+  ['Preparación (EE) — R1-78, R1-56, R23-345 y R1-34', 'Preparation (SpEd) — R1-78, R1-56, R23-345, and R1-34'],
+  ['Preparación (EE) — R23-123, R1-12, R1-1R y R1-K', 'Preparation (SpEd) — R23-123, R1-12, R1-1R, and R1-K'],
+  ['Preparación (EE) — PK-A, PK-NC y R1-1x1', 'Preparation (SpEd) — PK-A, PK-NC, and R1-1x1'],
+  ['Preparación — 8vo Grado', 'Preparation — 8th Grade'],
+  ['Preparación — 7mo Grado', 'Preparation — 7th Grade'],
+  ['Preparación — 6to Grado', 'Preparation — 6th Grade'],
+  ['Preparación — 5to Grado', 'Preparation — 5th Grade'],
 ];
 
 /* ---------- 3. Motor de traducción de patrones ---------- */
