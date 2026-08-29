@@ -667,71 +667,160 @@ function activarTab(tabId, grupo){
     const id = location.hash.slice(1);
     if(!id) return;
     const btn = document.querySelector(`.grade-tab[data-tab="${id}"]`);
-    if(!btn) return;
-    const grupo = btn.closest('.tabs-group')?.dataset.group;
-    if(!grupo) return;
-    activarTab(id, grupo);
-    if(!smooth){
-      const target = document.getElementById(id);
-      if(target){ target.scrollIntoView({behavior:'auto', block:'start'}); }
+    if(btn){
+      const grupo = btn.closest('.tabs-group')?.dataset.group;
+      if(!grupo) return;
+      activarTab(id, grupo);
+      if(!smooth){
+        const target = document.getElementById(id);
+        if(target){ target.scrollIntoView({behavior:'auto', block:'start'}); }
+      }
+      return;
+    }
+    if(typeof SEARCH_INDEX !== 'undefined' && SEARCH_INDEX.some(e=>e.tabId===id)){
+      mostrarSalonPorId(id, {scroll:true});
+      if(!smooth){
+        const target = document.getElementById(id);
+        if(target){ target.scrollIntoView({behavior:'auto', block:'start'}); }
+      }
     }
   }
   activarDesdeHash(false);
   window.addEventListener('hashchange', ()=> activarDesdeHash(true));
 })();
 
-/* ---------- 04 · Buscador por salón, grado o maestro/a ---------- */
+/* ---------- 04 · Selectores de Grupo / Maestro / Grado-Salón en "Charlas por grado" ---------- */
+function poblarGrupoSelect(){
+  const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+  const sel = document.getElementById('gf-grupo');
+  if(!sel) return;
+  const prev = sel.value;
+  const t = key => (typeof I18N_UI !== 'undefined' ? I18N_UI[lang][key] : key);
+  const opciones = [
+    ['', t('grados.todos-grupos')],
+    ['elemental', t('grados.grupo-elemental')],
+    ['intermedia', t('grados.grupo-intermedia')],
+    ['ee', t('grados.grupo-ee')],
+  ];
+  sel.innerHTML = opciones.map(([v,l])=>`<option value="${v}">${l}</option>`).join('');
+  sel.value = prev;
+}
+
+function poblarMaestroYSalon(grupoFiltro){
+  const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+  const t = s => (lang === 'en' && typeof i18nTranslateText === 'function') ? i18nTranslateText(s) : s;
+  const selMaestro = document.getElementById('gf-maestro');
+  const selSalon = document.getElementById('gf-salon');
+  if(!selMaestro || !selSalon || typeof SEARCH_INDEX === 'undefined') return;
+  const prevMaestro = selMaestro.value;
+  const prevSalon = selSalon.value;
+  const items = SEARCH_INDEX.filter(e => !grupoFiltro || e.group === grupoFiltro);
+  const todosMaestros = typeof I18N_UI !== 'undefined' ? I18N_UI[lang]['grados.todos-maestros'] : 'Todos los maestros/a';
+  const todosSalones = typeof I18N_UI !== 'undefined' ? I18N_UI[lang]['grados.todos-salones'] : 'Todos los salones';
+
+  const maestroItems = items.slice().sort((a,b)=> String(a.labels[2]).localeCompare(String(b.labels[2]), 'es'));
+  selMaestro.innerHTML = `<option value="">${todosMaestros}</option>` + maestroItems.map(e=>{
+    const nombre = e.labels[2];
+    const label = nombre === 'Vacante' ? `Vacante — ${t(e.title)}` : nombre;
+    return `<option value="${e.tabId}">${label}</option>`;
+  }).join('');
+
+  selSalon.innerHTML = `<option value="">${todosSalones}</option>` + items.map(e=>
+    `<option value="${e.tabId}">${t(e.title)}</option>`
+  ).join('');
+
+  selMaestro.value = items.some(e=>e.tabId===prevMaestro) ? prevMaestro : '';
+  selSalon.value = items.some(e=>e.tabId===prevSalon) ? prevSalon : '';
+}
+
+function mostrarSalonPorId(tabId, opts){
+  opts = opts || {};
+  if(typeof SEARCH_INDEX === 'undefined') return;
+  const entry = SEARCH_INDEX.find(e=>e.tabId===tabId);
+  const panelsContainer = document.querySelector('[data-panels="grados-todos"]');
+  const placeholder = document.getElementById('gf-placeholder');
+  if(!entry || !panelsContainer) return;
+
+  const selGrupo = document.getElementById('gf-grupo');
+  const selMaestro = document.getElementById('gf-maestro');
+  const selSalon = document.getElementById('gf-salon');
+  if(selGrupo) selGrupo.value = entry.group;
+  poblarMaestroYSalon(entry.group);
+  if(selMaestro) selMaestro.value = tabId;
+  if(selSalon) selSalon.value = tabId;
+
+  panelsContainer.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id===tabId));
+  if(placeholder) placeholder.hidden = true;
+
+  if(opts.scroll){
+    const target = document.getElementById(tabId);
+    if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+  }
+  history.replaceState(null, '', '#' + tabId);
+}
+
+function limpiarFiltrosGrados(){
+  const selGrupo = document.getElementById('gf-grupo');
+  const selMaestro = document.getElementById('gf-maestro');
+  const selSalon = document.getElementById('gf-salon');
+  const panelsContainer = document.querySelector('[data-panels="grados-todos"]');
+  const placeholder = document.getElementById('gf-placeholder');
+  if(selGrupo) selGrupo.value = '';
+  poblarMaestroYSalon('');
+  if(selMaestro) selMaestro.value = '';
+  if(selSalon) selSalon.value = '';
+  if(panelsContainer) panelsContainer.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  if(placeholder) placeholder.hidden = false;
+  history.replaceState(null, '', location.pathname + location.search);
+}
+
 (function(){
-  const data = SEARCH_INDEX;
-  const input = document.getElementById('buscador');
-  const btn = document.getElementById('buscador-btn');
-  const resultDiv = document.getElementById('buscador-resultado');
+  const selGrupo = document.getElementById('gf-grupo');
+  const selMaestro = document.getElementById('gf-maestro');
+  const selSalon = document.getElementById('gf-salon');
+  const btnClear = document.getElementById('gf-clear');
+  if(!selGrupo || !selMaestro || !selSalon) return;
 
-  function normalize(s){
-    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  }
+  poblarGrupoSelect();
+  poblarMaestroYSalon(selGrupo.value);
 
-  function buscar(){
-    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
-    const q = normalize(input.value.trim());
-    if(!q){ resultDiv.innerHTML=''; return; }
-    const hits = [];
-    const seen = new Set();
-    data.forEach(entry=>{
-      const found = entry.labels.some(l => normalize(String(l)).includes(q));
-      if(found && !seen.has(entry.tabId)){
-        seen.add(entry.tabId);
-        hits.push(entry);
+  selGrupo.addEventListener('change', ()=>{
+    poblarMaestroYSalon(selGrupo.value);
+    const panelsContainer = document.querySelector('[data-panels="grados-todos"]');
+    const activo = panelsContainer?.querySelector('.tab-panel.active');
+    if(activo && selGrupo.value){
+      const entry = SEARCH_INDEX.find(e=>e.tabId===activo.id);
+      if(entry && entry.group !== selGrupo.value){
+        activo.classList.remove('active');
+        const placeholder = document.getElementById('gf-placeholder');
+        if(placeholder) placeholder.hidden = false;
+        selMaestro.value = '';
+        selSalon.value = '';
+        history.replaceState(null, '', location.pathname + location.search);
       }
-    });
-    if(hits.length === 0){
-      resultDiv.innerHTML = lang === 'en'
-        ? '<span class="no-hit">I couldn’t find a matching classroom, grade, or group. Try a group code (e.g. G7) or a teacher’s name.</span>'
-        : '<span class="no-hit">No encontré ningún salón, grado o grupo que coincida. Prueba con un código de grupo (por ejemplo, G7) o el nombre de un maestro/a.</span>';
-      return;
     }
-    const t = s => lang === 'en' && typeof i18nTranslateText === 'function' ? i18nTranslateText(s) : s;
-    const list = hits.map(h => `<button type="button" class="hit-btn" data-tab="${h.tabId}" data-group="${h.group}">${t(h.title)}</button>`).join('');
-    const countLabel = lang === 'en' ? `${hits.length} result(s):` : `${hits.length} resultado(s):`;
-    resultDiv.innerHTML = `<span>${countLabel}</span><div class="hit-list">${list}</div>`;
-    resultDiv.querySelectorAll('.hit-btn').forEach(b=>{
-      b.addEventListener('click', ()=>{
-        document.getElementById('grados').scrollIntoView({behavior:'smooth', block:'start'});
-        setTimeout(()=>activarTab(b.dataset.tab, b.dataset.group), 300);
-      });
-    });
-  }
-  btn.addEventListener('click', buscar);
-  input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ buscar(); } });
-  window.I18N_RERENDER_HOOKS.push(buscar);
+  });
+  selMaestro.addEventListener('change', ()=>{ if(selMaestro.value) mostrarSalonPorId(selMaestro.value, {scroll:false}); });
+  selSalon.addEventListener('change', ()=>{ if(selSalon.value) mostrarSalonPorId(selSalon.value, {scroll:false}); });
+  if(btnClear) btnClear.addEventListener('click', limpiarFiltrosGrados);
+
+  window.I18N_RERENDER_HOOKS.push(()=>{
+    const grupoActual = selGrupo.value;
+    poblarGrupoSelect();
+    selGrupo.value = grupoActual;
+    poblarMaestroYSalon(grupoActual);
+    const panelsContainer = document.querySelector('[data-panels="grados-todos"]');
+    const activo = panelsContainer?.querySelector('.tab-panel.active');
+    if(activo){ selMaestro.value = activo.id; selSalon.value = activo.id; }
+  });
 })();
 
-/* ---------- 04b · Saltar al grupo desde la leyenda del almanaque ---------- */
+/* ---------- 04b · Saltar al salón desde la leyenda del almanaque ---------- */
 (function(){
   document.querySelectorAll('.legend .lg-item').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       document.getElementById('grados').scrollIntoView({behavior:'smooth', block:'start'});
-      setTimeout(()=>activarTab(btn.dataset.tab, btn.dataset.group), 300);
+      setTimeout(()=>mostrarSalonPorId(btn.dataset.tab, {scroll:true}), 300);
     });
   });
 })();

@@ -298,37 +298,26 @@
       <p data-i18n="grados.p">Selecciona un salón para ver la fecha, hora y tema de cada charla programada durante el año escolar.</p>
     </div>
 
-    <div class="search-box">
-      <label for="buscador" class="search-label" data-i18n="grados.buscador-label">Buscador &mdash; por salón, grado o maestro/a</label>
-      <div class="search-row">
-        <input type="text" id="buscador" placeholder="Ej. 8-1 · 8vo · nombre del maestro..." autocomplete="off">
-        <button type="button" id="buscador-btn" data-i18n="grados.buscador-btn">Buscar</button>
-      </div>
-      <div id="buscador-resultado" class="search-result"></div>
-    </div>
-
     <div class="rotation-note" data-i18n="grados.rotation-note">El Maestro Recurso dedica una semana completa a cada bloque &mdash;Intermedia y 5to, Elemental PK-4to, y Educación Especial&mdash; en ese orden, repitiendo el ciclo cada 3 semanas. Cada salón se atiende individualmente, siempre el mismo día y período dentro de su semana.</div>
-
-    <h3 class="subsection-title"><span data-i18n="grados.sub-elemental">Elemental</span> <span class="tag" data-i18n="grados.sub-elemental-tag">PK &ndash; 5to</span></h3>
-    <div class="tabs-nav tabs-group" data-group="elemental">
-      <button class="grade-tab active" data-tab="tab-s-pk" style="--tab-bg:#e8d7c8;--tab-fg:#7a4e29">PK</button>
-<button class="grade-tab" data-tab="tab-s-k-1" style="--tab-bg:#c8e1e8;--tab-fg:#29677a">K-1</button>
-<button class="grade-tab" data-tab="tab-s-k-2" style="--tab-bg:#d09f9f;--tab-fg:#4d1919">K-2</button>
-<button class="grade-tab" data-tab="tab-s-1-1" style="--tab-bg:#9fd0c5;--tab-fg:#194d41">1-1</button>
-<button class="grade-tab" data-tab="tab-s-1-2" style="--tab-bg:#d09fb6;--tab-fg:#4d1931">1-2</button>
-<button class="grade-tab" data-tab="tab-s-2-1" style="--tab-bg:#9fd0ae;--tab-fg:#194d29">2-1</button>
-<button class="grade-tab" data-tab="tab-s-2-2" style="--tab-bg:#d09fcc;--tab-fg:#4d1949">2-2</button>
-<button class="grade-tab" data-tab="tab-s-3-1" style="--tab-bg:#a7d09f;--tab-fg:#214d19">3-1</button>
-<button class="grade-tab" data-tab="tab-s-3-2" style="--tab-bg:#bd9fd0;--tab-fg:#39194d">3-2</button>
-<button class="grade-tab" data-tab="tab-s-4-1" style="--tab-bg:#bdd09f;--tab-fg:#394d19">4-1</button>
-<button class="grade-tab" data-tab="tab-s-4-2" style="--tab-bg:#a79fd0;--tab-fg:#21194d">4-2</button>
-<button class="grade-tab" data-tab="tab-s-4-3" style="--tab-bg:#d0cc9f;--tab-fg:#4d4919">4-3</button>
-<button class="grade-tab" data-tab="tab-s-5-1" style="--tab-bg:#9faed0;--tab-fg:#19294d">5-1</button>
-<button class="grade-tab" data-tab="tab-s-5-2" style="--tab-bg:#d0b69f;--tab-fg:#4d3119">5-2</button>
+    <div class="filter-bar" id="grados-filtros">
+      <div class="filter-field">
+        <label for="gf-grupo" data-i18n="grados.filtro-grupo">Grupo</label>
+        <select id="gf-grupo"></select>
+      </div>
+      <div class="filter-field">
+        <label for="gf-maestro" data-i18n="grados.filtro-maestro">Maestro/a</label>
+        <select id="gf-maestro"></select>
+      </div>
+      <div class="filter-field">
+        <label for="gf-salon" data-i18n="grados.filtro-salon">Grado/Salón</label>
+        <select id="gf-salon"></select>
+      </div>
+      <button type="button" class="filter-clear" id="gf-clear" data-i18n="grados.limpiar-filtros">Limpiar filtros</button>
     </div>
-    <div data-panels="elemental">
+    <p class="filter-placeholder" id="gf-placeholder" data-i18n="grados.placeholder">Selecciona un salón, maestro/a o grupo para ver su horario.</p>
+    <div data-panels="grados-todos">
 
-    <div class="tab-panel active" id="tab-s-pk">
+    <div class="tab-panel" id="tab-s-pk">
   <div class="panel-head" style="--tab-bg:#e8d7c8;--tab-fg:#7a4e29">
     <h3>PK · Pre-Kínder</h3>
     <p>Introducción a la Alfabetización Digital (TEED 111-0001)</p>
@@ -1374,22 +1363,6 @@
     </table>
   </div>
 </div>
-    </div>
-
-    <h3 class="subsection-title"><span data-i18n="grados.sub-intermedia">Intermedia</span> <span class="tag" data-i18n="grados.sub-intermedia-tag">6to &ndash; 8vo</span></h3>
-    <div class="tabs-nav tabs-group" data-group="intermedia">
-      <button class="grade-tab" data-tab="tab-s-6-1" style="--tab-bg:#9fc5d0;--tab-fg:#19414d">6-1</button>
-<button class="grade-tab" data-tab="tab-s-6-2" style="--tab-bg:#b87a7a;--tab-fg:#341313">6-2</button>
-<button class="grade-tab" data-tab="tab-s-6-3" style="--tab-bg:#7ab8a9;--tab-fg:#13342d">6-3</button>
-<button class="grade-tab" data-tab="tab-s-7-1" style="--tab-bg:#b87a97;--tab-fg:#341322">7-1</button>
-<button class="grade-tab" data-tab="tab-s-7-2" style="--tab-bg:#7ab88d;--tab-fg:#13341d">7-2</button>
-<button class="grade-tab" data-tab="tab-s-7-4" style="--tab-bg:#b87ab3;--tab-fg:#341332">7-4</button>
-<button class="grade-tab" data-tab="tab-s-8-1" style="--tab-bg:#84b87a;--tab-fg:#183413">8-1</button>
-<button class="grade-tab" data-tab="tab-s-8-2" style="--tab-bg:#a07ab8;--tab-fg:#271334">8-2</button>
-<button class="grade-tab" data-tab="tab-s-8-3" style="--tab-bg:#a0b87a;--tab-fg:#273413">8-3</button>
-    </div>
-    <div data-panels="intermedia">
-
     <div class="tab-panel" id="tab-s-6-1">
   <div class="panel-head" style="--tab-bg:#9fc5d0;--tab-fg:#19414d">
     <h3>6-1 · 6to Grado</h3>
@@ -2137,24 +2110,6 @@
     </table>
   </div>
 </div>
-    </div>
-
-    <h3 class="subsection-title"><span data-i18n="grados.sub-ee">Educación Especial y Rutas de Autismo</span> <span class="tag" data-i18n="grados.sub-ee-tag">Toda la escuela</span></h3>
-    <div class="tabs-nav tabs-group" data-group="ee">
-      <button class="grade-tab" data-tab="tab-s-pk-ee-autismo" style="--tab-bg:#e8c8c8;--tab-fg:#7a2929">PK EE Autismo</button>
-<button class="grade-tab" data-tab="tab-s-pk-ee-no-cat" style="--tab-bg:#c8e8e1;--tab-fg:#297a67">PK EE No Categorizado</button>
-<button class="grade-tab" data-tab="tab-s-ee-r1-1x1" style="--tab-bg:#e8c8d7;--tab-fg:#7a294e">EE Ruta 1 (Uno a Uno)</button>
-<button class="grade-tab" data-tab="tab-s-ee-r1-kinder" style="--tab-bg:#c8e8d2;--tab-fg:#297a41">EE Ruta 1 (Kínder)</button>
-<button class="grade-tab" data-tab="tab-s-ee-r1-1ro-red" style="--tab-bg:#e8c8e6;--tab-fg:#7a2973">EE Ruta 1 (1ro Reducido)</button>
-<button class="grade-tab" data-tab="tab-s-ee-r1-1-2" style="--tab-bg:#cde8c8;--tab-fg:#357a29">EE Ruta 1 (1ro y 2do)</button>
-<button class="grade-tab" data-tab="tab-s-ee-r1-3-4" style="--tab-bg:#dcc8e8;--tab-fg:#5a297a">EE Ruta 1 (3ro y 4to)</button>
-<button class="grade-tab" data-tab="tab-s-ee-r1-5-6" style="--tab-bg:#dce8c8;--tab-fg:#5a7a29">EE Ruta 1 (5to y 6to)</button>
-<button class="grade-tab" data-tab="tab-s-ee-r23-1-2-3" style="--tab-bg:#cdc8e8;--tab-fg:#35297a">EE Ruta 2 y 3 (1ro, 2do y 3ro — Autismo)</button>
-<button class="grade-tab" data-tab="tab-s-ee-r23-3-4-5" style="--tab-bg:#e8e6c8;--tab-fg:#7a7329">EE Ruta 2 y 3 (3ro, 4to y 5to)</button>
-<button class="grade-tab" data-tab="tab-s-ee-r1-7-8" style="--tab-bg:#c8d2e8;--tab-fg:#29417a">EE Ruta 1 (7mo y 8vo)</button>
-    </div>
-    <div data-panels="ee">
-
     <div class="tab-panel" id="tab-s-pk-ee-autismo">
   <div class="panel-head" style="--tab-bg:#e8c8c8;--tab-fg:#7a2929">
     <h3>PK EE Autismo</h3>

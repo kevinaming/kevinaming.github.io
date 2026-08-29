@@ -51,15 +51,17 @@ const I18N_UI = {
     'grados.kicker': 'Calendario detallado',
     'grados.h2': 'Charlas por grado y salón',
     'grados.p': 'Selecciona un salón para ver la fecha, hora y tema de cada charla programada durante el año escolar.',
-    'grados.buscador-label': 'Buscador — por salón, grado o maestro/a',
-    'grados.buscador-placeholder': 'Ej. 8-1 · 8vo · nombre del maestro...',
-    'grados.buscador-btn': 'Buscar',
-    'grados.sub-elemental': 'Elemental',
-    'grados.sub-elemental-tag': 'PK – 5to',
-    'grados.sub-intermedia': 'Intermedia',
-    'grados.sub-intermedia-tag': '6to – 8vo',
-    'grados.sub-ee': 'Educación Especial y Rutas de Autismo',
-    'grados.sub-ee-tag': 'Toda la escuela',
+    'grados.filtro-grupo': 'Grupo',
+    'grados.filtro-maestro': 'Maestro/a',
+    'grados.filtro-salon': 'Grado/Salón',
+    'grados.limpiar-filtros': 'Limpiar filtros',
+    'grados.placeholder': 'Selecciona un salón, maestro/a o grupo para ver su horario.',
+    'grados.todos-grupos': 'Todos los grupos',
+    'grados.todos-maestros': 'Todos los maestros/as',
+    'grados.todos-salones': 'Todos los salones',
+    'grados.grupo-elemental': 'Elemental',
+    'grados.grupo-intermedia': 'Intermedia',
+    'grados.grupo-ee': 'Educación Especial',
     'grados.th.num': '#',
     'grados.th.fecha': 'Fecha',
     'grados.th.hora': 'Hora',
@@ -121,15 +123,17 @@ const I18N_UI = {
     'grados.kicker': 'Detailed calendar',
     'grados.h2': 'Sessions by grade and classroom',
     'grados.p': 'Pick a classroom to see the date, time, and topic of every session scheduled during the school year.',
-    'grados.buscador-label': 'Search — by classroom, grade, or teacher',
-    'grados.buscador-placeholder': 'E.g. 8-1 · 8th · teacher name...',
-    'grados.buscador-btn': 'Search',
-    'grados.sub-elemental': 'Elementary',
-    'grados.sub-elemental-tag': 'PK – 5th',
-    'grados.sub-intermedia': 'Intermediate',
-    'grados.sub-intermedia-tag': '6th – 8th',
-    'grados.sub-ee': 'Special Education and Autism Route classrooms',
-    'grados.sub-ee-tag': 'School-wide',
+    'grados.filtro-grupo': 'Group',
+    'grados.filtro-maestro': 'Teacher',
+    'grados.filtro-salon': 'Grade/Classroom',
+    'grados.limpiar-filtros': 'Clear filters',
+    'grados.placeholder': 'Pick a classroom, teacher, or group to see its schedule.',
+    'grados.todos-grupos': 'All groups',
+    'grados.todos-maestros': 'All teachers',
+    'grados.todos-salones': 'All classrooms',
+    'grados.grupo-elemental': 'Elementary',
+    'grados.grupo-intermedia': 'Intermediate',
+    'grados.grupo-ee': 'Special Education',
     'grados.th.num': '#',
     'grados.th.fecha': 'Date',
     'grados.th.hora': 'Time',
@@ -362,9 +366,6 @@ function i18nApply(lang) {
     document.querySelectorAll(sel).forEach((el) => i18nTranslateContainer(el, lang));
   });
   i18nTranslateCalTableHeaders(lang);
-
-  const searchInput = document.getElementById('buscador');
-  if (searchInput) searchInput.placeholder = I18N_UI[lang]['grados.buscador-placeholder'];
 
   const langBtn = document.getElementById('lang-toggle');
   if (langBtn) {
