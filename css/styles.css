@@ -366,10 +366,20 @@ a{color:var(--teal);}
 @media print{
   body.qr-all-print-mode > *:not(.qr-all-modal){ display:none !important; }
   body.qr-all-print-mode .qr-all-modal{ position:static; overflow:visible; }
-  body.qr-all-print-mode .qr-all-modal-bar{ position:static; }
-  body.qr-all-print-mode .qr-all-modal-actions{ display:none !important; }
-  body.qr-all-print-mode .qr-all-grid{ max-width:100%; }
-  body.qr-all-print-mode .qr-all-card{ box-shadow:none; }
+  body.qr-all-print-mode .qr-all-modal-bar{ display:none !important; }
+  body.qr-all-print-mode .qr-all-grid{
+    display:block; max-width:100%; margin:0; padding:0;
+  }
+  body.qr-all-print-mode .qr-all-card{
+    border:none; border-radius:0; box-shadow:none; padding:40px;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    page-break-after:always; break-after:page; page-break-inside:avoid;
+  }
+  body.qr-all-print-mode .qr-all-card:last-child{ page-break-after:auto; break-after:auto; }
+  body.qr-all-print-mode .qr-all-card-canvas{ padding:24px; margin-bottom:28px; }
+  body.qr-all-print-mode .qr-all-card-canvas svg{ width:65vw; height:65vw; max-width:520px; max-height:520px; }
+  body.qr-all-print-mode .qr-all-card-grade{ font-size:1.9rem; margin-bottom:8px; }
+  body.qr-all-print-mode .qr-all-card-teacher{ font-size:1.05rem; }
 }
 td.cal-day.is-today{border:2px solid var(--teal); box-shadow:0 0 0 3px rgba(31,111,120,0.15);}
 td.cal-day.is-today .daynum{color:var(--teal-deep); font-weight:700;}
