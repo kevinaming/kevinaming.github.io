@@ -412,7 +412,10 @@ function getAllSessions(){
   const sessions = [];
   document.querySelectorAll('.tab-panel').forEach(panel=>{
     const gradeEl = panel.querySelector('.panel-head h3');
-    const gradeText = gradeEl ? gradeEl.textContent.trim() : '';
+    const gradeFull = gradeEl ? gradeEl.textContent.trim() : '';
+    // Para salones con formato "código · Grado" (ej. "8-1 · 8vo Grado") basta el código;
+    // los nombres de rutas de EE no tienen ese separador y se muestran completos.
+    const gradeText = gradeFull.includes(' · ') ? gradeFull.split(' · ')[0] : gradeFull;
     panel.querySelectorAll('.grade-table tbody tr').forEach(row=>{
       const fechaCell = row.querySelector('.col-fecha');
       const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
