@@ -12,7 +12,7 @@ const I18N_UI = {
     'nav.portada': 'Portada',
     'nav.metodologia': 'Metodología',
     'nav.horario': 'Horario',
-    'nav.grados': 'Charlas por grado',
+    'nav.grados': 'Buscar charla',
     'nav.almanaque': 'Almanaque',
 
     'hero.eyebrow': 'Año escolar 2026–2027',
@@ -49,7 +49,7 @@ const I18N_UI = {
     'horario.semana-c-tag': 'Cada 3 semanas',
 
     'grados.kicker': 'Calendario detallado',
-    'grados.h2': 'Charlas por grado y salón',
+    'grados.h2': '¡Busca tu charla!',
     'grados.p': 'Selecciona un salón para ver la fecha, hora y tema de cada charla programada durante el año escolar.',
     'grados.filtro-grupo': 'Nivel',
     'grados.filtro-maestro': 'Maestro/a',
@@ -84,7 +84,7 @@ const I18N_UI = {
     'nav.portada': 'Home',
     'nav.metodologia': 'Methodology',
     'nav.horario': 'Schedule',
-    'nav.grados': 'Sessions by grade',
+    'nav.grados': 'Find a session',
     'nav.almanaque': 'Calendar',
 
     'hero.eyebrow': 'School year 2026–2027',
@@ -121,7 +121,7 @@ const I18N_UI = {
     'horario.semana-c-tag': 'Every 3 weeks',
 
     'grados.kicker': 'Detailed calendar',
-    'grados.h2': 'Sessions by grade and classroom',
+    'grados.h2': 'Find your session!',
     'grados.p': 'Pick a classroom to see the date, time, and topic of every session scheduled during the school year.',
     'grados.filtro-grupo': 'Level',
     'grados.filtro-maestro': 'Teacher',
