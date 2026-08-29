@@ -421,7 +421,7 @@ table.weekly-table thead th{
 }
 .wk-slotlabel{font-family:'IBM Plex Mono',monospace; font-size:.8rem; color:var(--ink-soft); white-space:nowrap;}
 .wk-cell{border-radius:10px;}
-.wk-cell .wk-hora{display:block; font-family:'IBM Plex Mono',monospace; font-size:.72rem; opacity:.85;}
+.wk-cell .wk-hora{display:block; font-family:'IBM Plex Mono',monospace; font-size:.72rem; opacity:.85; white-space:nowrap;}
 .wk-cell .wk-grade{display:block; font-weight:600; margin-top:2px;}
 .wk-cell.wk-free{background:var(--paper); color:var(--ink-soft); font-style:italic; border:1.5px dashed var(--line);}
 .wk-cell.wk-rotation{background:var(--paper); border:1.5px dashed var(--line);}
