@@ -184,7 +184,7 @@ const I18N_GROUP_NAMES = [
   ['EE Ruta 1 (Kínder)', 'SPED Route 1 (Kindergarten)'],
   ['PK EE Autismo', 'PK SPED Autism'],
   // Fragmentos para las celdas de Horario que parten el nombre en 2 líneas.
-  ['(1ro, 2do y 3ro — Autismo)', '(1st, 2nd & 3rd — Autism)'],
+  ['(1ro, 2do y 3ro)', '(1st, 2nd & 3rd)'],
   ['(3ro, 4to y 5to)', '(3rd, 4th & 5th)'],
   ['(1ro Reducido)', '(1st, Reduced)'],
   ['(Uno a Uno)', '(One-on-One)'],
