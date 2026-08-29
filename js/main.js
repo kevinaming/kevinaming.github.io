@@ -336,6 +336,77 @@ function fmtFechaLarga(year, month, day, lang){
   window.I18N_RERENDER_HOOKS.push(syncLabels);
 })();
 
+/* ---------- 00g · Generar e imprimir los códigos QR de todos los salones ---------- */
+(function(){
+  const openBtn = document.getElementById('qr-all-btn');
+  const modal2 = document.getElementById('qr-all-modal');
+  const grid = document.getElementById('qr-all-grid');
+  const closeBtn2 = document.getElementById('qr-all-close');
+  const printBtn2 = document.getElementById('qr-all-print');
+  const titleEl = document.getElementById('qr-all-title');
+  if(!openBtn || !modal2 || !grid || typeof qrcode !== 'function' || typeof SEARCH_INDEX === 'undefined') return;
+
+  const BTN_LABEL = { es: 'Generar todos los códigos QR', en: 'Generate all QR codes' };
+  const TITLE_LABEL = { es: 'Códigos QR — todos los salones', en: 'QR codes — all classrooms' };
+  const PRINT_LABEL_ALL = { es: 'Imprimir', en: 'Print' };
+  let built = false;
+
+  function construirGrid(){
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    const t = s => (lang === 'en' && typeof i18nTranslateText === 'function') ? i18nTranslateText(s) : s;
+    const frag = document.createDocumentFragment();
+    SEARCH_INDEX.forEach(entry=>{
+      const url = location.origin + '/#' + entry.tabId;
+      const qr = qrcode(0, 'M');
+      qr.addData(url);
+      qr.make();
+      const card = document.createElement('div');
+      card.className = 'qr-all-card';
+      const canvas = document.createElement('div');
+      canvas.className = 'qr-all-card-canvas';
+      canvas.innerHTML = qr.createSvgTag(4, 2);
+      const gradeEl = document.createElement('div');
+      gradeEl.className = 'qr-all-card-grade';
+      gradeEl.textContent = t(entry.title);
+      const teacherEl = document.createElement('div');
+      teacherEl.className = 'qr-all-card-teacher';
+      teacherEl.textContent = entry.labels[2] || '';
+      card.append(canvas, gradeEl, teacherEl);
+      frag.appendChild(card);
+    });
+    grid.innerHTML = '';
+    grid.appendChild(frag);
+    built = true;
+  }
+
+  function syncLabelsAll(){
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    openBtn.querySelector('.qr-all-btn-label').textContent = BTN_LABEL[lang];
+    titleEl.textContent = TITLE_LABEL[lang];
+    printBtn2.textContent = PRINT_LABEL_ALL[lang];
+    if(built) construirGrid();
+  }
+
+  function abrirTodos(){
+    if(!built) construirGrid();
+    modal2.hidden = false;
+    document.body.classList.add('qr-all-print-mode');
+  }
+  function cerrarTodos(){
+    modal2.hidden = true;
+    document.body.classList.remove('qr-all-print-mode');
+  }
+
+  openBtn.addEventListener('click', abrirTodos);
+  closeBtn2.addEventListener('click', cerrarTodos);
+  printBtn2.addEventListener('click', ()=> window.print());
+  modal2.addEventListener('click', e=>{ if(e.target === modal2) cerrarTodos(); });
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && !modal2.hidden) cerrarTodos(); });
+
+  syncLabelsAll();
+  window.I18N_RERENDER_HOOKS.push(syncLabelsAll);
+})();
+
 /* ---------- Sesiones del día (compartido por el aviso y el modo pizarra) ---------- */
 function getAllSessions(){
   const sessions = [];

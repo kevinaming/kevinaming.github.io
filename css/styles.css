@@ -327,6 +327,50 @@ a{color:var(--teal);}
   body.qr-print-mode .qr-modal-card{ box-shadow:none; border:none; max-width:100%; }
   body.qr-print-mode .qr-modal-close, body.qr-print-mode .qr-modal-print{ display:none !important; }
 }
+
+/* ---------- Generar e imprimir todos los códigos QR ---------- */
+.qr-all-row{margin-bottom:18px;}
+.qr-all-btn{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:'IBM Plex Mono',monospace; font-size:.82rem; font-weight:600; color:#fff;
+  background:var(--teal-btn); border:none; border-radius:9px; padding:11px 18px; cursor:pointer; transition:.15s;
+}
+.qr-all-btn:hover{background:var(--teal-btn-hover);}
+.qr-all-btn svg{width:16px; height:16px; flex:none;}
+
+.qr-all-modal{
+  position:fixed; inset:0; z-index:999; background:var(--paper); overflow-y:auto; padding:0 0 40px;
+}
+.qr-all-modal[hidden]{display:none;}
+.qr-all-modal-bar{
+  position:sticky; top:0; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:16px;
+  background:var(--card); border-bottom:1px solid var(--line); padding:16px 24px;
+}
+.qr-all-modal-bar h2{font-family:'Fraunces',serif; font-size:1.15rem; color:var(--teal-deep); margin:0;}
+.qr-all-modal-actions{display:flex; align-items:center; gap:10px;}
+.qr-all-modal-actions .qr-modal-close{position:static;}
+
+.qr-all-grid{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:20px;
+  max-width:1100px; margin:24px auto 0; padding:0 24px;
+}
+.qr-all-card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px;
+  text-align:center; break-inside:avoid; page-break-inside:avoid;
+}
+.qr-all-card-canvas{background:#fff; border-radius:8px; padding:10px; display:inline-flex; margin-bottom:10px;}
+.qr-all-card-canvas svg{display:block; width:130px; height:130px;}
+.qr-all-card-grade{font-family:'Fraunces',serif; font-size:.98rem; color:var(--teal-deep); margin-bottom:2px;}
+.qr-all-card-teacher{font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:var(--ink-soft);}
+
+@media print{
+  body.qr-all-print-mode > *:not(.qr-all-modal){ display:none !important; }
+  body.qr-all-print-mode .qr-all-modal{ position:static; overflow:visible; }
+  body.qr-all-print-mode .qr-all-modal-bar{ position:static; }
+  body.qr-all-print-mode .qr-all-modal-actions{ display:none !important; }
+  body.qr-all-print-mode .qr-all-grid{ max-width:100%; }
+  body.qr-all-print-mode .qr-all-card{ box-shadow:none; }
+}
 td.cal-day.is-today{border:2px solid var(--teal); box-shadow:0 0 0 3px rgba(31,111,120,0.15);}
 td.cal-day.is-today .daynum{color:var(--teal-deep); font-weight:700;}
 
@@ -562,7 +606,7 @@ footer .copyright{margin-top:18px; padding-top:14px; border-top:1px solid var(--
     --teal:#1f6f78; --teal-deep:#154f56; --teal-btn:#1f6f78; --teal-btn-hover:#154f56;
     --mango:#e8a33d; --mango-deep:#b97c22;
   }
-  .topnav, .toolbar-buttons, .search-box, .filter-bar,
+  .topnav, .toolbar-buttons, .search-box, .filter-bar, .qr-all-row,
   .month-nav, .ics-btn, .hero-chipfield{
     display:none !important;
   }

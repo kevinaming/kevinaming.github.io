@@ -93,6 +93,17 @@
   </div>
 </div>
 
+<div class="qr-all-modal" id="qr-all-modal" hidden>
+  <div class="qr-all-modal-bar">
+    <h2 id="qr-all-title"></h2>
+    <div class="qr-all-modal-actions">
+      <button type="button" class="qr-modal-print" id="qr-all-print"></button>
+      <button type="button" class="qr-modal-close" id="qr-all-close" aria-label="Cerrar" title="Cerrar">&times;</button>
+    </div>
+  </div>
+  <div class="qr-all-grid" id="qr-all-grid"></div>
+</div>
+
 <section class="block" id="metodologia">
   <div class="wrap">
     <div class="section-head">
@@ -313,6 +324,9 @@
         <select id="gf-salon"></select>
       </div>
       <button type="button" class="filter-clear" id="gf-clear" data-i18n="grados.limpiar-filtros">Limpiar filtros</button>
+    </div>
+    <div class="qr-all-row">
+      <button type="button" class="qr-all-btn" id="qr-all-btn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="qr-all-btn-label"></span></button>
     </div>
     <p class="filter-placeholder" id="gf-placeholder" data-i18n="grados.placeholder">Selecciona un salón, maestro/a o grupo para ver su horario.</p>
     <div data-panels="grados-todos">
