@@ -428,6 +428,8 @@ table.weekly-table thead th{
 .wk-rotation-inner{display:flex; flex-direction:column; gap:6px;}
 .wk-rot-chips{display:flex; flex-wrap:wrap; gap:4px;}
 .wk-rot-chip{font-family:'IBM Plex Mono',monospace; font-size:.7rem; font-weight:600; padding:2px 6px; border-radius:6px;}
+/* Semana A y B: el nombre completo del grado/salón es redundante junto al chip de color, se oculta. Semana C lo conserva. */
+#tab-week-a .wk-rotation .wk-grade, #tab-week-b .wk-rotation .wk-grade{display:none;}
 .wk-rot-list{margin:2px 0 0; padding-left:16px; font-size:.76rem; color:var(--ink-soft);}
 .wk-rot-list li{margin-bottom:6px;}
 .wk-rot-list li:last-child{margin-bottom:0;}
