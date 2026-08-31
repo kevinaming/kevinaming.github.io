@@ -233,21 +233,28 @@ a{color:var(--teal);}
 /* ---------- Modo pizarra ---------- */
 .pizarra{
   position:fixed; inset:0; z-index:999; background:var(--paper); color:var(--ink);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:56px 32px; text-align:center; overflow-y:auto;
+  display:flex; flex-direction:column;
+  padding:20px 24px; text-align:center; overflow-y:auto;
 }
 .pizarra[hidden]{display:none;}
+.pizarra-header{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex:none; width:100%;
+}
 .pizarra-clock{
-  position:absolute; top:28px; left:32px; font-family:'IBM Plex Mono',monospace;
-  font-size:clamp(1.1rem,2.6vw,1.6rem); color:var(--ink-soft);
+  font-family:'IBM Plex Mono',monospace; font-size:clamp(1rem,2.6vw,1.6rem); color:var(--ink-soft); text-align:left;
 }
 .pizarra-close{
-  position:absolute; top:20px; right:24px; width:52px; height:52px; border-radius:50%;
+  width:44px; height:44px; border-radius:50%; flex:none;
   border:1px solid var(--line); background:var(--card); color:var(--ink-soft); cursor:pointer;
-  font-size:1.8rem; line-height:1; display:flex; align-items:center; justify-content:center;
+  font-size:1.6rem; line-height:1; display:flex; align-items:center; justify-content:center;
 }
 .pizarra-close:hover{border-color:var(--teal); color:var(--teal-deep);}
-.pizarra-content{max-width:1100px; width:100%;}
+.pizarra-content{
+  flex:1 1 auto; min-height:0; width:100%; max-width:1100px; margin:0 auto;
+  display:flex; flex-direction:column; align-items:center; padding:16px 0;
+  justify-content:flex-start; /* respaldo si el navegador no entiende "safe center" */
+  justify-content:safe center;
+}
 .pizarra-date{font-family:'Fraunces',serif; font-size:clamp(1.6rem,4vw,2.8rem); color:var(--teal-deep); margin-bottom:32px;}
 .pizarra-list{list-style:none; margin:0; padding:0; display:grid; gap:18px;}
 .pizarra-list li{
@@ -286,7 +293,6 @@ a{color:var(--teal);}
   color:#fff; background:var(--mango); padding:6px 16px; border-radius:999px; flex:none;
 }
 @media print{ .pizarra{ display:none !important; } }
-@media (max-width:600px){ .pizarra{ padding-top:112px; } }
 
 /* ---------- Botón y modal de código QR ---------- */
 .qr-btn{
