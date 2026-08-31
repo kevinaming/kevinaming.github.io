@@ -286,6 +286,7 @@ a{color:var(--teal);}
   color:#fff; background:var(--mango); padding:6px 16px; border-radius:999px; flex:none;
 }
 @media print{ .pizarra{ display:none !important; } }
+@media (max-width:600px){ .pizarra{ padding-top:112px; } }
 
 /* ---------- Botón y modal de código QR ---------- */
 .qr-btn{
@@ -429,7 +430,7 @@ table.weekly-table thead th{
 .wk-prep-chip{
   display:inline-block; margin-top:5px; font-style:normal; font-weight:400; white-space:normal;
   font-family:'IBM Plex Mono',monospace; font-size:.72rem; letter-spacing:.01em;
-  background:var(--paper-alt); color:var(--ink-soft); padding:3px 10px; border-radius:999px;
+  background:var(--paper-alt); color:var(--ink-soft); padding:3px 10px; border-radius:7px;
 }
 .wk-cell.wk-rotation{background:var(--paper); border:1.5px dashed var(--line);}
 .wk-rotation-inner{display:flex; flex-direction:column; gap:6px;}
@@ -626,7 +627,7 @@ footer .copyright{margin-top:18px; padding-top:14px; border-top:1px solid var(--
 .filter-field label{font-family:'IBM Plex Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);}
 .filter-field select{
   font-family:'Work Sans',sans-serif; font-size:.92rem; padding:10px 12px; border-radius:9px;
-  border:1px solid var(--line); background:var(--paper); color:var(--ink);
+  border:1px solid var(--line); background:var(--paper); color:var(--ink); width:100%; max-width:100%;
 }
 .filter-clear{
   font-family:'IBM Plex Mono',monospace; font-size:.8rem; font-weight:600; color:var(--teal-deep);
