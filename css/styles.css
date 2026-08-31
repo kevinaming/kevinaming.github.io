@@ -551,8 +551,9 @@ td.cal-day.out-month .chip{opacity:.4; filter:saturate(.7);}
 }
 .month-detail summary{cursor:pointer; padding:12px 0; font-weight:600; color:var(--teal-deep); font-size:.92rem;}
 .month-detail-list{list-style:none; margin:0; padding:0 0 14px; display:grid; gap:8px;}
-.month-detail-list li{font-size:.88rem; display:flex; align-items:flex-start; gap:8px;}
-.month-detail-list .dot{width:10px; height:10px; border-radius:3px; border-width:1px; border-style:solid; flex:none; margin-top:4px;}
+.month-detail-list li{font-size:.88rem; display:flex; flex-wrap:wrap; align-items:flex-start; gap:4px 8px;}
+.month-detail-list .dot{width:10px; height:10px; border-radius:3px; border-width:1px; border-style:solid; flex:none; margin-top:5px;}
+.month-detail-list li strong{white-space:nowrap; flex:none;}
 .no-sessions{color:var(--ink-soft); font-style:italic; padding:12px 0;}
 /* Fijar el display explícito en la lista anula el colapso nativo del <details>
    cuando está cerrado (el navegador ya no puede ocultarla por su cuenta);
