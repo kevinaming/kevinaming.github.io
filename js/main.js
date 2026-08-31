@@ -416,6 +416,9 @@ function getAllSessions(){
     // Para salones con formato "código · Grado" (ej. "8-1 · 8vo Grado") basta el código;
     // los nombres de rutas de EE no tienen ese separador y se muestran completos.
     const gradeText = gradeFull.includes(' · ') ? gradeFull.split(' · ')[0] : gradeFull;
+    const metaText = panel.querySelector('.panel-meta')?.textContent || '';
+    const roomMatch = metaText.match(/salón\s+(\S+)/);
+    const room = roomMatch ? roomMatch[1] : '';
     panel.querySelectorAll('.grade-table tbody tr').forEach(row=>{
       const fechaCell = row.querySelector('.col-fecha');
       const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
@@ -428,7 +431,7 @@ function getAllSessions(){
       sessions.push({
         start: new Date(fecha.year, fecha.month, fecha.day, horas[0].h, horas[0].min),
         end: new Date(fecha.year, fecha.month, fecha.day, horas[1].h, horas[1].min),
-        grade: gradeText, title: titulo,
+        grade: gradeText, room, title: titulo,
       });
     });
   });
@@ -478,7 +481,8 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     } else {
       cls = 'is-later';
     }
-    return `<li class="${cls}"><span class="${prefix}-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="${prefix}-grade">${s.grade}</span><span class="${prefix}-title">${s.title}</span>${badge}</li>`;
+    const roomHTML = s.room ? `<span class="${prefix}-room">${s.room}</span>` : '';
+    return `<li class="${cls}"><span class="${prefix}-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="${prefix}-grade">${s.grade}</span>${roomHTML}<span class="${prefix}-title">${s.title}</span>${badge}</li>`;
   }).join('');
 }
 
