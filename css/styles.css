@@ -332,7 +332,7 @@ a{color:var(--teal);}
 .qr-modal-print:hover{background:var(--teal-btn-hover);}
 @media print{
   body.qr-print-mode > *:not(.qr-modal){ display:none !important; }
-  body.qr-print-mode .qr-modal{ position:static; background:none; padding:0; }
+  body.qr-print-mode .qr-modal{ position:static; background:none; padding:0; min-height:100vh; }
   body.qr-print-mode .qr-modal-card{ box-shadow:none; border:none; max-width:100%; }
   body.qr-print-mode .qr-modal-close, body.qr-print-mode .qr-modal-print{ display:none !important; }
   body.qr-print-mode .qr-modal-canvas{ padding:24px; }
