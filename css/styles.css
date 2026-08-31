@@ -452,10 +452,10 @@ table.weekly-table thead th{
 .tabs-nav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
 .grade-tab{
   font-family:'Work Sans',sans-serif; font-weight:600; font-size:.9rem;
-  border:1px solid var(--tab-fg, var(--line)); background:var(--card); color:var(--ink-soft);
+  border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
   padding:6px 14px; border-radius:999px; cursor:pointer; transition:.15s;
 }
-.grade-tab:hover{border-color:var(--tab-fg); border-width:1px;}
+.grade-tab:hover{border-color:var(--tab-bg); border-width:1px;}
 .grade-tab.active{background:var(--tab-bg); color:var(--tab-fg); border-color:transparent; box-shadow:var(--shadow);}
 .tab-panel{display:none;}
 .tab-panel.active{display:block; animation:fadein .25s ease;}
