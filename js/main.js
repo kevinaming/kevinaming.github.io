@@ -797,7 +797,7 @@ function poblarMaestroYSalon(grupoFiltro){
   const prevMaestro = selMaestro.value;
   const prevSalon = selSalon.value;
   const items = SEARCH_INDEX.filter(e => !grupoFiltro || e.group === grupoFiltro);
-  const todosMaestros = typeof I18N_UI !== 'undefined' ? I18N_UI[lang]['grados.todos-maestros'] : 'Todos los maestros/a';
+  const todosMaestros = typeof I18N_UI !== 'undefined' ? I18N_UI[lang]['grados.todos-maestros'] : 'Todos los maestros/as de salón hogar';
   const todosSalones = typeof I18N_UI !== 'undefined' ? I18N_UI[lang]['grados.todos-salones'] : 'Todos los salones';
 
   const maestroItems = items.slice().sort((a,b)=> String(a.labels[2]).localeCompare(String(b.labels[2]), 'es'));
