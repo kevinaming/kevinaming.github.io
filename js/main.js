@@ -792,12 +792,16 @@ function poblarMaestroYSalon(grupoFiltro){
   const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
   const t = s => (lang === 'en' && typeof i18nTranslateText === 'function') ? i18nTranslateText(s) : s;
   const selMaestro = document.getElementById('gf-maestro');
+  const selClase = document.getElementById('gf-clase');
   const selSalon = document.getElementById('gf-salon');
   if(!selMaestro || !selSalon || typeof SEARCH_INDEX === 'undefined') return;
   const prevMaestro = selMaestro.value;
+  const prevClase = selClase ? selClase.value : '';
   const prevSalon = selSalon.value;
   const items = SEARCH_INDEX.filter(e => !grupoFiltro || e.group === grupoFiltro);
   const todosMaestros = typeof I18N_UI !== 'undefined' ? I18N_UI[lang]['grados.todos-maestros'] : 'Todos los maestros/as de salón hogar';
+  const todosClases = typeof I18N_UI !== 'undefined' ? I18N_UI[lang]['grados.todos-clases'] : 'Todos los maestros/as que dan la clase';
+  const porConfirmar = typeof I18N_UI !== 'undefined' ? I18N_UI[lang]['grados.pendiente-confirmar'] : 'Por confirmar';
   const todosSalones = typeof I18N_UI !== 'undefined' ? I18N_UI[lang]['grados.todos-salones'] : 'Todos los salones';
 
   const maestroItems = items.slice().sort((a,b)=> String(a.labels[2]).localeCompare(String(b.labels[2]), 'es'));
@@ -807,11 +811,21 @@ function poblarMaestroYSalon(grupoFiltro){
     return `<option value="${e.tabId}">${label}</option>`;
   }).join('');
 
+  if(selClase){
+    const claseItems = items.slice().sort((a,b)=> String(a.claseReal || porConfirmar).localeCompare(String(b.claseReal || porConfirmar), 'es'));
+    selClase.innerHTML = `<option value="">${todosClases}</option>` + claseItems.map(e=>{
+      const nombre = e.claseReal;
+      const label = !nombre ? `${porConfirmar} — ${t(e.title)}` : (nombre === 'Vacante' ? `Vacante — ${t(e.title)}` : nombre);
+      return `<option value="${e.tabId}">${label}</option>`;
+    }).join('');
+  }
+
   selSalon.innerHTML = `<option value="">${todosSalones}</option>` + items.map(e=>
     `<option value="${e.tabId}">${t(e.title)}</option>`
   ).join('');
 
   selMaestro.value = items.some(e=>e.tabId===prevMaestro) ? prevMaestro : '';
+  if(selClase) selClase.value = items.some(e=>e.tabId===prevClase) ? prevClase : '';
   selSalon.value = items.some(e=>e.tabId===prevSalon) ? prevSalon : '';
 }
 
@@ -825,10 +839,12 @@ function mostrarSalonPorId(tabId, opts){
 
   const selGrupo = document.getElementById('gf-grupo');
   const selMaestro = document.getElementById('gf-maestro');
+  const selClase = document.getElementById('gf-clase');
   const selSalon = document.getElementById('gf-salon');
   if(selGrupo) selGrupo.value = entry.group;
   poblarMaestroYSalon(entry.group);
   if(selMaestro) selMaestro.value = tabId;
+  if(selClase) selClase.value = tabId;
   if(selSalon) selSalon.value = tabId;
 
   panelsContainer.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id===tabId));
@@ -844,12 +860,14 @@ function mostrarSalonPorId(tabId, opts){
 function limpiarFiltrosGrados(){
   const selGrupo = document.getElementById('gf-grupo');
   const selMaestro = document.getElementById('gf-maestro');
+  const selClase = document.getElementById('gf-clase');
   const selSalon = document.getElementById('gf-salon');
   const panelsContainer = document.querySelector('[data-panels="grados-todos"]');
   const placeholder = document.getElementById('gf-placeholder');
   if(selGrupo) selGrupo.value = '';
   poblarMaestroYSalon('');
   if(selMaestro) selMaestro.value = '';
+  if(selClase) selClase.value = '';
   if(selSalon) selSalon.value = '';
   if(panelsContainer) panelsContainer.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   if(placeholder) placeholder.hidden = false;
@@ -859,6 +877,7 @@ function limpiarFiltrosGrados(){
 (function(){
   const selGrupo = document.getElementById('gf-grupo');
   const selMaestro = document.getElementById('gf-maestro');
+  const selClase = document.getElementById('gf-clase');
   const selSalon = document.getElementById('gf-salon');
   const btnClear = document.getElementById('gf-clear');
   if(!selGrupo || !selMaestro || !selSalon) return;
@@ -877,12 +896,14 @@ function limpiarFiltrosGrados(){
         const placeholder = document.getElementById('gf-placeholder');
         if(placeholder) placeholder.hidden = false;
         selMaestro.value = '';
+        if(selClase) selClase.value = '';
         selSalon.value = '';
         history.replaceState(null, '', location.pathname + location.search);
       }
     }
   });
   selMaestro.addEventListener('change', ()=>{ if(selMaestro.value) mostrarSalonPorId(selMaestro.value, {scroll:false}); });
+  if(selClase) selClase.addEventListener('change', ()=>{ if(selClase.value) mostrarSalonPorId(selClase.value, {scroll:false}); });
   selSalon.addEventListener('change', ()=>{ if(selSalon.value) mostrarSalonPorId(selSalon.value, {scroll:false}); });
   if(btnClear) btnClear.addEventListener('click', limpiarFiltrosGrados);
 
@@ -893,7 +914,7 @@ function limpiarFiltrosGrados(){
     poblarMaestroYSalon(grupoActual);
     const panelsContainer = document.querySelector('[data-panels="grados-todos"]');
     const activo = panelsContainer?.querySelector('.tab-panel.active');
-    if(activo){ selMaestro.value = activo.id; selSalon.value = activo.id; }
+    if(activo){ selMaestro.value = activo.id; if(selClase) selClase.value = activo.id; selSalon.value = activo.id; }
   });
 })();
 
