@@ -257,7 +257,8 @@ a{color:var(--teal);}
 }
 .pizarra-list .pz-time{font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); min-width:150px; flex:none;}
 .pizarra-list .pz-grade{font-weight:700; color:var(--teal-deep); min-width:190px; flex:none;}
-.pizarra-list .pz-room{font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); min-width:100px; flex:none;}
+.pizarra-list .pz-room{font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); min-width:100px; flex:none; display:flex; flex-direction:column; gap:1px; line-height:1.2;}
+.pizarra-list .pz-room-label{font-size:.55em; font-weight:400; opacity:.7; text-transform:lowercase;}
 .pizarra-list .pz-title{color:var(--ink-soft); flex:1; min-width:200px;}
 .pizarra-list li.is-done{opacity:.35;}
 .pizarra-list li.is-done .pz-time,

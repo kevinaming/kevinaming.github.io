@@ -417,7 +417,7 @@ function getAllSessions(){
     // los nombres de rutas de EE no tienen ese separador y se muestran completos.
     const gradeText = gradeFull.includes(' · ') ? gradeFull.split(' · ')[0] : gradeFull;
     const metaText = panel.querySelector('.panel-meta')?.textContent || '';
-    const roomMatch = metaText.match(/salón\s+(\S+)/);
+    const roomMatch = metaText.match(/(?:salón|room)\s+(\S+)/i);
     const room = roomMatch ? roomMatch[1] : '';
     panel.querySelectorAll('.grade-table tbody tr').forEach(row=>{
       const fechaCell = row.querySelector('.col-fecha');
@@ -481,7 +481,9 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     } else {
       cls = 'is-later';
     }
-    const roomHTML = s.room ? `<span class="${prefix}-room">${s.room}</span>` : '';
+    const roomLabel = lang === 'en' ? 'classroom' : 'salón';
+    const roomTag = prefix === 'pz' ? `<small class="${prefix}-room-label">(${roomLabel})</small>` : '';
+    const roomHTML = s.room ? `<span class="${prefix}-room">${s.room}${roomTag}</span>` : '';
     return `<li class="${cls}"><span class="${prefix}-time">${fmtHora12(s.start.getHours(), s.start.getMinutes(), lang)}</span><span class="${prefix}-grade">${s.grade}</span>${roomHTML}<span class="${prefix}-title">${s.title}</span>${badge}</li>`;
   }).join('');
 }
