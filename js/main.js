@@ -22,7 +22,7 @@ window.I18N_RERENDER_HOOKS = [];
   function updateActive(){
     ticking = false;
     const triggerY = window.innerHeight * 0.35;
-    let current = sections[0].id;
+    let current = null;
     for(const sec of sections){
       if(sec.getBoundingClientRect().top <= triggerY) current = sec.id;
     }
@@ -35,6 +35,8 @@ window.I18N_RERENDER_HOOKS = [];
     requestAnimationFrame(updateActive);
   }, { passive: true });
   window.addEventListener('hashchange', updateActive);
+  window.addEventListener('load', updateActive);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(updateActive);
 
   navLinks.forEach(a=>{
     a.addEventListener('click', ()=> setActive(a.getAttribute('href').slice(1)));
