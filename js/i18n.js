@@ -9,7 +9,6 @@
 const I18N_UI = {
   es: {
     'nav.brand': 'Alfabetización Digital · ANRL',
-    'nav.portada': 'Portada',
     'nav.metodologia': 'Metodología',
     'nav.horario': 'Horario',
     'nav.grados': 'Buscar charla',
@@ -82,7 +81,6 @@ const I18N_UI = {
   },
   en: {
     'nav.brand': 'Digital Literacy · ANRL',
-    'nav.portada': 'Home',
     'nav.metodologia': 'Methodology',
     'nav.horario': 'Schedule',
     'nav.grados': 'Find a session',
