@@ -47,6 +47,7 @@ const I18N_UI = {
     'horario.semana-b-tag': 'Cada 3 semanas',
     'horario.semana-c': 'Semana C — Educación Especial y Rutas de Autismo',
     'horario.semana-c-tag': 'Cada 3 semanas',
+    'horario.ee-glosario-btn': 'Glosario de códigos EE',
 
     'grados.kicker': 'Calendario detallado',
     'grados.h2': '¡Busca tu charla!',
@@ -119,6 +120,7 @@ const I18N_UI = {
     'horario.semana-b-tag': 'Every 3 weeks',
     'horario.semana-c': 'Week C — Special Education and Autism Routes',
     'horario.semana-c-tag': 'Every 3 weeks',
+    'horario.ee-glosario-btn': 'SpEd code glossary',
 
     'grados.kicker': 'Detailed calendar',
     'grados.h2': 'Find your session!',
@@ -363,7 +365,7 @@ function i18nTranslateCalTableHeaders(lang) {
 const I18N_SCOPED_SELECTORS = [
   '.weekly-table', '.panel-head', '.grade-table', '.month-detail',
   '.month-title', '.month-nav-link', '.hero-meta .value',
-  '.tabs-nav', '.legend',
+  '.tabs-nav', '.legend', '.ee-glossary',
 ];
 
 function i18nApply(lang) {
