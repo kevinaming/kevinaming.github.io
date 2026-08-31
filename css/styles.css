@@ -154,6 +154,7 @@ a{color:var(--teal);}
   position:relative;
   overflow:hidden;
   padding:44px 0 64px;
+  scroll-margin-top:76px;
   background:
     radial-gradient(circle at 85% 10%, rgba(232,163,61,0.16), transparent 55%),
     radial-gradient(circle at 8% 85%, rgba(31,111,120,0.14), transparent 55%);
