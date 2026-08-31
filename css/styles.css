@@ -399,7 +399,7 @@ td.cal-day.is-today{border:2px solid var(--teal); box-shadow:0 0 0 3px rgba(31,1
 td.cal-day.is-today .daynum{color:var(--teal-deep); font-weight:700;}
 
 /* ---------- SECTIONS ---------- */
-section.block{padding:56px 0;}
+section.block{padding:56px 0; scroll-margin-top:76px;}
 section.block.alt{background:var(--paper-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
 .section-head{max-width:720px; margin-bottom:32px;}
 .section-head .kicker{
