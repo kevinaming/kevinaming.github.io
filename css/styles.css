@@ -427,7 +427,8 @@ section.block.alt{background:var(--paper-alt); border-top:1px solid var(--line);
 
 /* Weekly table */
 .table-scroll{overflow-x:auto; border-radius:var(--radius); box-shadow:var(--shadow); background:var(--card); border:1px solid var(--line); padding:6px 10px;}
-table.weekly-table{border-collapse:separate; border-spacing:10px; width:100%; min-width:720px;}
+table.weekly-table{border-collapse:separate; border-spacing:10px; width:100%; min-width:720px; table-layout:fixed;}
+table.weekly-table th:first-child, table.weekly-table td.wk-slotlabel{width:110px;}
 table.weekly-table th, table.weekly-table td{padding:14px 14px; text-align:left; vertical-align:top;}
 table.weekly-table thead th{
   font-family:'IBM Plex Mono',monospace; font-size:.75rem; text-transform:uppercase; letter-spacing:.05em;
