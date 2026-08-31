@@ -455,7 +455,7 @@ table.weekly-table thead th{
   border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
   padding:9px 16px; border-radius:999px; cursor:pointer; transition:.15s;
 }
-.grade-tab:hover{border-color:var(--teal);}
+.grade-tab:hover{border-color:var(--tab-fg); border-width:1px;}
 .grade-tab.active{background:var(--tab-bg); color:var(--tab-fg); border-color:transparent; box-shadow:var(--shadow);}
 .tab-panel{display:none;}
 .tab-panel.active{display:block; animation:fadein .25s ease;}
@@ -563,7 +563,7 @@ td.cal-day.out-month .chip{opacity:.4; filter:saturate(.7);}
 }
 .ee-glossary-list li{font-size:.85rem; color:var(--ink-soft); display:flex; align-items:baseline; gap:8px;}
 .ee-glossary:not([open]) .ee-glossary-list{display:none;}
-.ee-glossary-list .dot{width:10px; height:10px; border-radius:3px; border-width:1px; border-style:solid; flex:none; align-self:center;}
+.ee-glossary-list .dot{width:10px; height:10px; border-radius:3px; border-width:1px; border-style:solid; flex:none; align-self:flex-start; margin-top:4px;}
 .ee-glossary-code{font-family:'IBM Plex Mono',monospace; font-weight:700; color:var(--ink); flex:none;}
 
 @media (max-width: 720px){

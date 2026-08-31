@@ -120,7 +120,7 @@ const I18N_UI = {
     'horario.semana-b-tag': 'Every 3 weeks',
     'horario.semana-c': 'Week C — Special Education and Autism Routes',
     'horario.semana-c-tag': 'Every 3 weeks',
-    'horario.ee-glosario-btn': 'SpEd code glossary',
+    'horario.ee-glosario-btn': 'SPED code glossary',
 
     'grados.kicker': 'Detailed calendar',
     'grados.h2': 'Find your session!',
