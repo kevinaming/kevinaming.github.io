@@ -153,7 +153,7 @@ a{color:var(--teal);}
 .hero{
   position:relative;
   overflow:hidden;
-  padding:76px 0 64px;
+  padding:44px 0 64px;
   background:
     radial-gradient(circle at 85% 10%, rgba(232,163,61,0.16), transparent 55%),
     radial-gradient(circle at 8% 85%, rgba(31,111,120,0.14), transparent 55%);
@@ -602,7 +602,7 @@ footer .sig{margin-top:18px; font-family:'Fraunces',serif; color:var(--teal-deep
 footer .copyright{margin-top:18px; padding-top:14px; border-top:1px solid var(--line); font-size:.76rem;}
 
 @media (max-width:600px){
-  .hero{padding:56px 0 44px;}
+  .hero{padding:36px 0 44px;}
   section.block{padding:40px 0;}
 }/* Buscador sección 04 */
 .search-box{
