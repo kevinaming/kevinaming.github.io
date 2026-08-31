@@ -437,7 +437,7 @@ table.weekly-table thead th{
 }
 .wk-slotlabel{font-family:'IBM Plex Mono',monospace; font-size:.8rem; color:var(--ink-soft); white-space:nowrap;}
 .wk-cell{border-radius:10px;}
-.wk-cell .wk-hora{display:block; font-family:'IBM Plex Mono',monospace; font-size:.72rem; opacity:.85; white-space:nowrap;}
+.wk-cell .wk-hora{display:block; font-family:'IBM Plex Mono',monospace; font-size:.72rem; opacity:.85; overflow-wrap:break-word; max-width:100%;}
 .wk-cell .wk-grade{display:block; font-weight:600; margin-top:2px; white-space:nowrap;}
 .wk-cell.wk-free{background:var(--paper); color:var(--ink-soft); font-style:italic; border:1.5px dashed var(--line);}
 .wk-prep-chip{
@@ -448,7 +448,7 @@ table.weekly-table thead th{
 .wk-cell.wk-rotation{background:var(--paper); border:1.5px dashed var(--line);}
 .wk-rotation-inner{display:flex; flex-direction:column; gap:6px;}
 .wk-rot-chips{display:flex; flex-wrap:wrap; gap:4px;}
-.wk-rot-chip{font-family:'IBM Plex Mono',monospace; font-size:.7rem; font-weight:600; padding:2px 6px; border-radius:6px;}
+.wk-rot-chip{font-family:'IBM Plex Mono',monospace; font-size:.7rem; font-weight:600; padding:2px 6px; border-radius:6px; overflow-wrap:break-word; max-width:100%;}
 /* Semana A y B: el nombre completo del grado/salón es redundante junto al chip de color, se oculta. Semana C lo conserva. */
 #tab-week-a .wk-rotation .wk-grade, #tab-week-b .wk-rotation .wk-grade, #tab-week-c .wk-rotation .wk-grade{display:none;}
 .wk-rot-list{margin:2px 0 0; padding-left:16px; font-size:.76rem; color:var(--ink-soft);}
