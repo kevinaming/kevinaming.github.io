@@ -15,7 +15,7 @@ const I18N_UI = {
     'nav.almanaque': 'Almanaque',
 
     'hero.eyebrow': 'Año escolar 2026–2027',
-    'hero.h1': 'Calendario de Charlas de<br>Alfabetización Digital',
+    'hero.h1': 'Calendario de Charlas de Alfabetización Digital',
     'hero.subtitle': 'Simple. Organizado. Para todos.',
     'hero.escuela': 'Escuela',
     'hero.directora': 'Directora',
@@ -87,7 +87,7 @@ const I18N_UI = {
     'nav.almanaque': 'Calendar',
 
     'hero.eyebrow': 'School year 2026–2027',
-    'hero.h1': 'Digital Literacy<br>Session Calendar',
+    'hero.h1': 'Digital Literacy Session Calendar',
     'hero.subtitle': 'Simple. Organized. For everyone.',
     'hero.escuela': 'School',
     'hero.directora': 'Principal',
