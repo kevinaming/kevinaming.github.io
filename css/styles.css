@@ -464,7 +464,7 @@ table.weekly-table thead th{
 }
 .grade-tab:hover{border-color:var(--tab-bg); border-width:1px;}
 .grade-tab.active{background:var(--tab-bg); color:var(--tab-fg); border-color:transparent; box-shadow:var(--shadow);}
-.tab-panel{display:none;}
+.tab-panel{display:none; scroll-margin-top:76px;}
 .tab-panel.active{display:block; animation:fadein .25s ease;}
 @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
 .panel-head{
