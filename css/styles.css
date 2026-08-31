@@ -447,8 +447,8 @@ table.weekly-table thead th{
 .wk-rot-list{margin:2px 0 0; padding-left:16px; font-size:.76rem; color:var(--ink-soft);}
 .wk-rot-list li{margin-bottom:6px;}
 .wk-rot-list li:last-child{margin-bottom:0;}
-.subsection-title{font-size:1.05rem; margin:34px 0 14px; color:var(--teal-deep); display:flex; align-items:center; gap:10px;}
-.subsection-title .tag{font-family:'IBM Plex Mono',monospace; font-size:.7rem; background:var(--mango); color:#fff; padding:3px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:.04em;}
+.subsection-title{font-size:1.05rem; margin:34px 0 14px; color:var(--teal-deep); display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.subsection-title .tag{font-family:'IBM Plex Mono',monospace; font-size:.7rem; background:var(--mango); color:#fff; padding:3px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:.04em; white-space:nowrap; flex:none;}
 .rotation-note{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:20px; font-size:.88rem; color:var(--ink-soft);}
 .rotation-note strong{color:var(--teal-deep);}
 .combo-glossary{list-style:none; margin:10px 0 0; padding:0; display:grid; gap:6px;}
