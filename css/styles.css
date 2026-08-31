@@ -452,8 +452,8 @@ table.weekly-table thead th{
 .tabs-nav{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
 .grade-tab{
   font-family:'Work Sans',sans-serif; font-weight:600; font-size:.9rem;
-  border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
-  padding:9px 16px; border-radius:999px; cursor:pointer; transition:.15s;
+  border:1px solid var(--tab-fg, var(--line)); background:var(--card); color:var(--ink-soft);
+  padding:6px 14px; border-radius:999px; cursor:pointer; transition:.15s;
 }
 .grade-tab:hover{border-color:var(--tab-fg); border-width:1px;}
 .grade-tab.active{background:var(--tab-bg); color:var(--tab-fg); border-color:transparent; box-shadow:var(--shadow);}
@@ -560,6 +560,7 @@ td.cal-day.out-month .chip{opacity:.4; filter:saturate(.7);}
 .ee-glossary summary{cursor:pointer; padding:12px 0; font-weight:600; color:var(--teal-deep); font-size:.92rem;}
 .ee-glossary-list{
   list-style:none; margin:0; padding:0 0 16px; display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:8px 20px;
+  align-items:start;
 }
 .ee-glossary-list li{font-size:.85rem; color:var(--ink-soft); display:flex; align-items:baseline; gap:8px;}
 .ee-glossary:not([open]) .ee-glossary-list{display:none;}
