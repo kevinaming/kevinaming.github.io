@@ -547,6 +547,11 @@ td.cal-day.out-month .chip{opacity:.4; filter:saturate(.7);}
 .month-detail-list li{font-size:.88rem; display:flex; align-items:flex-start; gap:8px;}
 .month-detail-list .dot{width:10px; height:10px; border-radius:3px; border-width:1px; border-style:solid; flex:none; margin-top:4px;}
 .no-sessions{color:var(--ink-soft); font-style:italic; padding:12px 0;}
+/* Fijar el display explícito en la lista anula el colapso nativo del <details>
+   cuando está cerrado (el navegador ya no puede ocultarla por su cuenta);
+   se restaura ocultándola a mano mientras no tenga el atributo [open]. */
+.month-detail:not([open]) .month-detail-list,
+.month-detail:not([open]) .no-sessions{display:none;}
 
 /* ---------- Glosario de códigos EE (Semana C) ---------- */
 .ee-glossary{
@@ -557,6 +562,7 @@ td.cal-day.out-month .chip{opacity:.4; filter:saturate(.7);}
   list-style:none; margin:0; padding:0 0 16px; display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:8px 20px;
 }
 .ee-glossary-list li{font-size:.85rem; color:var(--ink-soft); display:flex; align-items:baseline; gap:8px;}
+.ee-glossary:not([open]) .ee-glossary-list{display:none;}
 .ee-glossary-list .dot{width:10px; height:10px; border-radius:3px; border-width:1px; border-style:solid; flex:none; align-self:center;}
 .ee-glossary-code{font-family:'IBM Plex Mono',monospace; font-weight:700; color:var(--ink); flex:none;}
 
