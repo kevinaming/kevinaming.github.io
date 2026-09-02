@@ -463,7 +463,9 @@
       else if(!nextMarked){ cls = 'is-next'; badge = '<span class="tb-next-badge">PRÓXIMA</span>'; nextMarked = true; }
       else { cls = 'is-later'; }
       var grade = formatCode(abbreviateFixed(p.actividad));
-      var title = (p.label && p.label !== p.actividad) ? escapeHTML(p.label) : '';
+      // Compacto: solo el código corto, sin la descripción larga al lado
+      // (ej. "6-1", no "6-1 · 6to Grado").
+      var title = '';
       return '<li class="' + cls + '"><span class="tb-time">' + escapeHTML(p.hora) + '</span><span class="tb-grade">' + grade + '</span><span class="tb-title">' + title + '</span>' + badge + '</li>';
     }).join('');
     el.innerHTML = '<div class="today-banner-head"><span class="today-banner-dot"></span><strong>' + label + ' — ' + dateStr + '</strong></div><ul class="today-banner-list">' + itemsHTML + '</ul>';
