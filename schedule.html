@@ -285,6 +285,15 @@
     });
   }
 
+  // Para los "PREP — A, B y C" combinados: parte el "PREP —" a su propia
+  // línea y deja la lista de códigos debajo, en vez de todo corrido.
+  function formatCode(code){
+    if(!code) return '—';
+    var m = String(code).match(/^(PREP\s*—\s*)(.+)$/);
+    if(m) return escapeHTML(m[1].trim()) + '<br>' + escapeHTML(m[2]);
+    return escapeHTML(code);
+  }
+
   async function fetchWeekTypeMap(){
     var text = await fetch('js/data.js', {cache:'no-store'}).then(function(r){ return r.text(); });
     var idx = text.indexOf('WEEK_TYPE_BY_MONDAY');
@@ -450,7 +459,7 @@
       else if(isCurrent){ cls = 'is-current'; badge = '<span class="tb-now">AHORA</span>'; }
       else if(!nextMarked){ cls = 'is-next'; badge = '<span class="tb-next-badge">PRÓXIMA</span>'; nextMarked = true; }
       else { cls = 'is-later'; }
-      var grade = escapeHTML(p.actividad || '—');
+      var grade = formatCode(p.actividad);
       var title = (p.label && p.label !== p.actividad) ? escapeHTML(p.label) : '';
       return '<li class="' + cls + '"><span class="tb-time">' + escapeHTML(p.hora) + '</span><span class="tb-grade">' + grade + '</span><span class="tb-title">' + title + '</span>' + badge + '</li>';
     }).join('');
@@ -488,7 +497,7 @@
               var code = s ? s.code : '—';
               var isPrep = /^PREP/i.test(code || '');
               td.className = 'wk-cell ' + (isPrep || !s ? 'wk-free' : 'wk-rotation');
-              td.innerHTML = '<span class="wk-hora">' + escapeHTML(hora) + '</span><span class="wk-grade">' + escapeHTML(code || '—') + '</span>';
+              td.innerHTML = '<span class="wk-hora">' + escapeHTML(hora) + '</span><span class="wk-grade">' + formatCode(code) + '</span>';
             }
             tr.appendChild(td);
           });
@@ -514,7 +523,7 @@
             tdHora.textContent = s ? s.hora : p.hora;
             var code = s ? s.code : '—';
             var isPrep = /^PREP/i.test(code || '');
-            tdAct.textContent = s ? code : '—';
+            tdAct.innerHTML = formatCode(s ? code : '—');
             tr.className = (isPrep || !s) ? '' : 'sch-class';
           }
           tr.appendChild(tdIdx); tr.appendChild(tdHora); tr.appendChild(tdAct);
