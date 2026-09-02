@@ -18,7 +18,7 @@
 </script>
 <title>Mi Horario — Kevin García</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="description" content="Horario semanal personal de Kevin García, Maestro Recurso de Uso de la Computadora, Escuela Arianys Nicole Rosa Luquis.">
+<meta name="description" content="Horario semanal personal de Kevin García, Maestro Recurso de Uso de la Computadora, Escuela Arianys Nicole Rosa Luquis. Se sincroniza con el calendario principal.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -51,6 +51,9 @@
 .lock-card button:hover{background:var(--teal-btn-hover);}
 .lock-error{color:var(--mango-deep); font-size:.82rem; margin-top:12px; min-height:1.2em;}
 #protected-root[hidden], .lock-screen[hidden]{display:none;}
+.sch-sync-row{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:14px 0 0;}
+.sch-sync-warn{color:var(--mango-deep); font-size:.82rem;}
+.sch-today-wrap{max-width:640px;}
 </style>
 </head>
 <body>
@@ -85,9 +88,136 @@
   </div>
 </div>
 
-<div id="protected-root" hidden></div>
+<div id="protected-root" hidden>
 
-<script type="application/json" id="enc-payload">{"salt": "VBaN4x53r/EfZgkE92mnzQ==", "iv": "9vlMuTWNyoIBcx6y", "iterations": 200000, "cipher": "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"}</script>
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> Uso interno · Año escolar 2026&ndash;2027</span>
+    <h1>Mi Horario</h1>
+    <p class="subtitle">Se sincroniza en vivo con el calendario principal — Período, semana (A/B/C) y grupo de cada día.</p>
+    <div class="hero-meta">
+      <div class="item"><div class="label">Maestro</div><div class="value">Kevin García</div></div>
+      <div class="item"><div class="label">Puesto</div><div class="value">Maestro Recurso — Uso de la Computadora</div></div>
+      <div class="item"><div class="label">Escuela</div><div class="value">Arianys Nicole Rosa Luquis</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="hoy">
+  <div class="wrap">
+    <a class="sch-back" href="index.html">&larr; Volver al calendario de charlas</a>
+    <div class="section-head">
+      <span class="kicker">En vivo</span>
+      <h2>Tu horario de hoy</h2>
+      <p>Calculado según la semana vigente (A/B/C) y el horario semanal publicado en la portada.</p>
+    </div>
+    <div class="sch-today-wrap">
+      <div class="today-banner is-today" id="sch-today-banner">
+        <p>Cargando…</p>
+      </div>
+      <div class="sch-sync-row">
+        <span class="grp-summary" id="sch-sync-status">Sincronizando…</span>
+        <button type="button" class="grp-btn" id="sch-refresh">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="referencia">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Referencia</span>
+      <h2>Tu horario por semana</h2>
+      <p>Los períodos de charla muestran el grupo o la preparación que corresponde a cada semana del ciclo de 3 semanas.</p>
+    </div>
+
+    <div class="tabs-nav" id="sch-week-tabs">
+      <button type="button" class="grade-tab active" data-week="A" style="--tab-bg:#cac8e8;--tab-fg:#285f7a">Semana A</button>
+      <button type="button" class="grade-tab" data-week="B" style="--tab-bg:#e8ddc8;--tab-fg:#7a5f28">Semana B</button>
+      <button type="button" class="grade-tab" data-week="C" style="--tab-bg:#e8c8cd;--tab-fg:#7a2836">Semana C</button>
+    </div>
+
+    <div id="sch-week-panel-A" class="tab-panel active">
+      <div class="panel-head" style="--tab-bg:#cac8e8;--tab-fg:#285f7a">
+        <h3 id="sch-title-A">Semana A</h3>
+        <p class="panel-meta">Cada 3 semanas</p>
+      </div>
+      <h3 class="subsection-title">Lunes, martes, jueves y viernes</h3>
+      <div class="table-scroll">
+        <table class="weekly-table">
+          <thead><tr><th scope="col">Período</th><th scope="col">Lunes</th><th scope="col">Martes</th><th scope="col">Jueves</th><th scope="col">Viernes</th></tr></thead>
+          <tbody id="wk-tbody-A"></tbody>
+        </table>
+      </div>
+      <h3 class="subsection-title">Miércoles</h3>
+      <div class="table-scroll">
+        <table class="sch-table">
+          <thead><tr><th scope="col">#</th><th scope="col">Horario</th><th scope="col">Actividad</th></tr></thead>
+          <tbody id="mi-tbody-A"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="sch-week-panel-B" class="tab-panel">
+      <div class="panel-head" style="--tab-bg:#e8ddc8;--tab-fg:#7a5f28">
+        <h3 id="sch-title-B">Semana B</h3>
+        <p class="panel-meta">Cada 3 semanas</p>
+      </div>
+      <h3 class="subsection-title">Lunes, martes, jueves y viernes</h3>
+      <div class="table-scroll">
+        <table class="weekly-table">
+          <thead><tr><th scope="col">Período</th><th scope="col">Lunes</th><th scope="col">Martes</th><th scope="col">Jueves</th><th scope="col">Viernes</th></tr></thead>
+          <tbody id="wk-tbody-B"></tbody>
+        </table>
+      </div>
+      <h3 class="subsection-title">Miércoles</h3>
+      <div class="table-scroll">
+        <table class="sch-table">
+          <thead><tr><th scope="col">#</th><th scope="col">Horario</th><th scope="col">Actividad</th></tr></thead>
+          <tbody id="mi-tbody-B"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="sch-week-panel-C" class="tab-panel">
+      <div class="panel-head" style="--tab-bg:#e8c8cd;--tab-fg:#7a2836">
+        <h3 id="sch-title-C">Semana C</h3>
+        <p class="panel-meta">Cada 3 semanas</p>
+      </div>
+      <h3 class="subsection-title">Lunes, martes, jueves y viernes</h3>
+      <div class="table-scroll">
+        <table class="weekly-table">
+          <thead><tr><th scope="col">Período</th><th scope="col">Lunes</th><th scope="col">Martes</th><th scope="col">Jueves</th><th scope="col">Viernes</th></tr></thead>
+          <tbody id="wk-tbody-C"></tbody>
+        </table>
+      </div>
+      <h3 class="subsection-title">Miércoles</h3>
+      <div class="table-scroll">
+        <table class="sch-table">
+          <thead><tr><th scope="col">#</th><th scope="col">Horario</th><th scope="col">Actividad</th></tr></thead>
+          <tbody id="mi-tbody-C"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sch-legend">
+      <span class="lg"><span class="sw sch-sw-class"></span> Clase / ruta / charla</span>
+      <span class="lg"><span class="sw sch-sw-lunch"></span> Almuerzo</span>
+      <span class="lg"><span class="sw sch-sw-break"></span> TADO</span>
+    </div>
+    <p style="color:var(--ink-soft); font-size:.8rem; margin-top:14px;">Esta página no conoce días feriados ni cierres específicos — solo la rotación semanal (A/B/C). Para fechas exactas y feriados, consulta el calendario principal.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; <span id="copyright-year">2026</span> Escuela Arianys Nicole Rosa Luquis. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+</div>
+
+<script type="application/json" id="enc-payload">{"salt":"baW21r+uWUoT14q3/7VpiQ==","iv":"2E4rWw+nBZN5/dxR","iterations":200000,"cipher":"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"}</script>
 
 <script>
 (function(){
@@ -97,7 +227,7 @@
   var form = document.getElementById('lock-form');
   var errorEl = document.getElementById('lock-error');
   var digits = Array.prototype.slice.call(document.querySelectorAll('.lock-digit'));
-  var STORAGE_KEY = 'sch-key-v1';
+  var KEY_STORAGE = 'sch-key-v2';
 
   function b64ToBytes(b64){
     var bin = atob(b64);
@@ -112,8 +242,336 @@
     return btoa(bin);
   }
 
-  function reveal(plaintext){
-    root.innerHTML = plaintext;
+  async function decryptWithKey(key){
+    var iv = b64ToBytes(payload.iv);
+    var cipher = b64ToBytes(payload.cipher);
+    var plainBuf = await crypto.subtle.decrypt({name:'AES-GCM', iv: iv}, key, cipher);
+    return JSON.parse(new TextDecoder().decode(plainBuf));
+  }
+
+  async function deriveKeyFromPin(pin){
+    var salt = b64ToBytes(payload.salt);
+    var keyMaterial = await crypto.subtle.importKey('raw', new TextEncoder().encode(pin), {name:'PBKDF2'}, false, ['deriveKey']);
+    return crypto.subtle.deriveKey(
+      {name:'PBKDF2', salt: salt, iterations: payload.iterations, hash:'SHA-256'},
+      keyMaterial,
+      {name:'AES-GCM', length:256},
+      true,
+      ['decrypt']
+    );
+  }
+
+  /* ---------- Lógica de horario en vivo ---------- */
+
+  function escapeHTML(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  async function fetchWeekTypeMap(){
+    var text = await fetch('js/data.js', {cache:'no-store'}).then(function(r){ return r.text(); });
+    var idx = text.indexOf('WEEK_TYPE_BY_MONDAY');
+    if(idx === -1) throw new Error('WEEK_TYPE_BY_MONDAY no encontrado');
+    var braceStart = text.indexOf('{', idx);
+    var depth = 0, i = braceStart;
+    for(; i < text.length; i++){
+      if(text[i] === '{') depth++;
+      else if(text[i] === '}'){ depth--; if(depth === 0) break; }
+    }
+    return JSON.parse(text.slice(braceStart, i + 1));
+  }
+
+  function lunesDe(d){
+    var dia = d.getDay();
+    var diff = (dia === 0) ? -6 : (1 - dia);
+    var m = new Date(d);
+    m.setDate(d.getDate() + diff);
+    m.setHours(0, 0, 0, 0);
+    return m;
+  }
+  function isoOf(d){ return d.toISOString().slice(0, 10); }
+
+  function computeWeekType(map, baseDate){
+    var cursor = lunesDe(baseDate);
+    for(var i = 0; i < 60; i++){
+      var clave = isoOf(cursor);
+      if(map[clave]) return map[clave];
+      cursor.setDate(cursor.getDate() - 7);
+    }
+    return 'A';
+  }
+
+  async function fetchSiteHorario(){
+    var html = await fetch('index.html', {cache:'no-store'}).then(function(r){ return r.text(); });
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var days = ['lunes','martes','miercoles','jueves','viernes'];
+    var out = {};
+    ['a','b','c'].forEach(function(w){
+      var panel = doc.getElementById('tab-week-' + w);
+      if(!panel) return;
+      var titleEl = panel.querySelector('.subsection-title');
+      var perDay = {lunes:[], martes:[], miercoles:[], jueves:[], viernes:[]};
+      panel.querySelectorAll('table.weekly-table tbody tr').forEach(function(tr){
+        var cells = tr.querySelectorAll('td');
+        days.forEach(function(day, i){
+          var cell = cells[i + 1];
+          if(!cell) return;
+          var horaEl = cell.querySelector('.wk-hora');
+          var chip = cell.querySelector('.wk-rot-chip');
+          var prep = cell.querySelector('.wk-prep-chip');
+          var gradeEl = cell.querySelector('.wk-grade');
+          perDay[day].push({
+            hora: horaEl ? horaEl.textContent.replace(/ /g, ' ').trim() : '',
+            code: chip ? chip.textContent.trim() : (prep ? prep.textContent.trim() : ''),
+            label: gradeEl ? gradeEl.textContent.trim() : (prep ? prep.textContent.trim() : '')
+          });
+        });
+      });
+      out[w.toUpperCase()] = {
+        title: titleEl ? titleEl.textContent.replace(/\s+/g, ' ').trim() : ('Semana ' + w.toUpperCase()),
+        days: perDay
+      };
+    });
+    return out;
+  }
+
+  function templateFor(templates, day, weekType){
+    if(day === 'miercoles') return weekType === 'A' ? templates.miercolesA : templates.miercolesBC;
+    return templates.comun;
+  }
+
+  function resolvePeriods(tmpl, day, weekType, siteData){
+    var slots = (siteData && siteData[weekType] && siteData[weekType].days[day]) || [];
+    return tmpl.map(function(p){
+      if(p.kind === 'fixed'){
+        return {hora: p.hora, actividad: p.actividad, label: '', meta: p};
+      }
+      var s = slots[p.slot] || {};
+      return {hora: s.hora || p.hora, actividad: s.code || '—', label: s.label || '', meta: p};
+    });
+  }
+
+  function parseHoraRange(str){
+    if(!str) return null;
+    str = str.replace(/ /g, ' ').replace(/\s+/g, ' ').trim();
+    var m = str.match(/^(\d{1,2}):(\d{2})\s*(a\.m\.|p\.m\.)?\s*[–-]\s*(\d{1,2}):(\d{2})\s*(a\.m\.|p\.m\.)$/i);
+    if(!m) return null;
+    var apEnd = m[6].toLowerCase();
+    var apStart = (m[3] || m[6]).toLowerCase();
+    function to24(h, ap){
+      h = parseInt(h, 10);
+      if(ap === 'p.m.' && h !== 12) h += 12;
+      if(ap === 'a.m.' && h === 12) h = 0;
+      return h;
+    }
+    return {
+      startMin: to24(m[1], apStart) * 60 + parseInt(m[2], 10),
+      endMin: to24(m[4], apEnd) * 60 + parseInt(m[5], 10)
+    };
+  }
+
+  var DIAS_KEY = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
+  var DIAS_LABEL_CAP = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  var MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+  function dayNameOf(date){ return DIAS_KEY[date.getDay()]; }
+  function isSchoolDay(name){ return name !== 'domingo' && name !== 'sabado'; }
+  function fmtFechaLarga(date){
+    return DIAS_LABEL_CAP[date.getDay()] + ', ' + date.getDate() + ' de ' + MESES_ES[date.getMonth()];
+  }
+
+  function findTargetDay(templates, weekMap, siteData){
+    var now = new Date();
+    var cursor = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    for(var i = 0; i < 14; i++){
+      var name = dayNameOf(cursor);
+      if(isSchoolDay(name)){
+        var weekType = computeWeekType(weekMap, cursor);
+        var tmpl = templateFor(templates, name, weekType);
+        var periods = resolvePeriods(tmpl, name, weekType, siteData).map(function(p){
+          return Object.assign({}, p, {range: parseHoraRange(p.hora)});
+        });
+        var isToday = (i === 0);
+        if(isToday){
+          var allDone = periods.length > 0 && periods.every(function(p){
+            if(!p.range) return false;
+            var endDate = new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate(), Math.floor(p.range.endMin / 60), p.range.endMin % 60);
+            return endDate <= now;
+          });
+          if(!allDone) return {date: cursor, dayName: name, weekType: weekType, periods: periods, isToday: true};
+        } else {
+          return {date: cursor, dayName: name, weekType: weekType, periods: periods, isToday: false};
+        }
+      }
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return null;
+  }
+
+  function renderTodayBanner(target){
+    var el = document.getElementById('sch-today-banner');
+    if(!target){
+      el.innerHTML = '<p>No se pudo calcular el horario de hoy.</p>';
+      el.classList.remove('is-today');
+      return;
+    }
+    var now = new Date();
+    var label = target.isToday ? 'Hoy' : 'Próximo día';
+    var dateStr = fmtFechaLarga(target.date) + ' · Semana ' + target.weekType;
+    var nextMarked = false;
+    var itemsHTML = target.periods.map(function(p){
+      var cls = '', badge = '';
+      var isDoneNow = false, isCurrent = false;
+      if(target.isToday && p.range){
+        var d = target.date;
+        var startDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(p.range.startMin / 60), p.range.startMin % 60);
+        var endDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(p.range.endMin / 60), p.range.endMin % 60);
+        isDoneNow = endDate <= now;
+        isCurrent = startDate <= now && now < endDate;
+      }
+      if(isDoneNow){ cls = 'is-done'; }
+      else if(isCurrent){ cls = 'is-current'; badge = '<span class="tb-now">AHORA</span>'; }
+      else if(!nextMarked){ cls = 'is-next'; badge = '<span class="tb-next-badge">PRÓXIMA</span>'; nextMarked = true; }
+      else { cls = 'is-later'; }
+      var grade = escapeHTML(p.actividad || '—');
+      var title = (p.label && p.label !== p.actividad) ? escapeHTML(p.label) : '';
+      return '<li class="' + cls + '"><span class="tb-time">' + escapeHTML(p.hora) + '</span><span class="tb-grade">' + grade + '</span><span class="tb-title">' + title + '</span>' + badge + '</li>';
+    }).join('');
+    el.innerHTML = '<div class="today-banner-head"><span class="today-banner-dot"></span><strong>' + label + ' — ' + dateStr + '</strong></div><ul class="today-banner-list">' + itemsHTML + '</ul>';
+    el.classList.toggle('is-today', target.isToday);
+  }
+
+  function renderWeekTables(templates, siteData){
+    var dias = ['lunes','martes','jueves','viernes'];
+    ['A','B','C'].forEach(function(w){
+      var tbody = document.getElementById('wk-tbody-' + w);
+      if(tbody){
+        tbody.innerHTML = '';
+        templates.comun.forEach(function(p){
+          var tr = document.createElement('tr');
+          var tdLabel = document.createElement('td');
+          tdLabel.className = 'wk-slotlabel';
+          tdLabel.textContent = p.kind === 'var' ? ('Período ' + (p.slot + 1)) : p.actividad;
+          tr.appendChild(tdLabel);
+          dias.forEach(function(day){
+            var td = document.createElement('td');
+            if(p.kind === 'fixed'){
+              td.className = 'wk-cell wk-free';
+              td.innerHTML = '<span class="wk-hora">' + escapeHTML(p.hora) + '</span><span class="wk-grade">' + escapeHTML(p.actividad) + '</span>';
+            } else {
+              var s = siteData && siteData[w] && siteData[w].days[day] ? siteData[w].days[day][p.slot] : null;
+              var hora = s ? s.hora : p.hora;
+              var code = s ? s.code : '—';
+              var label = s ? s.label : '';
+              var isPrep = /^PREP/i.test(code || '');
+              td.className = 'wk-cell ' + (isPrep || !s ? 'wk-free' : 'wk-rotation');
+              td.innerHTML = '<span class="wk-hora">' + escapeHTML(hora) + '</span><span class="wk-grade">' + escapeHTML(label || code || '—') + '</span>' +
+                (!isPrep && s ? '<div class="wk-rot-chips"><span class="wk-rot-chip">' + escapeHTML(code) + '</span></div>' : '');
+            }
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      }
+
+      var miBody = document.getElementById('mi-tbody-' + w);
+      if(miBody){
+        miBody.innerHTML = '';
+        var miTmpl = w === 'A' ? templates.miercolesA : templates.miercolesBC;
+        miTmpl.forEach(function(p, idx){
+          var tr = document.createElement('tr');
+          var tdIdx = document.createElement('td'); tdIdx.textContent = String(idx + 1);
+          var tdHora = document.createElement('td'); tdHora.className = 'sch-hora';
+          var tdAct = document.createElement('td'); tdAct.className = 'sch-act';
+          if(p.kind === 'fixed'){
+            tdHora.textContent = p.hora;
+            tdAct.textContent = p.actividad;
+            tr.className = p.lunch ? 'sch-lunch' : (p.tado ? 'sch-break' : (p.clase ? 'sch-class' : ''));
+          } else {
+            var s = siteData && siteData[w] && siteData[w].days.miercoles ? siteData[w].days.miercoles[p.slot] : null;
+            tdHora.textContent = s ? s.hora : p.hora;
+            var code = s ? s.code : '—';
+            var isPrep = /^PREP/i.test(code || '');
+            tdAct.textContent = s ? (s.label || code) : '—';
+            tr.className = (isPrep || !s) ? '' : 'sch-class';
+          }
+          tr.appendChild(tdIdx); tr.appendChild(tdHora); tr.appendChild(tdAct);
+          miBody.appendChild(tr);
+        });
+      }
+
+      var titleEl = document.getElementById('sch-title-' + w);
+      if(titleEl && siteData && siteData[w] && siteData[w].title){
+        titleEl.textContent = siteData[w].title;
+      }
+    });
+  }
+
+  function setSyncStatus(text, isWarn){
+    var el = document.getElementById('sch-sync-status');
+    el.textContent = text;
+    el.classList.toggle('sch-sync-warn', !!isWarn);
+  }
+
+  var appState = {templates: null, weekMap: null, siteData: null};
+
+  async function loadLiveData(){
+    setSyncStatus('Sincronizando con el calendario principal…', false);
+    var weekMap = null, siteData = null, errored = false;
+    try {
+      var results = await Promise.all([fetchWeekTypeMap(), fetchSiteHorario()]);
+      weekMap = results[0];
+      siteData = results[1];
+    } catch(e){
+      errored = true;
+    }
+    appState.weekMap = weekMap;
+    appState.siteData = siteData;
+    if(errored || !weekMap || !siteData){
+      setSyncStatus('No se pudo sincronizar — mostrando la estructura sin resolver grupos. Intenta "Actualizar".', true);
+    } else {
+      var now = new Date();
+      setSyncStatus('Sincronizado con el calendario principal · ' + now.toLocaleTimeString('es-PR'), false);
+    }
+    renderAll();
+  }
+
+  function renderAll(){
+    var target = appState.weekMap ? findTargetDay(appState.templates, appState.weekMap, appState.siteData) : null;
+    renderTodayBanner(target);
+    renderWeekTables(appState.templates, appState.siteData);
+  }
+
+  function initApp(templates){
+    appState.templates = templates;
+
+    document.getElementById('sch-refresh').addEventListener('click', function(){
+      loadLiveData();
+    });
+
+    document.querySelectorAll('#sch-week-tabs .grade-tab').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var w = btn.getAttribute('data-week');
+        document.querySelectorAll('#sch-week-tabs .grade-tab').forEach(function(b){ b.classList.toggle('active', b === btn); });
+        ['A','B','C'].forEach(function(letter){
+          var panel = document.getElementById('sch-week-panel-' + letter);
+          if(panel) panel.classList.toggle('active', letter === w);
+        });
+      });
+    });
+
+    loadLiveData();
+    setInterval(function(){
+      if(appState.weekMap && appState.siteData){
+        renderTodayBanner(findTargetDay(appState.templates, appState.weekMap, appState.siteData));
+      }
+    }, 60000);
+  }
+
+  /* ---------- Desbloqueo con PIN ---------- */
+
+  function reveal(templates){
     root.hidden = false;
     lockScreen.hidden = true;
     var cy = document.getElementById('copyright-year');
@@ -136,39 +594,21 @@
         syncButton(next);
       });
     }
-  }
-
-  async function decryptWithKey(key){
-    var iv = b64ToBytes(payload.iv);
-    var cipher = b64ToBytes(payload.cipher);
-    var plainBuf = await crypto.subtle.decrypt({name:'AES-GCM', iv: iv}, key, cipher);
-    return new TextDecoder().decode(plainBuf);
-  }
-
-  async function deriveKeyFromPin(pin){
-    var salt = b64ToBytes(payload.salt);
-    var keyMaterial = await crypto.subtle.importKey('raw', new TextEncoder().encode(pin), {name:'PBKDF2'}, false, ['deriveKey']);
-    return crypto.subtle.deriveKey(
-      {name:'PBKDF2', salt: salt, iterations: payload.iterations, hash:'SHA-256'},
-      keyMaterial,
-      {name:'AES-GCM', length:256},
-      true,
-      ['decrypt']
-    );
+    initApp(templates);
   }
 
   async function tryStoredKey(){
     var stored = null;
-    try { stored = localStorage.getItem(STORAGE_KEY); } catch(e) {}
+    try { stored = localStorage.getItem(KEY_STORAGE); } catch(e) {}
     if(!stored) return false;
     try {
       var raw = b64ToBytes(stored);
       var key = await crypto.subtle.importKey('raw', raw, {name:'AES-GCM'}, false, ['decrypt']);
-      var plaintext = await decryptWithKey(key);
-      reveal(plaintext);
+      var templates = await decryptWithKey(key);
+      reveal(templates);
       return true;
     } catch(e) {
-      try { localStorage.removeItem(STORAGE_KEY); } catch(err) {}
+      try { localStorage.removeItem(KEY_STORAGE); } catch(err) {}
       return false;
     }
   }
@@ -193,12 +633,12 @@
     }
     try {
       var key = await deriveKeyFromPin(pin);
-      var plaintext = await decryptWithKey(key);
+      var templates = await decryptWithKey(key);
       try {
         var rawKey = await crypto.subtle.exportKey('raw', key);
-        localStorage.setItem(STORAGE_KEY, bytesToB64(rawKey));
+        localStorage.setItem(KEY_STORAGE, bytesToB64(rawKey));
       } catch(err) {}
-      reveal(plaintext);
+      reveal(templates);
     } catch(err){
       errorEl.textContent = 'PIN incorrecto.';
       digits.forEach(function(d){ d.value = ''; });
