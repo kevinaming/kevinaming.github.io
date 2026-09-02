@@ -67,6 +67,24 @@
   0%, 100% { opacity:.3; box-shadow:0 0 0 0 rgba(31,111,120,0); }
   50% { opacity:1; box-shadow:0 0 6px 1px rgba(31,111,120,.55); }
 }
+/* Toca/pulsa la tarjeta "Hoy" para verla en pantalla completa. */
+#sch-today-banner{cursor:pointer;}
+#sch-today-banner.sch-fullscreen{
+  position:fixed; inset:0; z-index:999; max-width:none; width:100%; height:100%;
+  margin:0; border-radius:0; box-shadow:none; overflow-y:auto;
+  padding:56px 24px 32px; display:flex; flex-direction:column; justify-content:center;
+  cursor:default;
+}
+#sch-today-banner.sch-fullscreen .today-banner-head{justify-content:center; font-size:clamp(1.1rem,3vw,1.7rem);}
+#sch-today-banner.sch-fullscreen .today-banner-list{max-width:720px; width:100%; margin:0 auto; gap:16px;}
+#sch-today-banner.sch-fullscreen .today-banner-list li{font-size:clamp(1.05rem,2.6vw,1.55rem); padding:10px 0;}
+#sch-fullscreen-close{
+  position:fixed; top:16px; right:16px; z-index:1000;
+}
+#sch-fullscreen-close[hidden]{display:none;}
+@media (max-width:600px){
+  #sch-today-banner.sch-fullscreen{padding-top:72px;}
+}
 @media (prefers-reduced-motion: reduce){
   #sch-today-banner .today-banner-dot{ animation:none; }
 }
@@ -128,9 +146,10 @@
       <p>Calculado según la semana vigente (A/B/C) y el horario semanal publicado en la portada.</p>
     </div>
     <div class="sch-today-wrap">
-      <div class="today-banner is-today" id="sch-today-banner">
+      <div class="today-banner is-today" id="sch-today-banner" role="button" tabindex="0" aria-label="Ver en pantalla completa">
         <p>Cargando…</p>
       </div>
+      <button type="button" class="pizarra-close" id="sch-fullscreen-close" hidden aria-label="Salir de pantalla completa" title="Salir de pantalla completa">&times;</button>
       <div class="sch-sync-row">
         <span class="grp-summary" id="sch-sync-status"><span id="sch-sync-label">Sincronizando…</span> <span id="sch-clock"></span></span>
         <button type="button" class="grp-btn" id="sch-refresh">Actualizar</button>
@@ -605,6 +624,36 @@
     document.getElementById('sch-refresh').addEventListener('click', function(){
       loadLiveData();
     });
+
+    // Tocar/pulsar la tarjeta "Hoy" la muestra en pantalla completa
+    // (útil en el teléfono); el botón circular con "×" regresa al modo
+    // normal y desaparece de nuevo.
+    (function(){
+      var banner = document.getElementById('sch-today-banner');
+      var closeBtn = document.getElementById('sch-fullscreen-close');
+      function openFullscreen(){
+        if(banner.classList.contains('sch-fullscreen')) return;
+        banner.classList.add('sch-fullscreen');
+        closeBtn.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+      function closeFullscreen(){
+        banner.classList.remove('sch-fullscreen');
+        closeBtn.hidden = true;
+        document.body.style.overflow = '';
+      }
+      banner.addEventListener('click', openFullscreen);
+      banner.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openFullscreen(); }
+      });
+      closeBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        closeFullscreen();
+      });
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && banner.classList.contains('sch-fullscreen')) closeFullscreen();
+      });
+    })();
 
     document.querySelectorAll('#sch-week-tabs .grade-tab').forEach(function(btn){
       btn.addEventListener('click', function(){
