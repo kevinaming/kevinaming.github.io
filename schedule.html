@@ -54,6 +54,14 @@
 .sch-sync-row{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:14px 0 0;}
 .sch-sync-warn{color:var(--mango-deep); font-size:.82rem;}
 .sch-today-wrap{max-width:640px;}
+#sch-today-banner .today-banner-dot{animation:sch-live-pulse 2.4s ease-in-out infinite;}
+@keyframes sch-live-pulse{
+  0%, 100% { opacity:.3; box-shadow:0 0 0 0 rgba(31,111,120,0); }
+  50% { opacity:1; box-shadow:0 0 6px 1px rgba(31,111,120,.55); }
+}
+@media (prefers-reduced-motion: reduce){
+  #sch-today-banner .today-banner-dot{ animation:none; }
+}
 </style>
 </head>
 <body>
@@ -442,6 +450,13 @@
     el.classList.toggle('is-today', target.isToday);
   }
 
+  // Abrevia las etiquetas fijas largas, igual que los chips de la Rotación
+  // semanal de la portada (CP, TADO, 7-3... ya son cortos de por sí).
+  function abbreviateFixed(text){
+    if(/^Ruta 2-3/i.test(text || '')) return 'R23-678';
+    return text;
+  }
+
   function renderWeekTables(templates, siteData){
     var dias = ['lunes','martes','jueves','viernes'];
     ['A','B','C'].forEach(function(w){
@@ -452,22 +467,20 @@
           var tr = document.createElement('tr');
           var tdLabel = document.createElement('td');
           tdLabel.className = 'wk-slotlabel';
-          tdLabel.textContent = p.kind === 'var' ? ('Período ' + (p.slot + 1)) : p.actividad;
+          tdLabel.textContent = p.kind === 'var' ? ('Charla ' + (p.slot + 1)) : abbreviateFixed(p.actividad);
           tr.appendChild(tdLabel);
           dias.forEach(function(day){
             var td = document.createElement('td');
             if(p.kind === 'fixed'){
               td.className = 'wk-cell wk-free';
-              td.innerHTML = '<span class="wk-hora">' + escapeHTML(p.hora) + '</span><span class="wk-grade">' + escapeHTML(p.actividad) + '</span>';
+              td.innerHTML = '<span class="wk-hora">' + escapeHTML(p.hora) + '</span><span class="wk-grade">' + escapeHTML(abbreviateFixed(p.actividad)) + '</span>';
             } else {
               var s = siteData && siteData[w] && siteData[w].days[day] ? siteData[w].days[day][p.slot] : null;
               var hora = s ? s.hora : p.hora;
               var code = s ? s.code : '—';
-              var label = s ? s.label : '';
               var isPrep = /^PREP/i.test(code || '');
               td.className = 'wk-cell ' + (isPrep || !s ? 'wk-free' : 'wk-rotation');
-              td.innerHTML = '<span class="wk-hora">' + escapeHTML(hora) + '</span><span class="wk-grade">' + escapeHTML(label || code || '—') + '</span>' +
-                (!isPrep && s ? '<div class="wk-rot-chips"><span class="wk-rot-chip">' + escapeHTML(code) + '</span></div>' : '');
+              td.innerHTML = '<span class="wk-hora">' + escapeHTML(hora) + '</span><span class="wk-grade">' + escapeHTML(code || '—') + '</span>';
             }
             tr.appendChild(td);
           });
@@ -486,14 +499,14 @@
           var tdAct = document.createElement('td'); tdAct.className = 'sch-act';
           if(p.kind === 'fixed'){
             tdHora.textContent = p.hora;
-            tdAct.textContent = p.actividad;
+            tdAct.textContent = abbreviateFixed(p.actividad);
             tr.className = p.lunch ? 'sch-lunch' : (p.tado ? 'sch-break' : (p.clase ? 'sch-class' : ''));
           } else {
             var s = siteData && siteData[w] && siteData[w].days.miercoles ? siteData[w].days.miercoles[p.slot] : null;
             tdHora.textContent = s ? s.hora : p.hora;
             var code = s ? s.code : '—';
             var isPrep = /^PREP/i.test(code || '');
-            tdAct.textContent = s ? (s.label || code) : '—';
+            tdAct.textContent = s ? code : '—';
             tr.className = (isPrep || !s) ? '' : 'sch-class';
           }
           tr.appendChild(tdIdx); tr.appendChild(tdHora); tr.appendChild(tdAct);
@@ -562,10 +575,10 @@
     });
 
     loadLiveData();
+    // Re-sincroniza con el calendario principal automáticamente, sin recargar
+    // la página ni depender del botón "Actualizar".
     setInterval(function(){
-      if(appState.weekMap && appState.siteData){
-        renderTodayBanner(findTargetDay(appState.templates, appState.weekMap, appState.siteData));
-      }
+      loadLiveData();
     }, 60000);
   }
 
