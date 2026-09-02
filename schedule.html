@@ -465,6 +465,18 @@
     }).join('');
     el.innerHTML = '<div class="today-banner-head"><span class="today-banner-dot"></span><strong>' + label + ' — ' + dateStr + '</strong></div><ul class="today-banner-list">' + itemsHTML + '</ul>';
     el.classList.toggle('is-today', target.isToday);
+
+    // .tb-time solo tiene min-width, así que una hora más larga (ej. la del
+    // almuerzo, que cruza el mediodía) empuja su descripción más a la
+    // derecha que las demás filas. Igualamos el ancho de todas las horas al
+    // de la más larga para que la columna de descripciones quede alineada,
+    // sin agregar ninguna línea divisoria.
+    var timeEls = el.querySelectorAll('.tb-time');
+    var maxW = 0;
+    timeEls.forEach(function(t){ maxW = Math.max(maxW, t.getBoundingClientRect().width); });
+    if(maxW > 0){
+      timeEls.forEach(function(t){ t.style.minWidth = Math.ceil(maxW) + 'px'; });
+    }
   }
 
   // Abrevia las etiquetas fijas largas, igual que los chips de la Rotación
