@@ -54,6 +54,14 @@
 .sch-sync-row{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:14px 0 0;}
 .sch-sync-warn{color:var(--mango-deep); font-size:.82rem;}
 .sch-today-wrap{max-width:640px;}
+#sch-clock{font-family:'IBM Plex Mono',monospace;}
+/* Las tablas de referencia ahora muestran códigos cortos, no descripciones
+   largas — el tamaño y el nowrap heredados de css/styles.css (pensados
+   para la portada) se ajustan solo aquí, sin tocar la hoja compartida. */
+#referencia .wk-cell .wk-grade{font-size:.82rem; white-space:normal; line-height:1.3; overflow-wrap:break-word;}
+#referencia .wk-cell .wk-hora{font-size:.68rem;}
+#referencia table.sch-table .sch-act{font-size:.82rem;}
+#referencia table.sch-table .sch-hora{font-size:.76rem;}
 #sch-today-banner .today-banner-dot{animation:sch-live-pulse 2.4s ease-in-out infinite;}
 @keyframes sch-live-pulse{
   0%, 100% { opacity:.3; box-shadow:0 0 0 0 rgba(31,111,120,0); }
@@ -124,7 +132,7 @@
         <p>Cargando…</p>
       </div>
       <div class="sch-sync-row">
-        <span class="grp-summary" id="sch-sync-status">Sincronizando…</span>
+        <span class="grp-summary" id="sch-sync-status"><span id="sch-sync-label">Sincronizando…</span> <span id="sch-clock"></span></span>
         <button type="button" class="grp-btn" id="sch-refresh">Actualizar</button>
       </div>
     </div>
@@ -522,9 +530,17 @@
   }
 
   function setSyncStatus(text, isWarn){
-    var el = document.getElementById('sch-sync-status');
-    el.textContent = text;
-    el.classList.toggle('sch-sync-warn', !!isWarn);
+    var labelEl = document.getElementById('sch-sync-label');
+    labelEl.textContent = text;
+    document.getElementById('sch-sync-status').classList.toggle('sch-sync-warn', !!isWarn);
+  }
+
+  // Reloj en vivo junto al estado de sincronización — corre solo, cada
+  // segundo, para que quede claro que la página sigue viva y no que se
+  // congeló en la última sincronización.
+  function tickClock(){
+    var el = document.getElementById('sch-clock');
+    if(el) el.textContent = '· ' + new Date().toLocaleTimeString('es-PR');
   }
 
   var appState = {templates: null, weekMap: null, siteData: null};
@@ -544,8 +560,7 @@
     if(errored || !weekMap || !siteData){
       setSyncStatus('No se pudo sincronizar — mostrando la estructura sin resolver grupos. Intenta "Actualizar".', true);
     } else {
-      var now = new Date();
-      setSyncStatus('Sincronizado con el calendario principal · ' + now.toLocaleTimeString('es-PR'), false);
+      setSyncStatus('Sincronizado con el calendario principal', false);
     }
     renderAll();
   }
@@ -580,6 +595,8 @@
     setInterval(function(){
       loadLiveData();
     }, 60000);
+    tickClock();
+    setInterval(tickClock, 1000);
   }
 
   /* ---------- Desbloqueo con PIN ---------- */
