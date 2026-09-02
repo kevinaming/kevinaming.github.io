@@ -290,8 +290,11 @@
   // línea y deja la lista de códigos debajo, en vez de todo corrido.
   function formatCode(code){
     if(!code) return '—';
+    // Solo parte "PREP —" a su propia línea cuando junta varios códigos
+    // (ej. "PREP — R1-12, R1-34, R1-56 y R1-78"). Los PREP de un solo
+    // destino (ej. "PREP — 5to", "PREP — K") se dejan en una sola línea.
     var m = String(code).match(/^(PREP\s*—\s*)(.+)$/);
-    if(m) return escapeHTML(m[1].trim()) + '<br>' + escapeHTML(m[2]);
+    if(m && m[2].indexOf(',') !== -1) return escapeHTML(m[1].trim()) + '<br>' + escapeHTML(m[2]);
     return escapeHTML(code);
   }
 
