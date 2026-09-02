@@ -62,7 +62,6 @@
 #referencia .wk-cell .wk-hora{font-size:.68rem;}
 #referencia table.sch-table .sch-act{font-size:.82rem;}
 #referencia table.sch-table .sch-hora{font-size:.76rem;}
-#sch-today-banner .today-banner-list li{gap:26px;}
 #sch-today-banner .today-banner-dot{animation:sch-live-pulse 2.4s ease-in-out infinite;}
 @keyframes sch-live-pulse{
   0%, 100% { opacity:.3; box-shadow:0 0 0 0 rgba(31,111,120,0); }
@@ -463,7 +462,7 @@
       else if(isCurrent){ cls = 'is-current'; badge = '<span class="tb-now">AHORA</span>'; }
       else if(!nextMarked){ cls = 'is-next'; badge = '<span class="tb-next-badge">PRÓXIMA</span>'; nextMarked = true; }
       else { cls = 'is-later'; }
-      var grade = formatCode(p.actividad);
+      var grade = formatCode(abbreviateFixed(p.actividad));
       var title = (p.label && p.label !== p.actividad) ? escapeHTML(p.label) : '';
       return '<li class="' + cls + '"><span class="tb-time">' + escapeHTML(p.hora) + '</span><span class="tb-grade">' + grade + '</span><span class="tb-title">' + title + '</span>' + badge + '</li>';
     }).join('');
@@ -479,7 +478,9 @@
     var maxW = 0;
     timeEls.forEach(function(t){ maxW = Math.max(maxW, t.getBoundingClientRect().width); });
     if(maxW > 0){
-      timeEls.forEach(function(t){ t.style.minWidth = Math.ceil(maxW) + 'px'; });
+      // +24px extra solo aquí, para separar la hora de su descripción sin
+      // tocar el espacio entre el código, la descripción y la insignia.
+      timeEls.forEach(function(t){ t.style.minWidth = (Math.ceil(maxW) + 24) + 'px'; });
     }
   }
 
