@@ -69,11 +69,12 @@
 }
 /* Toca/pulsa la tarjeta "Hoy" para verla en pantalla completa. */
 #sch-today-banner{cursor:pointer;}
+#sch-today-banner .tb-grade{font-weight:400;}
 #sch-today-banner.sch-fullscreen{
   position:fixed; inset:0; z-index:999; max-width:none; width:100%; height:100%;
   margin:0; border-radius:0; box-shadow:none; overflow-y:auto;
   padding:56px 24px 32px; display:flex; flex-direction:column; justify-content:center;
-  cursor:default;
+  cursor:default; background:var(--paper);
 }
 #sch-today-banner.sch-fullscreen .today-banner-head{justify-content:center; font-size:clamp(1.1rem,3vw,1.7rem);}
 #sch-today-banner.sch-fullscreen .today-banner-list{max-width:720px; width:100%; margin:0 auto; gap:16px;}
@@ -84,6 +85,18 @@
 #sch-fullscreen-close[hidden]{display:none;}
 @media (max-width:600px){
   #sch-today-banner.sch-fullscreen{padding-top:72px;}
+}
+/* Mientras está en pantalla completa, se quita el resto de la página del
+   árbol de render (no solo se tapa) para que no pueda verse detrás bajo
+   ninguna circunstancia. */
+body.sch-fs-active > .topnav,
+body.sch-fs-active #protected-root > header,
+body.sch-fs-active #referencia,
+body.sch-fs-active footer,
+body.sch-fs-active #hoy .sch-back,
+body.sch-fs-active #hoy .section-head,
+body.sch-fs-active .sch-sync-row{
+  display:none !important;
 }
 @media (prefers-reduced-motion: reduce){
   #sch-today-banner .today-banner-dot{ animation:none; }
@@ -634,11 +647,13 @@
       function openFullscreen(){
         if(banner.classList.contains('sch-fullscreen')) return;
         banner.classList.add('sch-fullscreen');
+        document.body.classList.add('sch-fs-active');
         closeBtn.hidden = false;
         document.body.style.overflow = 'hidden';
       }
       function closeFullscreen(){
         banner.classList.remove('sch-fullscreen');
+        document.body.classList.remove('sch-fs-active');
         closeBtn.hidden = true;
         document.body.style.overflow = '';
       }
