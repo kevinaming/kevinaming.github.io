@@ -419,8 +419,12 @@ function getAllSessions(){
     // los nombres de rutas de EE no tienen ese separador y se muestran completos.
     const gradeText = gradeFull.includes(' · ') ? gradeFull.split(' · ')[0] : gradeFull;
     const metaText = panel.querySelector('.panel-meta')?.textContent || '';
-    const roomMatch = metaText.match(/(?:salón|room)\s+(\S+)/i);
-    const room = roomMatch ? roomMatch[1] : '';
+    // Puede haber varias apariciones de "salón"/"room" en la ficha (ej. "maestro/a
+    // salón hogar:" o "homeroom teacher:"); el salón real siempre es la última,
+    // así que tomamos esa. La palabra debe empezar tras un espacio/inicio (no
+    // "room" dentro de "homeroom").
+    const roomMatches = [...metaText.matchAll(/(?:^|\s)(?:salón|room)\s+(\S+)/gi)];
+    const room = roomMatches.length ? roomMatches[roomMatches.length - 1][1] : '';
     panel.querySelectorAll('.grade-table tbody tr').forEach(row=>{
       const fechaCell = row.querySelector('.col-fecha');
       const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
