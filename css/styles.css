@@ -266,15 +266,23 @@ a{color:var(--teal);}
 .pizarra-date{font-family:'Fraunces',serif; font-size:clamp(1.6rem,4vw,2.8rem); color:var(--teal-deep); margin-bottom:32px;}
 .pizarra-list{list-style:none; margin:0; padding:0; display:grid; gap:18px;}
 .pizarra-list li{
-  display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  display:grid; grid-template-columns:auto auto auto 1fr auto; align-items:center; column-gap:28px;
   padding:20px 28px; border-radius:var(--radius); border:2px solid var(--line);
   background:var(--card); font-size:clamp(1.05rem,2.1vw,1.5rem); text-align:left;
 }
-.pizarra-list .pz-time{font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); min-width:9ch; flex:none;}
-.pizarra-list .pz-grade{font-weight:700; color:var(--teal-deep); min-width:4ch; flex:none;}
-.pizarra-list .pz-room{font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); min-width:6ch; flex:none; display:flex; flex-direction:column; gap:1px; line-height:1.2;}
+.pizarra-list .pz-time{font-family:'IBM Plex Mono',monospace; color:var(--ink-soft);}
+.pizarra-list .pz-grade{font-weight:700; color:var(--teal-deep);}
+.pizarra-list .pz-room{font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); display:flex; flex-direction:column; gap:1px; line-height:1.2;}
 .pizarra-list .pz-room-label{font-size:.55em; font-weight:400; opacity:.7; text-transform:lowercase;}
-.pizarra-list .pz-title{color:var(--ink-soft); flex:1; min-width:200px;}
+.pizarra-list .pz-title{color:var(--ink-soft);}
+@media (max-width:760px){
+  .pizarra-list li{grid-template-columns:auto auto auto auto; grid-template-areas:"time grade room badge" "title title title title"; row-gap:8px;}
+  .pizarra-list .pz-time{grid-area:time;}
+  .pizarra-list .pz-grade{grid-area:grade;}
+  .pizarra-list .pz-room{grid-area:room;}
+  .pizarra-list .pz-title{grid-area:title;}
+  .pizarra-list .pz-now, .pizarra-list .pz-next-badge{grid-area:badge; justify-self:end;}
+}
 .pizarra-list li.is-done{opacity:.35;}
 .pizarra-list li.is-done .pz-time,
 .pizarra-list li.is-done .pz-grade,
