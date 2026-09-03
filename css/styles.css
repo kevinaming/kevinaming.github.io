@@ -228,14 +228,14 @@ a{color:var(--teal);}
 .today-banner-list li.is-done .tb-title{text-decoration:line-through;}
 .today-banner-list .tb-now{
   font-family:'IBM Plex Mono',monospace; font-size:.65rem; font-weight:700; letter-spacing:.04em;
-  color:#fff; background:var(--teal-btn); padding:2px 7px; border-radius:999px; flex:none;
+  color:#fff; background:var(--mango); padding:2px 7px; border-radius:999px; flex:none;
 }
-.today-banner-list li.is-next .tb-grade{color:var(--mango-deep);}
-.today-banner-list li.is-next .tb-title{color:var(--ink); font-weight:500;}
+.today-banner-list li.is-current .tb-grade{color:var(--mango-deep);}
+.today-banner-list li.is-current .tb-title{color:var(--ink); font-weight:500;}
 .today-banner-list li.is-later{opacity:.55;}
 .today-banner-list .tb-next-badge{
   font-family:'IBM Plex Mono',monospace; font-size:.65rem; font-weight:700; letter-spacing:.04em;
-  color:#fff; background:var(--mango); padding:2px 7px; border-radius:999px; flex:none;
+  color:#fff; background:var(--teal-btn); padding:2px 7px; border-radius:999px; flex:none;
 }
 
 /* ---------- Modo pizarra ---------- */
