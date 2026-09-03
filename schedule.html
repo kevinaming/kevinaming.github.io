@@ -68,7 +68,11 @@
   50% { opacity:1; box-shadow:0 0 6px 1px rgba(31,111,120,.55); }
 }
 /* Toca/pulsa la tarjeta "Hoy" para verla en pantalla completa. */
-#sch-today-banner{cursor:pointer;}
+/* La pantalla completa solo aplica en teléfono (ver el JS, que revisa
+   el mismo ancho); en escritorio/tablet el cursor se queda normal. */
+@media (max-width:600px){
+  #sch-today-banner{cursor:pointer;}
+}
 #sch-today-banner .tb-grade{font-weight:400;}
 #sch-today-banner.sch-fullscreen{
   position:fixed; inset:0; z-index:999; max-width:none; width:100%; height:100%;
@@ -644,7 +648,10 @@ body.sch-fs-active .sch-sync-row{
     (function(){
       var banner = document.getElementById('sch-today-banner');
       var closeBtn = document.getElementById('sch-fullscreen-close');
+      // Solo en teléfono (mismo corte que el CSS del cursor arriba).
+      function isPhoneWidth(){ return window.innerWidth <= 600; }
       function openFullscreen(){
+        if(!isPhoneWidth()) return;
         if(banner.classList.contains('sch-fullscreen')) return;
         banner.classList.add('sch-fullscreen');
         document.body.classList.add('sch-fs-active');
