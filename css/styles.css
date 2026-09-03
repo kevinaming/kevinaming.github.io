@@ -203,7 +203,14 @@ a{color:var(--teal);}
   border-color:var(--teal);
   background:linear-gradient(135deg, rgba(31,111,120,0.08), rgba(232,163,61,0.1));
 }
-.today-banner.is-today .today-banner-dot{background:var(--teal);}
+.today-banner.is-today .today-banner-dot{background:var(--teal); animation:today-banner-pulse 2.4s ease-in-out infinite;}
+@keyframes today-banner-pulse{
+  0%, 100% { opacity:.3; box-shadow:0 0 0 0 rgba(31,111,120,0); }
+  50% { opacity:1; box-shadow:0 0 6px 1px rgba(31,111,120,.55); }
+}
+@media (prefers-reduced-motion: reduce){
+  .today-banner-dot{ animation:none; }
+}
 .today-banner-list{list-style:none; margin:0; padding:0; display:grid; gap:6px;}
 .today-banner-list li{
   display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
