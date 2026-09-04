@@ -197,27 +197,41 @@
     return true;
   }
 
+  var TIPOS_CON_GRUPO = {clase:1, tado:1, cp:1};
+
+  function tipoSelectHTML(tipoActual){
+    var opciones = [
+      ['clase','Clase'], ['tado','TADO'], ['cp','CP'], ['prep','Preparaci\u00f3n (PREP)'],
+    ];
+    return '<select class="bd-in" data-field="tipo">' + opciones.map(function(o){
+      var sel = o[0] === tipoActual ? ' selected' : '';
+      return '<option value="' + o[0] + '"' + sel + '>' + o[1] + '</option>';
+    }).join('') + '</select>';
+  }
+
   function renderCellHTML(cell){
-    if(cell.tipo === 'clase'){
+    if(TIPOS_CON_GRUPO[cell.tipo]){
       var g = GROUP_BY_ID[cell.tabId] || {code:'?', title:'', hogar:'', clase:'', salon:''};
       var colorClass = colorClassFor(cell.tabId);
-      return ''
+      var esClasePlena = cell.tipo === 'clase';
+      var html = ''
         + '<div class="bd-field"><label>Hora</label><input type="text" class="bd-in" data-field="hora" value="' + escAttr(cell.hora||'') + '"></div>'
-        + '<div class="bd-field"><label>Tipo</label><select class="bd-in" data-field="tipo">'
-        +   '<option value="clase" selected>Clase</option><option value="prep">Preparaci\u00f3n (PREP)</option>'
-        + '</select></div>'
+        + '<div class="bd-field"><label>Tipo</label>' + tipoSelectHTML(cell.tipo) + '</div>'
         + '<div class="bd-field"><label>Grupo</label><select class="bd-in" data-field="grupo">' + groupOptionsHTML(cell.tabId) + '</select></div>'
         + '<div class="bd-chip-row"><span class="bd-chip-preview ' + colorClass + '">' + escHTML(g.code) + '</span></div>'
-        + '<div class="bd-field"><label>Sal\u00f3n de la charla</label><input type="text" class="bd-in" data-field="salon" value="' + escAttr((cell.salon!==undefined? cell.salon : g.salon)||'') + '"></div>'
-        + '<div class="bd-field"><label>Materia / actividad</label><input type="text" class="bd-in" data-field="materia" placeholder="ej. MATE, CIEN, Adq. Lengua" value="' + escAttr(cell.materia||'') + '"></div>'
-        + '<div class="bd-field"><label>Maestro/a que da la clase</label><input type="text" class="bd-in" data-field="maestroClase" placeholder="Sin maestro asignado" value="' + escAttr((cell.maestroClase!==undefined? cell.maestroClase : g.clase)||'') + '"></div>'
-        + '<div class="bd-field"><label>Maestro/a Sal\u00f3n Hogar</label><input type="text" class="bd-in" data-field="maestroHogar" value="' + escAttr((cell.maestroHogar!==undefined? cell.maestroHogar : g.hogar)||'') + '"></div>';
+        + '<div class="bd-field"><label>Sal\u00f3n de la charla</label><input type="text" class="bd-in" data-field="salon" value="' + escAttr((cell.salon!==undefined? cell.salon : g.salon)||'') + '"></div>';
+      if(esClasePlena){
+        html += '<div class="bd-field"><label>Materia / actividad</label><input type="text" class="bd-in" data-field="materia" placeholder="ej. MATE, CIEN, Adq. Lengua" value="' + escAttr(cell.materia||'') + '"></div>'
+          + '<div class="bd-field"><label>Maestro/a que da la clase</label><input type="text" class="bd-in" data-field="maestroClase" placeholder="Sin maestro asignado" value="' + escAttr((cell.maestroClase!==undefined? cell.maestroClase : g.clase)||'') + '"></div>';
+      } else {
+        html += '<p class="bd-hint">' + (cell.tipo==='tado' ? 'TADO: el/la maestro/a de sal\u00f3n hogar hace tarea administrativa, no hay clase de materia a esta hora.' : 'CP: cubierto por otro/a maestro/a, no hay clase de materia a esta hora.') + '</p>';
+      }
+      html += '<div class="bd-field"><label>Maestro/a Sal\u00f3n Hogar</label><input type="text" class="bd-in" data-field="maestroHogar" value="' + escAttr((cell.maestroHogar!==undefined? cell.maestroHogar : g.hogar)||'') + '"></div>';
+      return html;
     } else {
       return ''
         + '<div class="bd-field"><label>Hora</label><input type="text" class="bd-in" data-field="hora" value="' + escAttr(cell.hora||'') + '"></div>'
-        + '<div class="bd-field"><label>Tipo</label><select class="bd-in" data-field="tipo">'
-        +   '<option value="clase">Clase</option><option value="prep" selected>Preparaci\u00f3n (PREP)</option>'
-        + '</select></div>'
+        + '<div class="bd-field"><label>Tipo</label>' + tipoSelectHTML(cell.tipo) + '</div>'
         + '<div class="bd-field"><label>Texto (PREP)</label><input type="text" class="bd-in" data-field="prepText" placeholder="PREP \u2014 ..." value="' + escAttr(cell.prepText||'') + '"></div>'
         + '<p class="bd-hint">Las celdas de preparaci\u00f3n no tienen grupo asignado en ese momento.</p>';
     }
@@ -260,20 +274,25 @@
     var cell = getCell(currentWeek, periodo, dia);
     var field = input.getAttribute('data-field');
     if(field === 'tipo'){
-      if(input.value === 'prep' && cell.tipo !== 'prep'){
+      var nuevoTipo = input.value;
+      var eraConGrupo = !!TIPOS_CON_GRUPO[cell.tipo];
+      var esConGrupo = !!TIPOS_CON_GRUPO[nuevoTipo];
+      if(esConGrupo && eraConGrupo){
+        // Clase / TADO / CP entre sí: mismo dato de fondo, solo cambia la etiqueta.
+        cell.tipo = nuevoTipo;
+      } else if(!esConGrupo){
+        // A Preparación (PREP): se pierde el grupo asignado.
         var nuevo = {periodo:periodo, dia:dia, hora:cell.hora, tipo:'prep', prepText:''};
         replaceCell(periodo, dia, nuevo);
-        render();
-        persist();
-        return;
-      } else if(input.value === 'clase' && cell.tipo !== 'clase'){
+      } else {
+        // De Preparación a Clase/TADO/CP: arranca con el primer grupo de la lista.
         var primerGrupo = GROUPS[0];
-        var nuevo2 = {periodo:periodo, dia:dia, hora:cell.hora, tipo:'clase', tabId:primerGrupo.tabId, materia:''};
+        var nuevo2 = {periodo:periodo, dia:dia, hora:cell.hora, tipo:nuevoTipo, tabId:primerGrupo.tabId,
+          materia:'', maestroClase:primerGrupo.clase||'', maestroHogar:primerGrupo.hogar||'', salon:primerGrupo.salon||''};
         replaceCell(periodo, dia, nuevo2);
-        render();
-        persist();
-        return;
       }
+      render();
+      persist();
       return;
     }
     if(field === 'grupo'){
@@ -354,7 +373,7 @@
       out += '<tr><td class=\'wk-slotlabel\'>' + p + '</td>';
       DAYS.forEach(function(d){
         var cell = getCell(week, p, d);
-        if(cell.tipo === 'clase'){
+        if(TIPOS_CON_GRUPO[cell.tipo]){
           var g = GROUP_BY_ID[cell.tabId];
           var colorClass = colorClassFor(cell.tabId);
           out += '<td class="wk-cell wk-rotation">\n'
