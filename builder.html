@@ -54,8 +54,18 @@
   display:flex; align-items:center; justify-content:center; text-align:center;
 }
 .bd-cell{
+  position:relative;
   background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius);
   padding:12px 14px; display:flex; flex-direction:column; gap:8px;
+}
+.bd-cell.bd-modified{
+  border-color:var(--mango); box-shadow:0 0 0 3px rgba(232,163,61,.16);
+  background:linear-gradient(135deg, rgba(232,163,61,.10), rgba(31,111,120,.04));
+}
+.bd-modified-tag{
+  position:absolute; top:-9px; right:10px;
+  font-family:'IBM Plex Mono',monospace; font-size:.62rem; font-weight:700; letter-spacing:.03em;
+  color:#fff; background:var(--mango); padding:2px 8px; border-radius:999px;
 }
 .bd-field{display:flex; flex-direction:column; gap:3px;}
 .bd-field label{
@@ -166,6 +176,27 @@
     return null;
   }
 
+  function getOriginalCell(week, periodo, dia){
+    var arr = BUNDLE.SCHEDULE[week];
+    for(var i=0;i<arr.length;i++){ if(arr[i].periodo===periodo && arr[i].dia===dia) return arr[i]; }
+    return null;
+  }
+
+  // Compara dos celdas campo por campo (sin importar el orden en que se
+  // agregaron las propiedades) para saber si el período fue editado.
+  function cellsEqual(a, b){
+    var keys = {};
+    Object.keys(a || {}).forEach(function(k){ keys[k] = true; });
+    Object.keys(b || {}).forEach(function(k){ keys[k] = true; });
+    for(var k in keys){
+      if(k === 'periodo' || k === 'dia') continue;
+      var av = (a && a[k] !== undefined) ? a[k] : '';
+      var bv = (b && b[k] !== undefined) ? b[k] : '';
+      if(av !== bv) return false;
+    }
+    return true;
+  }
+
   function renderCellHTML(cell){
     if(cell.tipo === 'clase'){
       var g = GROUP_BY_ID[cell.tabId] || {code:'?', title:'', hogar:'', clase:'', salon:''};
@@ -204,7 +235,10 @@
       html += '<div class="bd-period-label">' + p + '</div>';
       DAYS.forEach(function(d){
         var cell = getCell(currentWeek, p, d);
-        html += '<div class="bd-cell" data-periodo="' + p + '" data-dia="' + d + '">' + renderCellHTML(cell) + '</div>';
+        var modificado = !cellsEqual(cell, getOriginalCell(currentWeek, p, d));
+        var claseExtra = modificado ? ' bd-modified' : '';
+        var etiqueta = modificado ? '<span class="bd-modified-tag">&#9679; Editado</span>' : '';
+        html += '<div class="bd-cell' + claseExtra + '" data-periodo="' + p + '" data-dia="' + d + '">' + etiqueta + renderCellHTML(cell) + '</div>';
       });
     });
     grid.innerHTML = html;
@@ -259,7 +293,22 @@
     if(field === 'maestroClase'){ cell.maestroClase = input.value; }
     if(field === 'maestroHogar'){ cell.maestroHogar = input.value; }
     if(field === 'prepText'){ cell.prepText = input.value; }
+    updateModifiedIndicator(periodo, dia);
     persist();
+  }
+
+  function updateModifiedIndicator(periodo, dia){
+    var cellEl = document.querySelector('.bd-cell[data-periodo="' + periodo + '"][data-dia="' + dia + '"]');
+    if(!cellEl) return;
+    var cell = getCell(currentWeek, periodo, dia);
+    var modificado = !cellsEqual(cell, getOriginalCell(currentWeek, periodo, dia));
+    cellEl.classList.toggle('bd-modified', modificado);
+    var tag = cellEl.querySelector('.bd-modified-tag');
+    if(modificado && !tag){
+      cellEl.insertAdjacentHTML('afterbegin', '<span class="bd-modified-tag">● Editado</span>');
+    } else if(!modificado && tag){
+      tag.remove();
+    }
   }
 
   function replaceCell(periodo, dia, nuevaCelda){
