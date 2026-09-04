@@ -223,8 +223,11 @@
       if(esClasePlena){
         html += '<div class="bd-field"><label>Materia / actividad</label><input type="text" class="bd-in" data-field="materia" placeholder="ej. MATE, CIEN, Adq. Lengua" value="' + escAttr(cell.materia||'') + '"></div>'
           + '<div class="bd-field"><label>Maestro/a que da la clase</label><input type="text" class="bd-in" data-field="maestroClase" placeholder="Sin maestro asignado" value="' + escAttr((cell.maestroClase!==undefined? cell.maestroClase : g.clase)||'') + '"></div>';
+      } else if(cell.tipo === 'cp'){
+        html += '<p class="bd-hint">CP: no siempre lo cubre el/la maestro/a de sal\u00f3n hogar \u2014 indica qui\u00e9n cubre este per\u00edodo.</p>'
+          + '<div class="bd-field"><label>Maestro/a que cubre (CP)</label><input type="text" class="bd-in" data-field="maestroClase" placeholder="Nombre del maestro/a que cubre" value="' + escAttr((cell.maestroClase!==undefined? cell.maestroClase : g.clase)||'') + '"></div>';
       } else {
-        html += '<p class="bd-hint">' + (cell.tipo==='tado' ? 'TADO: el/la maestro/a de sal\u00f3n hogar hace tarea administrativa, no hay clase de materia a esta hora.' : 'CP: cubierto por otro/a maestro/a, no hay clase de materia a esta hora.') + '</p>';
+        html += '<p class="bd-hint">TADO: el/la maestro/a de sal\u00f3n hogar hace tarea administrativa, no hay clase de materia a esta hora.</p>';
       }
       html += '<div class="bd-field"><label>Maestro/a Sal\u00f3n Hogar</label><input type="text" class="bd-in" data-field="maestroHogar" value="' + escAttr((cell.maestroHogar!==undefined? cell.maestroHogar : g.hogar)||'') + '"></div>';
       return html;
