@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<script>
+(function(){
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored === 'light' || stored === 'dark'
+      ? stored
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+</script>
+<title>Constructor de Horarios &mdash; Kevin García</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.bd-wrap{max-width:1400px; margin:0 auto; padding:32px 24px 90px;}
+.bd-header p{color:var(--ink-soft); max-width:70ch;}
+.bd-tabs{display:flex; gap:10px; margin:24px 0 18px; flex-wrap:wrap;}
+.bd-toolbar{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:22px;
+  padding:14px 16px; background:var(--paper-alt); border:1px solid var(--line); border-radius:var(--radius);
+}
+.bd-btn{
+  font-family:'IBM Plex Mono',monospace; font-size:.8rem; font-weight:600; color:#fff;
+  background:var(--teal-btn); border:none; border-radius:9px; padding:9px 16px; cursor:pointer; transition:.15s;
+}
+.bd-btn:hover{background:var(--teal-btn-hover);}
+.bd-btn.bd-btn-ghost{color:var(--teal-deep); background:transparent; border:1px solid var(--line);}
+.bd-btn.bd-btn-ghost:hover{border-color:var(--teal); background:var(--card);}
+.bd-btn.bd-btn-danger{color:var(--mango-deep); background:transparent; border:1px solid var(--line);}
+.bd-btn.bd-btn-danger:hover{border-color:var(--mango);}
+.bd-save-status{font-family:'IBM Plex Mono',monospace; font-size:.76rem; color:var(--ink-soft); margin-left:auto;}
+.bd-week{margin-bottom:8px;}
+.bd-week-title{display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
+.bd-week-title h2{font-size:1.2rem; margin:0;}
+.bd-grid-scroll{overflow-x:auto; padding-bottom:8px;}
+.bd-week-grid{display:grid; grid-template-columns:110px repeat(5, minmax(230px,1fr)); gap:12px; min-width:1300px;}
+.bd-day-head{
+  font-family:'IBM Plex Mono',monospace; font-size:.76rem; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--teal-deep); background:var(--paper-alt); border-radius:10px; padding:10px 12px; text-align:center;
+}
+.bd-period-label{
+  font-family:'IBM Plex Mono',monospace; font-size:.82rem; color:var(--ink-soft);
+  display:flex; align-items:center; justify-content:center; text-align:center;
+}
+.bd-cell{
+  background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius);
+  padding:12px 14px; display:flex; flex-direction:column; gap:8px;
+}
+.bd-field{display:flex; flex-direction:column; gap:3px;}
+.bd-field label{
+  font-family:'IBM Plex Mono',monospace; font-size:.62rem; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft);
+}
+.bd-field input, .bd-field select{
+  font-family:'Work Sans',sans-serif; font-size:.82rem; padding:6px 8px; border-radius:7px;
+  border:1px solid var(--line); background:var(--paper); color:var(--ink); width:100%;
+}
+.bd-field input::placeholder{color:var(--ink-soft); opacity:.7;}
+.bd-chip-row{display:flex; align-items:center; gap:8px;}
+.bd-chip-preview{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:.78rem; padding:3px 10px; border-radius:999px; display:inline-block;}
+.bd-hint{font-size:.68rem; color:var(--ink-soft); font-style:italic;}
+.bd-html-out{
+  width:100%; min-height:160px; font-family:'IBM Plex Mono',monospace; font-size:.78rem;
+  border:1px solid var(--line); border-radius:var(--radius); padding:12px; background:var(--paper); color:var(--ink);
+  margin-top:14px;
+}
+@media (max-width:760px){
+  .bd-week-grid{grid-template-columns:90px repeat(5,minmax(200px,1fr));}
+}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Alfabetización Digital &middot; ANRL</a>
+    <div class="toolbar-buttons">
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.4"/><path d="M12 19.1v2.4"/><path d="M4.2 4.2l1.7 1.7"/><path d="M18.1 18.1l1.7 1.7"/><path d="M2.5 12h2.4"/><path d="M19.1 12h2.4"/><path d="M4.2 19.8l1.7-1.7"/><path d="M18.1 5.9l1.7-1.7"/></g></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.8A8.6 8.6 0 1 1 9.2 3.8a7 7 0 0 0 11 11z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="bd-wrap">
+  <div class="bd-header">
+    <span class="eyebrow"><span class="dot"></span> Herramienta interna</span>
+    <h1>Constructor de Horarios</h1>
+    <p>Ajusta manualmente el horario de las Semanas A, B y C &mdash; hora, grupo, materia, maestro/a que da la clase y maestro/a de salón hogar &mdash; y expórtalo cuando termines. Tus cambios se guardan automáticamente en este navegador mientras trabajas.</p>
+  </div>
+
+  <div class="bd-tabs" id="bd-tabs">
+    <button type="button" class="grade-tab active" data-week="A">Semana A</button>
+    <button type="button" class="grade-tab" data-week="B">Semana B</button>
+    <button type="button" class="grade-tab" data-week="C">Semana C</button>
+  </div>
+
+  <div class="bd-toolbar">
+    <button type="button" class="bd-btn" id="bd-export-json">Descargar JSON (las 3 semanas)</button>
+    <button type="button" class="bd-btn bd-btn-ghost" id="bd-copy-html">Copiar HTML de esta semana</button>
+    <button type="button" class="bd-btn bd-btn-danger" id="bd-reset">Restablecer esta semana</button>
+    <span class="bd-save-status" id="bd-save-status">Guardado automáticamente</span>
+  </div>
+
+  <div class="bd-week">
+    <div class="bd-grid-scroll">
+      <div class="bd-week-grid" id="bd-grid"></div>
+    </div>
+  </div>
+
+  <textarea class="bd-html-out" id="bd-html-out" hidden readonly></textarea>
+</div>
+
+<script id="bd-bundle" type="application/json">{"GROUPS": [{"tabId": "tab-s-pk", "code": "PK", "title": "PK · Pre-Kínder", "hogar": "Melanie K. Olmeda Pagán", "clase": "Melanie K. Olmeda Pagán"}, {"tabId": "tab-s-k-1", "code": "K-1", "title": "K-1 · Kindergarten", "hogar": "Jacmir Tirado Cintrón", "clase": "Johan Rivera Ortiz"}, {"tabId": "tab-s-k-2", "code": "K-2", "title": "K-2 · Kindergarten", "hogar": "Agnes Miranda Suárez", "clase": "Agnes Miranda Suárez"}, {"tabId": "tab-s-1-1", "code": "1-1", "title": "1-1 · 1er Grado", "hogar": "Yaznery Santos Figueroa", "clase": "Yaznery Santos Figueroa"}, {"tabId": "tab-s-1-2", "code": "1-2", "title": "1-2 · 1er Grado", "hogar": "Luzmarie Cotto Morales", "clase": "Luzmarie Cotto Morales"}, {"tabId": "tab-s-2-1", "code": "2-1", "title": "2-1 · 2do Grado", "hogar": "María Rivera Robles", "clase": "Yahaira Jiménez Rodríguez"}, {"tabId": "tab-s-2-2", "code": "2-2", "title": "2-2 · 2do Grado", "hogar": "Norma Aponte Concepción", "clase": "Norma Aponte Concepción"}, {"tabId": "tab-s-3-1", "code": "3-1", "title": "3-1 · 3er Grado", "hogar": "Brenda Virella Rosado", "clase": "Brenda Virella Rosado"}, {"tabId": "tab-s-3-2", "code": "3-2", "title": "3-2 · 3er Grado", "hogar": "Arlene M. Del Río García", "clase": "Soniber Rivera Arnau"}, {"tabId": "tab-s-4-1", "code": "4-1", "title": "4-1 · 4to Grado", "hogar": "Iris Zayas González", "clase": "Olga Rivera La Luz"}, {"tabId": "tab-s-4-2", "code": "4-2", "title": "4-2 · 4to Grado", "hogar": "Tomasita Rivas Laureano", "clase": ""}, {"tabId": "tab-s-4-3", "code": "4-3", "title": "4-3 · 4to Grado", "hogar": "Christian Marrero Ortega", "clase": "Christian Marrero Ortega"}, {"tabId": "tab-s-5-1", "code": "5-1", "title": "5-1 · 5to Grado", "hogar": "Olga Colón Santiago", "clase": "Ilka Figueroa Rivera"}, {"tabId": "tab-s-5-2", "code": "5-2", "title": "5-2 · 5to Grado", "hogar": "Vacante", "clase": "Olga Colón Santiago"}, {"tabId": "tab-s-6-1", "code": "6-1", "title": "6-1 · 6to Grado", "hogar": "Janzel Cruz Otero", "clase": "Janzel Cruz Otero"}, {"tabId": "tab-s-6-2", "code": "6-2", "title": "6-2 · 6to Grado", "hogar": "Carmen N. Pagán Ayala", "clase": "Mildred I. Negrón"}, {"tabId": "tab-s-6-3", "code": "6-3", "title": "6-3 · 6to Grado", "hogar": "Kassandra Rivera Rodríguez", "clase": "Cruz M. Trinidad Otero"}, {"tabId": "tab-s-7-1", "code": "7-1", "title": "7-1 · 7mo Grado", "hogar": "Jenyfer Albelo Oliveras", "clase": "Fiordaliza Torres Santa"}, {"tabId": "tab-s-7-2", "code": "7-2", "title": "7-2 · 7mo Grado", "hogar": "Fiordaliza Torres Santa", "clase": ""}, {"tabId": "tab-s-7-4", "code": "7-4", "title": "7-4 · 7mo Grado", "hogar": "Raúl Lugo Rosa", "clase": "Janzel Cruz Otero"}, {"tabId": "tab-s-8-1", "code": "8-1", "title": "8-1 · 8vo Grado", "hogar": "Eduardo Calderón Cordero", "clase": "Yesenia Méndez Hernández"}, {"tabId": "tab-s-8-2", "code": "8-2", "title": "8-2 · 8vo Grado", "hogar": "Stephanie Vargas Maldonado", "clase": ""}, {"tabId": "tab-s-8-3", "code": "8-3", "title": "8-3 · 8vo Grado", "hogar": "Miriam Arocho Repollet", "clase": "Jenyfer Albelo Oliveras"}, {"tabId": "tab-s-pk-ee-autismo", "code": "PK-A", "title": "PK EE Autismo", "hogar": "Gladys Pagán Cosme", "clase": "Doris Milian Torres"}, {"tabId": "tab-s-pk-ee-no-cat", "code": "PK-NC", "title": "PK EE No Categorizado", "hogar": "Keila De Jesús Román", "clase": "Keila De Jesús Román"}, {"tabId": "tab-s-ee-r1-1x1", "code": "R1-1x1", "title": "EE Ruta 1 (Uno a Uno)", "hogar": "Esnelin Barrios", "clase": "Yahaira Jiménez Rodríguez"}, {"tabId": "tab-s-ee-r1-kinder", "code": "R1-K", "title": "EE Ruta 1 (Kínder)", "hogar": "Ada Santiago Otero", "clase": "Doris Milian Torres"}, {"tabId": "tab-s-ee-r1-1ro-red", "code": "R1-1R", "title": "EE Ruta 1 (1ro Reducido)", "hogar": "Vacante", "clase": "Vacante"}, {"tabId": "tab-s-ee-r1-1-2", "code": "R1-12", "title": "EE Ruta 1 (1ro y 2do)", "hogar": "Marta Reyes Afanador", "clase": "Marta Reyes Afanador"}, {"tabId": "tab-s-ee-r1-3-4", "code": "R1-34", "title": "EE Ruta 1 (3ro y 4to)", "hogar": "Vacante", "clase": "Vacante"}, {"tabId": "tab-s-ee-r1-5-6", "code": "R1-56", "title": "EE Ruta 1 (5to y 6to)", "hogar": "Maribel Ortega Santos", "clase": "Maribel Ortega Santos"}, {"tabId": "tab-s-ee-r23-1-2-3", "code": "R23-123", "title": "EE Ruta 2 y 3 (1ro, 2do y 3ro — Autismo)", "hogar": "Elizabeth Rivera Rique", "clase": "Elizabeth Rivera Rique"}, {"tabId": "tab-s-ee-r23-3-4-5", "code": "R23-345", "title": "EE Ruta 2 y 3 (3ro, 4to y 5to)", "hogar": "Karla Maldonado García", "clase": "Karla Maldonado García"}, {"tabId": "tab-s-ee-r1-7-8", "code": "R1-78", "title": "EE Ruta 1 (7mo y 8vo)", "hogar": "Nora Náter Nieves", "clase": ""}], "SCHEDULE": {"A": [{"periodo": "Período 1", "dia": "Lunes", "hora": "8:30–9:20 a.m.", "tipo": "clase", "tabId": "tab-s-8-1", "materia": ""}, {"periodo": "Período 1", "dia": "Martes", "hora": "8:30–9:20 a.m.", "tipo": "clase", "tabId": "tab-s-7-1", "materia": ""}, {"periodo": "Período 1", "dia": "Miércoles", "hora": "8:15–9:00 a.m.", "tipo": "clase", "tabId": "tab-s-6-1", "materia": ""}, {"periodo": "Período 1", "dia": "Jueves", "hora": "8:30–9:20 a.m.", "tipo": "clase", "tabId": "tab-s-5-1", "materia": ""}, {"periodo": "Período 1", "dia": "Viernes", "hora": "8:30–9:20 a.m.", "tipo": "prep", "prepText": "PREP — K"}, {"periodo": "Período 2", "dia": "Lunes", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-8-2", "materia": ""}, {"periodo": "Período 2", "dia": "Martes", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-7-2", "materia": ""}, {"periodo": "Período 2", "dia": "Miércoles", "hora": "1:00–1:45 p.m.", "tipo": "clase", "tabId": "tab-s-6-2", "materia": ""}, {"periodo": "Período 2", "dia": "Jueves", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-5-2", "materia": ""}, {"periodo": "Período 2", "dia": "Viernes", "hora": "12:50–1:40 p.m.", "tipo": "prep", "prepText": "PREP — 1ro-2do"}, {"periodo": "Período 3", "dia": "Lunes", "hora": "1:40–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-8-3", "materia": ""}, {"periodo": "Período 3", "dia": "Martes", "hora": "1:40–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-7-4", "materia": ""}, {"periodo": "Período 3", "dia": "Miércoles", "hora": "1:45–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-6-3", "materia": ""}, {"periodo": "Período 3", "dia": "Jueves", "hora": "1:40–2:30 p.m.", "tipo": "prep", "prepText": "PREP — PK"}, {"periodo": "Período 3", "dia": "Viernes", "hora": "1:40–2:30 p.m.", "tipo": "prep", "prepText": "PREP — 3ro-4to"}], "B": [{"periodo": "Período 1", "dia": "Lunes", "hora": "8:30–9:20 a.m.", "tipo": "clase", "tabId": "tab-s-4-1", "materia": ""}, {"periodo": "Período 1", "dia": "Martes", "hora": "8:30–9:20 a.m.", "tipo": "clase", "tabId": "tab-s-3-1", "materia": ""}, {"periodo": "Período 1", "dia": "Miércoles", "hora": "8:15–9:15 a.m.", "tipo": "clase", "tabId": "tab-s-1-1", "materia": ""}, {"periodo": "Período 1", "dia": "Jueves", "hora": "8:30–9:20 a.m.", "tipo": "clase", "tabId": "tab-s-k-1", "materia": ""}, {"periodo": "Período 1", "dia": "Viernes", "hora": "8:30–9:20 a.m.", "tipo": "prep", "prepText": "PREP — R1-1x1, PK-A y PK-NC"}, {"periodo": "Período 2", "dia": "Lunes", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-4-2", "materia": ""}, {"periodo": "Período 2", "dia": "Martes", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-3-2", "materia": ""}, {"periodo": "Período 2", "dia": "Miércoles", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-1-2", "materia": ""}, {"periodo": "Período 2", "dia": "Jueves", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-k-2", "materia": ""}, {"periodo": "Período 2", "dia": "Viernes", "hora": "12:50–1:40 p.m.", "tipo": "prep", "prepText": "PREP — R1-K, R1-1R, R23-123 y R23-345"}, {"periodo": "Período 3", "dia": "Lunes", "hora": "1:40–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-4-3", "materia": ""}, {"periodo": "Período 3", "dia": "Martes", "hora": "1:40–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-2-1", "materia": ""}, {"periodo": "Período 3", "dia": "Miércoles", "hora": "1:40–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-2-2", "materia": ""}, {"periodo": "Período 3", "dia": "Jueves", "hora": "1:40–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-pk", "materia": ""}, {"periodo": "Período 3", "dia": "Viernes", "hora": "1:40–2:30 p.m.", "tipo": "prep", "prepText": "PREP — R1-12, R1-34, R1-56 y R1-78"}], "C": [{"periodo": "Período 1", "dia": "Lunes", "hora": "8:30–9:20 a.m.", "tipo": "clase", "tabId": "tab-s-ee-r1-1x1", "materia": ""}, {"periodo": "Período 1", "dia": "Martes", "hora": "8:30–9:20 a.m.", "tipo": "clase", "tabId": "tab-s-ee-r1-kinder", "materia": ""}, {"periodo": "Período 1", "dia": "Miércoles", "hora": "8:15–9:15 a.m.", "tipo": "clase", "tabId": "tab-s-ee-r23-3-4-5", "materia": ""}, {"periodo": "Período 1", "dia": "Jueves", "hora": "8:30–9:20 a.m.", "tipo": "clase", "tabId": "tab-s-ee-r1-5-6", "materia": ""}, {"periodo": "Período 1", "dia": "Viernes", "hora": "8:30–9:20 a.m.", "tipo": "prep", "prepText": "PREP — 6to"}, {"periodo": "Período 2", "dia": "Lunes", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-pk-ee-autismo", "materia": ""}, {"periodo": "Período 2", "dia": "Martes", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-ee-r1-1ro-red", "materia": ""}, {"periodo": "Período 2", "dia": "Miércoles", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-ee-r1-1-2", "materia": ""}, {"periodo": "Período 2", "dia": "Jueves", "hora": "12:50–1:40 p.m.", "tipo": "clase", "tabId": "tab-s-ee-r1-7-8", "materia": ""}, {"periodo": "Período 2", "dia": "Viernes", "hora": "12:50–1:40 p.m.", "tipo": "prep", "prepText": "PREP — 7mo"}, {"periodo": "Período 3", "dia": "Lunes", "hora": "1:40–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-pk-ee-no-cat", "materia": ""}, {"periodo": "Período 3", "dia": "Martes", "hora": "1:40–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-ee-r23-1-2-3", "materia": ""}, {"periodo": "Período 3", "dia": "Miércoles", "hora": "1:40–2:30 p.m.", "tipo": "clase", "tabId": "tab-s-ee-r1-3-4", "materia": ""}, {"periodo": "Período 3", "dia": "Jueves", "hora": "1:40–2:30 p.m.", "tipo": "prep", "prepText": "PREP — 5to"}, {"periodo": "Período 3", "dia": "Viernes", "hora": "1:40–2:30 p.m.", "tipo": "prep", "prepText": "PREP — 8vo"}]}}</script>
+<script>
+(function(){
+  var BUNDLE = JSON.parse(document.getElementById('bd-bundle').textContent);
+  var GROUPS = BUNDLE.GROUPS;
+  var GROUP_BY_ID = {};
+  GROUPS.forEach(function(g){ GROUP_BY_ID[g.tabId] = g; });
+  var DAYS = ['Lunes','Martes','Mi\u00e9rcoles','Jueves','Viernes'];
+  var STORAGE_KEY = 'builder-state-v1';
+
+  function colorClassFor(tabId){ return 'c-' + tabId.replace(/^tab-/, ''); }
+
+  function loadState(){
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw) return JSON.parse(raw);
+    } catch(e) {}
+    return JSON.parse(JSON.stringify(BUNDLE.SCHEDULE));
+  }
+  var state = loadState();
+  var currentWeek = 'A';
+  var saveTimer = null;
+
+  function persist(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+    var el = document.getElementById('bd-save-status');
+    el.textContent = 'Guardado \u2713';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ el.textContent = 'Guardado autom\u00e1ticamente'; }, 1500);
+  }
+
+  function groupOptionsHTML(selectedTabId){
+    return GROUPS.map(function(g){
+      var sel = g.tabId === selectedTabId ? ' selected' : '';
+      return '<option value="' + g.tabId + '"' + sel + '>' + g.code + ' \u2014 ' + g.title + '</option>';
+    }).join('');
+  }
+
+  function getCell(week, periodo, dia){
+    var arr = state[week];
+    for(var i=0;i<arr.length;i++){ if(arr[i].periodo===periodo && arr[i].dia===dia) return arr[i]; }
+    return null;
+  }
+
+  function renderCellHTML(cell){
+    if(cell.tipo === 'clase'){
+      var g = GROUP_BY_ID[cell.tabId] || {code:'?', title:'', hogar:'', clase:''};
+      var colorClass = colorClassFor(cell.tabId);
+      return ''
+        + '<div class="bd-field"><label>Hora</label><input type="text" class="bd-in" data-field="hora" value="' + escAttr(cell.hora||'') + '"></div>'
+        + '<div class="bd-field"><label>Tipo</label><select class="bd-in" data-field="tipo">'
+        +   '<option value="clase" selected>Clase</option><option value="prep">Preparaci\u00f3n (PREP)</option>'
+        + '</select></div>'
+        + '<div class="bd-field"><label>Grupo</label><select class="bd-in" data-field="grupo">' + groupOptionsHTML(cell.tabId) + '</select></div>'
+        + '<div class="bd-chip-row"><span class="bd-chip-preview ' + colorClass + '">' + escHTML(g.code) + '</span></div>'
+        + '<div class="bd-field"><label>Materia / actividad</label><input type="text" class="bd-in" data-field="materia" placeholder="ej. MATE, CIEN, Adq. Lengua" value="' + escAttr(cell.materia||'') + '"></div>'
+        + '<div class="bd-field"><label>Maestro/a que da la clase</label><input type="text" class="bd-in" data-field="maestroClase" placeholder="Sin maestro asignado" value="' + escAttr((cell.maestroClase!==undefined? cell.maestroClase : g.clase)||'') + '"></div>'
+        + '<div class="bd-field"><label>Maestro/a Sal\u00f3n Hogar</label><input type="text" class="bd-in" data-field="maestroHogar" value="' + escAttr((cell.maestroHogar!==undefined? cell.maestroHogar : g.hogar)||'') + '"></div>';
+    } else {
+      return ''
+        + '<div class="bd-field"><label>Hora</label><input type="text" class="bd-in" data-field="hora" value="' + escAttr(cell.hora||'') + '"></div>'
+        + '<div class="bd-field"><label>Tipo</label><select class="bd-in" data-field="tipo">'
+        +   '<option value="clase">Clase</option><option value="prep" selected>Preparaci\u00f3n (PREP)</option>'
+        + '</select></div>'
+        + '<div class="bd-field"><label>Texto (PREP)</label><input type="text" class="bd-in" data-field="prepText" placeholder="PREP \u2014 ..." value="' + escAttr(cell.prepText||'') + '"></div>'
+        + '<p class="bd-hint">Las celdas de preparaci\u00f3n no tienen grupo asignado en ese momento.</p>';
+    }
+  }
+
+  function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+  function escHTML(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+  function render(){
+    var grid = document.getElementById('bd-grid');
+    var periodos = ['Per\u00edodo 1','Per\u00edodo 2','Per\u00edodo 3'];
+    var html = '<div></div>';
+    DAYS.forEach(function(d){ html += '<div class="bd-day-head">' + d + '</div>'; });
+    periodos.forEach(function(p){
+      html += '<div class="bd-period-label">' + p + '</div>';
+      DAYS.forEach(function(d){
+        var cell = getCell(currentWeek, p, d);
+        html += '<div class="bd-cell" data-periodo="' + p + '" data-dia="' + d + '">' + renderCellHTML(cell) + '</div>';
+      });
+    });
+    grid.innerHTML = html;
+    attachHandlers();
+  }
+
+  function attachHandlers(){
+    var grid = document.getElementById('bd-grid');
+    grid.querySelectorAll('.bd-cell').forEach(function(cellEl){
+      var periodo = cellEl.getAttribute('data-periodo');
+      var dia = cellEl.getAttribute('data-dia');
+      cellEl.querySelectorAll('.bd-in').forEach(function(input){
+        input.addEventListener('change', function(){ onFieldChange(periodo, dia, input); });
+      });
+    });
+  }
+
+  function onFieldChange(periodo, dia, input){
+    var cell = getCell(currentWeek, periodo, dia);
+    var field = input.getAttribute('data-field');
+    if(field === 'tipo'){
+      if(input.value === 'prep' && cell.tipo !== 'prep'){
+        var nuevo = {periodo:periodo, dia:dia, hora:cell.hora, tipo:'prep', prepText:''};
+        replaceCell(periodo, dia, nuevo);
+        render();
+        persist();
+        return;
+      } else if(input.value === 'clase' && cell.tipo !== 'clase'){
+        var primerGrupo = GROUPS[0];
+        var nuevo2 = {periodo:periodo, dia:dia, hora:cell.hora, tipo:'clase', tabId:primerGrupo.tabId, materia:''};
+        replaceCell(periodo, dia, nuevo2);
+        render();
+        persist();
+        return;
+      }
+      return;
+    }
+    if(field === 'grupo'){
+      cell.tabId = input.value;
+      var g = GROUP_BY_ID[cell.tabId];
+      cell.maestroClase = g.clase || '';
+      cell.maestroHogar = g.hogar || '';
+      cell.materia = '';
+      render();
+      persist();
+      return;
+    }
+    if(field === 'hora'){ cell.hora = input.value; }
+    if(field === 'materia'){ cell.materia = input.value; }
+    if(field === 'maestroClase'){ cell.maestroClase = input.value; }
+    if(field === 'maestroHogar'){ cell.maestroHogar = input.value; }
+    if(field === 'prepText'){ cell.prepText = input.value; }
+    persist();
+  }
+
+  function replaceCell(periodo, dia, nuevaCelda){
+    var arr = state[currentWeek];
+    for(var i=0;i<arr.length;i++){
+      if(arr[i].periodo===periodo && arr[i].dia===dia){ arr[i] = nuevaCelda; return; }
+    }
+  }
+
+  document.getElementById('bd-tabs').addEventListener('click', function(e){
+    var btn = e.target.closest('[data-week]');
+    if(!btn) return;
+    document.querySelectorAll('#bd-tabs .grade-tab').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    currentWeek = btn.getAttribute('data-week');
+    document.getElementById('bd-html-out').hidden = true;
+    render();
+  });
+
+  document.getElementById('bd-reset').addEventListener('click', function(){
+    if(!confirm('\u00bfRestablecer la Semana ' + currentWeek + ' a los valores actuales del sitio? Se perder\u00e1n tus cambios en esta semana.')) return;
+    state[currentWeek] = JSON.parse(JSON.stringify(BUNDLE.SCHEDULE[currentWeek]));
+    render();
+    persist();
+  });
+
+  document.getElementById('bd-export-json').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'horarios-editados.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  });
+
+  function buildWeekHTML(week){
+    var periodos = ['Per\u00edodo 1','Per\u00edodo 2','Per\u00edodo 3'];
+    var out = '<table class="weekly-table">\n<thead><tr><th scope="col">Hora</th>' + DAYS.map(function(d){return '<th scope="col">'+d+'</th>';}).join('') + '</tr></thead>\n<tbody>';
+    periodos.forEach(function(p){
+      out += '<tr><td class=\'wk-slotlabel\'>' + p + '</td>';
+      DAYS.forEach(function(d){
+        var cell = getCell(week, p, d);
+        if(cell.tipo === 'clase'){
+          var g = GROUP_BY_ID[cell.tabId];
+          var colorClass = colorClassFor(cell.tabId);
+          out += '<td class="wk-cell wk-rotation">\n'
+              + '  <span class="wk-hora">' + escHTML(cell.hora) + '</span>\n'
+              + '  <span class="wk-grade">' + escHTML(g.title) + '</span>\n'
+              + '  <div class="wk-rot-chips"><span class="wk-rot-chip ' + colorClass + '">' + escHTML(g.code) + '</span></div>\n'
+              + '</td>';
+        } else {
+          out += '<td class="wk-cell wk-free"><span class="wk-hora">' + escHTML(cell.hora) + '</span><span class="wk-prep-chip">' + escHTML(cell.prepText||'') + '</span></td>';
+        }
+      });
+      out += '</tr>';
+    });
+    out += '\n</tbody>\n</table>';
+    return out;
+  }
+
+  document.getElementById('bd-copy-html').addEventListener('click', function(){
+    var html = buildWeekHTML(currentWeek);
+    var ta = document.getElementById('bd-html-out');
+    ta.value = html;
+    ta.hidden = false;
+    ta.focus();
+    ta.select();
+    var copiado = false;
+    try {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(html);
+        copiado = true;
+      }
+    } catch(e) {}
+    if(!copiado){
+      try { document.execCommand('copy'); } catch(e) {}
+    }
+  });
+
+  // Tema
+  (function(){
+    var btn = document.getElementById('theme-toggle');
+    if(!btn) return;
+    var rootEl = document.documentElement;
+    function syncButton(theme){
+      var isDark = theme === 'dark';
+      btn.setAttribute('aria-pressed', String(isDark));
+      var label = isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+      btn.setAttribute('aria-label', label);
+      btn.setAttribute('title', label);
+    }
+    syncButton(rootEl.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    btn.addEventListener('click', function(){
+      var next = rootEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      rootEl.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch(e) {}
+      syncButton(next);
+    });
+  })();
+
+  render();
+})();
+</script>
+</body>
+</html>
