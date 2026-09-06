@@ -494,7 +494,12 @@ table.weekly-table thead th{
 }
 .panel-head h3{color:var(--tab-fg); margin-bottom:2px;}
 .panel-head p{margin:2px 0; opacity:.92;}
-.panel-meta{font-size:.85rem;}
+.panel-meta{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px;
+  font-size:.85rem; margin:2px 0 0; opacity:.92;
+}
+.panel-meta .pm-item{display:inline-flex; align-items:center; gap:5px; white-space:nowrap;}
+.panel-meta .pm-icon{width:15px; height:15px; flex:none; opacity:.7;}
 .ics-btn{
   margin-top:14px; display:inline-flex; align-items:center; gap:7px;
   font-family:'IBM Plex Mono',monospace; font-size:.78rem; font-weight:600;

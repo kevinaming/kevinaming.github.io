@@ -277,12 +277,7 @@ const I18N_ROLES = [
 const I18N_PHRASES = [
   ['temas del currículo + repaso continuo', 'curriculum topics + ongoing review'],
   ['charlas durante el año', 'sessions during the school year'],
-  ['Se reúne el', 'Meets on'],
-  ['· maestro/a salón hogar:', '· homeroom teacher:'],
-  ['· materia:', '· subject:'],
-  ['· maestro/a que da la clase:', '· class teacher:'],
   ['Por confirmar', 'To be confirmed'],
-  ['· salón ', '· room '],
   ['Todo el día', 'All day'],
   ['Período 1', 'Period 1'],
   ['Período 2', 'Period 2'],
