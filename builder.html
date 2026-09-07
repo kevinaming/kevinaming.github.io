@@ -219,7 +219,8 @@
         + '<div class="bd-field"><label>Tipo</label>' + tipoSelectHTML(cell.tipo) + '</div>'
         + '<div class="bd-field"><label>Grupo</label><select class="bd-in" data-field="grupo">' + groupOptionsHTML(cell.tabId) + '</select></div>'
         + '<div class="bd-chip-row"><span class="bd-chip-preview ' + colorClass + '">' + escHTML(g.code) + '</span></div>'
-        + '<div class="bd-field"><label>Sal\u00f3n de la charla</label><input type="text" class="bd-in" data-field="salon" value="' + escAttr((cell.salon!==undefined? cell.salon : g.salon)||'') + '"></div>';
+        + '<div class="bd-field"><label>Sal\u00f3n de la charla</label><input type="text" class="bd-in" data-field="salon" value="' + escAttr((cell.salon!==undefined? cell.salon : g.salon)||'') + '"></div>'
+        + '<div class="bd-field"><label>N\u00fam. de Estudiantes</label><input type="number" min="0" step="1" class="bd-in" data-field="estudiantes" placeholder="Sin dato" value="' + escAttr(cell.estudiantes!==undefined? cell.estudiantes : '') + '"></div>';
       if(esClasePlena){
         html += '<div class="bd-field"><label>Materia / actividad</label><input type="text" class="bd-in" data-field="materia" placeholder="ej. MATE, CIEN, Adq. Lengua" value="' + escAttr(cell.materia||'') + '"></div>'
           + '<div class="bd-field"><label>Maestro/a que da la clase</label><input type="text" class="bd-in" data-field="maestroClase" placeholder="Sin maestro asignado" value="' + escAttr((cell.maestroClase!==undefined? cell.maestroClase : g.clase)||'') + '"></div>';
@@ -290,7 +291,7 @@
         // De Preparación a Clase/TADO/CP: arranca con el primer grupo de la lista.
         var primerGrupo = GROUPS[0];
         var nuevo2 = {periodo:periodo, dia:dia, hora:cell.hora, tipo:nuevoTipo, tabId:primerGrupo.tabId,
-          materia:'', maestroClase:primerGrupo.clase||'', maestroHogar:primerGrupo.hogar||'', salon:primerGrupo.salon||''};
+          materia:'', maestroClase:primerGrupo.clase||'', maestroHogar:primerGrupo.hogar||'', salon:primerGrupo.salon||'', estudiantes:''};
         replaceCell(periodo, dia, nuevo2);
       }
       render();
@@ -304,6 +305,7 @@
       cell.maestroHogar = g.hogar || '';
       cell.salon = g.salon || '';
       cell.materia = '';
+      cell.estudiantes = '';
       render();
       persist();
       return;
@@ -313,6 +315,7 @@
     if(field === 'materia'){ cell.materia = input.value; }
     if(field === 'maestroClase'){ cell.maestroClase = input.value; }
     if(field === 'maestroHogar'){ cell.maestroHogar = input.value; }
+    if(field === 'estudiantes'){ cell.estudiantes = input.value; }
     if(field === 'prepText'){ cell.prepText = input.value; }
     updateModifiedIndicator(periodo, dia);
     persist();
