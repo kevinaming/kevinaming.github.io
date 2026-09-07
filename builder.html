@@ -118,6 +118,8 @@
 
   <div class="bd-toolbar">
     <button type="button" class="bd-btn" id="bd-export-json">Descargar JSON (las 3 semanas)</button>
+    <button type="button" class="bd-btn bd-btn-ghost" id="bd-import-json">Importar JSON</button>
+    <input type="file" id="bd-import-file" accept="application/json,.json" hidden>
     <button type="button" class="bd-btn bd-btn-ghost" id="bd-copy-html">Copiar HTML de esta semana</button>
     <button type="button" class="bd-btn bd-btn-danger" id="bd-reset">Restablecer esta semana</button>
     <span class="bd-save-status" id="bd-save-status">Guardado automáticamente</span>
@@ -369,6 +371,64 @@
     a.click();
     document.body.removeChild(a);
     setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  });
+
+  // Importar un JSON exportado antes (ej. después de borrar el caché del
+  // navegador) para no tener que reintroducir todo a mano.
+  function validarImportado(data){
+    if(!data || typeof data !== 'object') return 'El archivo no es un JSON válido.';
+    var semanas = ['A','B','C'];
+    for(var i=0;i<semanas.length;i++){
+      var w = semanas[i];
+      if(!Array.isArray(data[w])) return 'Falta la Semana ' + w + ' en el archivo.';
+      for(var j=0;j<data[w].length;j++){
+        var c = data[w][j];
+        if(!c || !c.periodo || !c.dia || !c.tipo) return 'La Semana ' + w + ' tiene un período con datos incompletos.';
+      }
+    }
+    return null;
+  }
+
+  document.getElementById('bd-import-json').addEventListener('click', function(){
+    document.getElementById('bd-import-file').click();
+  });
+
+  document.getElementById('bd-import-file').addEventListener('change', function(e){
+    var file = e.target.files && e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      var parsed;
+      try {
+        parsed = JSON.parse(reader.result);
+      } catch(err){
+        alert('Ese archivo no se pudo leer como JSON.');
+        e.target.value = '';
+        return;
+      }
+      var error = validarImportado(parsed);
+      if(error){
+        alert('No se pudo importar: ' + error);
+        e.target.value = '';
+        return;
+      }
+      if(!confirm('Esto reemplaza las Semanas A, B y C que tienes ahora en este navegador con las del archivo importado. ¿Continuar?')){
+        e.target.value = '';
+        return;
+      }
+      state = parsed;
+      currentWeek = 'A';
+      document.querySelectorAll('#bd-tabs .grade-tab').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-week') === 'A'); });
+      document.getElementById('bd-html-out').hidden = true;
+      render();
+      persist();
+      e.target.value = '';
+      var status = document.getElementById('bd-save-status');
+      status.textContent = 'Importado ✓';
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(function(){ status.textContent = 'Guardado automáticamente'; }, 2000);
+    };
+    reader.readAsText(file);
   });
 
   function buildWeekHTML(week){
