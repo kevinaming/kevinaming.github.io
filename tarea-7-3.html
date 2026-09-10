@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<script>
+(function(){
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored === 'light' || stored === 'dark'
+      ? stored
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+</script>
+<title>Tarea 7-3 — Charla en Canva</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="description" content="Guía de la presentación en Canva para los grupos de 7-3 — Fundamentos de la Alfabetización Digital. Cuántos slides y qué poner en cada uno.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .t7-back{
+    display:inline-block; margin-bottom:20px; font-family:'IBM Plex Mono',monospace;
+    font-size:.82rem; font-weight:600; color:var(--ink-soft); text-decoration:none;
+  }
+  .t7-back:hover{color:var(--teal);}
+
+  .t7-skeleton{
+    list-style:none; margin:0; padding:0; counter-reset:sk;
+    display:grid; gap:10px;
+  }
+  .t7-skeleton li{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:13px 16px 13px 52px; position:relative; box-shadow:var(--shadow);
+    font-size:.94rem;
+  }
+  .t7-skeleton li::before{
+    counter-increment:sk; content:counter(sk);
+    position:absolute; left:12px; top:12px;
+    font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:.8rem; color:#fff;
+    background:var(--teal-btn); width:26px; height:26px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .t7-skeleton li strong{color:var(--teal-deep);}
+
+  .t7-groups{display:grid; gap:22px;}
+  .t7-group{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  .t7-group-head{
+    padding:18px 20px; border-bottom:1px solid var(--line);
+    background:var(--gc-bg);
+  }
+  .t7-group-head .t7-topic{
+    font-family:'Fraunces',serif; font-size:1.15rem; font-weight:600; color:var(--gc-fg);
+    margin:0 0 4px;
+  }
+  .t7-group-head .t7-names{
+    font-family:'IBM Plex Mono',monospace; font-size:.8rem; color:var(--gc-fg); opacity:.85;
+    margin:0;
+  }
+  .t7-group-body{padding:16px 20px 20px;}
+  .t7-group-body > .t7-lead{
+    margin:0 0 14px; font-size:.9rem; color:var(--ink-soft);
+  }
+  ol.t7-slides{
+    margin:0; padding:0; list-style:none; counter-reset:sl; display:grid; gap:9px;
+  }
+  ol.t7-slides li{
+    position:relative; padding:6px 0 6px 40px; font-size:.92rem; border-top:1px solid var(--line);
+  }
+  ol.t7-slides li:first-child{border-top:none;}
+  ol.t7-slides li::before{
+    counter-increment:sl; content:"S" counter(sl);
+    position:absolute; left:0; top:6px;
+    font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:.72rem; color:var(--teal-deep);
+  }
+  ol.t7-slides li strong{color:var(--teal-deep);}
+
+  .t7-note{
+    background:var(--paper-alt); border:1px solid var(--line); border-radius:12px;
+    padding:14px 16px; font-size:.9rem; color:var(--ink-soft); margin-top:10px;
+  }
+  .t7-note strong{color:var(--teal-deep);}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Alfabetización Digital · ANRL</a>
+    <div class="toolbar-buttons">
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Cambiar de tema" title="Cambiar de tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.4"/><path d="M12 19.1v2.4"/><path d="M4.2 4.2l1.7 1.7"/><path d="M18.1 18.1l1.7 1.7"/><path d="M2.5 12h2.4"/><path d="M19.1 12h2.4"/><path d="M4.2 19.8l1.7-1.7"/><path d="M18.1 5.9l1.7-1.7"/></g></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.8A8.6 8.6 0 1 1 9.2 3.8a7 7 0 0 0 11 11z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> Tarea · 7-3 · Fundamentos de la Alfabetización Digital</span>
+    <h1>Tu charla en Canva: cuántos slides y qué poner en cada uno</h1>
+    <p class="subtitle">Cada grupo prepara una presentación en Canva para dar su charla frente a la clase. Aquí está la estructura que deben seguir y, más abajo, una guía slide por slide hecha para el tema de tu grupo.</p>
+    <div class="hero-meta">
+      <div class="item"><div class="label">Formato</div><div class="value">Presentación en Canva</div></div>
+      <div class="item"><div class="label">Slides</div><div class="value">10 (mínimo 8, máximo 12)</div></div>
+      <div class="item"><div class="label">Grupo</div><div class="value">2 estudiantes</div></div>
+      <div class="item"><div class="label">Exposición</div><div class="value">5–7 minutos</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="reglas">
+  <div class="wrap">
+    <a class="t7-back" href="index.html">&larr; Volver al calendario de charlas</a>
+    <div class="section-head">
+      <span class="kicker">Para todos los grupos</span>
+      <h2>Reglas generales</h2>
+      <p>Se aplican igual a los cinco grupos. La nota evalúa que se cumplan.</p>
+    </div>
+    <ul class="method-list">
+      <li><span class="num">1</span><span class="txt"><strong>10 slides.</strong> Puedes tener 8 como mínimo y 12 como máximo. Ni uno solo con un párrafo largo.</span></li>
+      <li><span class="num">2</span><span class="txt"><strong>Máximo ~20 palabras por slide.</strong> El slide es el apoyo visual; lo demás lo explicas hablando, no leyendo.</span></li>
+      <li><span class="num">3</span><span class="txt"><strong>Una imagen por slide</strong> como mínimo, y que se entienda sin ella. Usa las imágenes de Canva o de bancos gratuitos.</span></li>
+      <li><span class="num">4</span><span class="txt"><strong>Letra grande:</strong> títulos 32 pt o más, texto 24 pt o más. Si no se lee desde atrás del salón, no sirve.</span></li>
+      <li><span class="num">5</span><span class="txt"><strong>Los dos exponen.</strong> Repártanse los slides (por ejemplo, uno los slides 1–5 y el otro 6–10) y practíquenlo en voz alta.</span></li>
+      <li><span class="num">6</span><span class="txt"><strong>Mínimo 3 fuentes confiables</strong> (páginas de organizaciones, museos, medios serios — no un video cualquiera). Van en el último slide.</span></li>
+      <li><span class="num">7</span><span class="txt"><strong>Nada de copiar y pegar.</strong> Todo con sus palabras. Si usan IA para investigar, hay que verificarlo y decirlo.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="block alt" id="estructura">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Esqueleto común</span>
+      <h2>Los 10 slides, en orden</h2>
+      <p>Esta es la forma de todas las presentaciones. Cada grupo llena los slides 3 a 7 con el contenido de su tema (guía personalizada abajo).</p>
+    </div>
+    <ol class="t7-skeleton">
+      <li><strong>Portada.</strong> Título del tema, nombres de los dos, "7-3 · Fundamentos de la Alfabetización Digital" y la fecha.</li>
+      <li><strong>La pregunta / el gancho.</strong> ¿Por qué este tema le importa a alguien de tu edad? Una pregunta o dato que enganche.</li>
+      <li><strong>Contenido 1.</strong> La idea base del tema, explicada sencilla.</li>
+      <li><strong>Contenido 2.</strong> Cómo funciona por dentro / los detalles.</li>
+      <li><strong>Contenido 3.</strong> Un ejemplo o caso real y concreto.</li>
+      <li><strong>Contenido 4.</strong> El lado que sorprende: un riesgo, un truco o un dato fuerte.</li>
+      <li><strong>Contenido 5.</strong> Qué hacer con esto: consejos prácticos o el lado positivo.</li>
+      <li><strong>Actividad con el público.</strong> Una pregunta, una mini demostración o un "adivina cuál".</li>
+      <li><strong>Conclusión + opinión del grupo.</strong> Respondan la pregunta del slide 2 y digan qué piensan ustedes.</li>
+      <li><strong>Referencias.</strong> Las 3+ fuentes que usaron, con el nombre de la página.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="block" id="grupos">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Guía por grupo</span>
+      <h2>Qué poner en cada slide, según tu tema</h2>
+      <p>Busca tu grupo. Los slides 1, 2, 8, 9 y 10 siguen el esqueleto de arriba; aquí se detalla lo que cambia para tu tema.</p>
+    </div>
+
+    <div class="t7-groups">
+
+      <article class="t7-group c-s-1-1">
+        <div class="t7-group-head">
+          <p class="t7-topic">Cómo hackear a las personas</p>
+          <p class="t7-names">Kamille Colón Valentín &nbsp;·&nbsp; Jairo Robles Rosa</p>
+        </div>
+        <div class="t7-group-body">
+          <p class="t7-lead">Su tema NO es de computadoras: es de <strong>ingeniería social</strong> — engañar a la persona para que ella misma entregue su información. Ese es el hilo de toda la charla.</p>
+          <ol class="t7-slides">
+            <li><strong>Portada.</strong> Título, sus nombres, "7-3", fecha. Pongan una imagen de un candado o un anzuelo.</li>
+            <li><strong>Gancho.</strong> "Hackear no siempre es con códigos: muchas veces es solo una mentira bien hecha." Pregunta: ¿alguna vez te llegó un mensaje raro de un premio?</li>
+            <li><strong>Qué es la ingeniería social.</strong> Definición en una frase: convencer a alguien de dar su contraseña, su código o su dinero. El "hacker" ataca a la persona, no al aparato.</li>
+            <li><strong>Los trucos más comunes.</strong> Phishing (correos/mensajes falsos), llamadas fingiendo ser el banco, enlaces de "ganaste", perfiles falsos de amigos. Un ícono por cada uno.</li>
+            <li><strong>Por qué caemos.</strong> Juegan con la prisa, el miedo ("tu cuenta será cerrada"), la curiosidad y la confianza en un logo conocido.</li>
+            <li><strong>Un caso real.</strong> Cuenten un ejemplo concreto: robo de una cuenta de Instagram o Roblox, o la estafa del código que "te llegó por error". Qué pasó y qué perdió la persona.</li>
+            <li><strong>Señales de alerta + cómo protegerte.</strong> Errores de ortografía, direcciones raras, te apuran, te piden contraseña o código. Regla de oro: nadie serio te pide tu contraseña; activa la verificación en dos pasos; confirma por otro medio.</li>
+            <li><strong>Actividad.</strong> Muestren dos mensajes lado a lado (uno real, uno falso) y que la clase adivine cuál es la estafa.</li>
+            <li><strong>Conclusión + opinión.</strong> "El eslabón más débil de la seguridad es la persona." Qué aprendieron ustedes y qué van a cambiar.</li>
+            <li><strong>Referencias.</strong> Ej.: página de seguridad de Google, un medio de noticias sobre estafas, una guía de una biblioteca o universidad.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="t7-group c-s-2-1">
+        <div class="t7-group-head">
+          <p class="t7-topic">Qué hace que los videojuegos sean adictivos</p>
+          <p class="t7-names">Johneyshka Alvarez Albelo &nbsp;·&nbsp; Jesuham Otero Torres</p>
+        </div>
+        <div class="t7-group-body">
+          <p class="t7-lead">La idea central: los juegos están <strong>diseñados a propósito</strong> para que quieras seguir jugando. No es solo "falta de fuerza de voluntad".</p>
+          <ol class="t7-slides">
+            <li><strong>Portada.</strong> Título, nombres, "7-3", fecha. Imagen de un control o un celular.</li>
+            <li><strong>Gancho.</strong> "¿Por qué dices 'una partida más' y terminan siendo cinco?" Un dato: cuántas horas juega en promedio alguien de tu edad.</li>
+            <li><strong>El juego está diseñado para eso.</strong> Hay personas cuyo trabajo es hacer que no lo sueltes. Introduzcan la palabra clave: enganche.</li>
+            <li><strong>Las técnicas de diseño.</strong> Recompensas sorpresa (cofres, cajas de botín), rachas diarias, barras de progreso casi llenas, "energía" que se recarga con el tiempo.</li>
+            <li><strong>Qué pasa en el cerebro.</strong> La dopamina y la sensación de recompensa, explicada simple. Las recompensas que no sabes cuándo llegan enganchan más que las fijas.</li>
+            <li><strong>El dinero.</strong> Microtransacciones, pases de batalla, skins y cajas de botín. El FOMO: "si no lo compras hoy, lo pierdes."</li>
+            <li><strong>Señales de alerta + jugar sano.</strong> Pierdes noción del tiempo, te da ansiedad no jugar, afecta el sueño y las tareas. Consejos: límite de tiempo, apagar notificaciones, no gastar sin permiso, otras actividades.</li>
+            <li><strong>Actividad.</strong> Encuesta rápida a mano alzada: ¿cuántas horas al día juegas? Muestren el resultado del salón.</li>
+            <li><strong>Conclusión + opinión.</strong> ¿Los videojuegos son malos? Su postura (probablemente: no son malos, pero hay que saber cómo te están enganchando).</li>
+            <li><strong>Referencias.</strong> Ej.: artículo de una universidad o museo de ciencia sobre dopamina y juegos, guía de una organización de salud, un medio serio sobre loot boxes.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="t7-group c-s-3-1">
+        <div class="t7-group-head">
+          <p class="t7-topic">Inteligencia Artificial, ¿amiga o enemiga?</p>
+          <p class="t7-names">Diego Ramos Milian &nbsp;·&nbsp; Celyann Sánchez Pérez</p>
+        </div>
+        <div class="t7-group-body">
+          <p class="t7-lead">La charla es un <strong>debate</strong>: presenten los dos lados de forma justa y al final den su respuesta con argumentos.</p>
+          <ol class="t7-slides">
+            <li><strong>Portada.</strong> Título con el signo de pregunta, nombres, "7-3", fecha.</li>
+            <li><strong>Gancho.</strong> "Hoy ya usaste IA sin darte cuenta." Ejemplos: recomendaciones de YouTube/TikTok, filtros, autocorrector, asistentes de voz.</li>
+            <li><strong>Qué es la IA.</strong> Definición sencilla: programas que aprenden de muchísimos ejemplos para reconocer patrones y responder. No "piensa" ni "siente" como un humano.</li>
+            <li><strong>Cómo aprende.</strong> Se entrena con millones de textos o imágenes; imita lo que vio. Por eso puede equivocarse o inventar cosas ("alucina").</li>
+            <li><strong>La IA como amiga.</strong> Ayuda en medicina, traduce idiomas, apoya a personas con discapacidad, ayuda a estudiar y a crear. Un ejemplo concreto de cada.</li>
+            <li><strong>La IA como enemiga.</strong> Deepfakes, noticias falsas, hacer la tarea por ti y no aprender, copiar el estilo de artistas, usar tus datos, dar respuestas con prejuicios.</li>
+            <li><strong>Caso para pensar + uso responsable.</strong> Muestren un deepfake o una noticia falsa hecha con IA y cómo detectarla. Reglas: verificar lo que dice, no dar datos personales, usarla como ayuda y no como reemplazo, dar crédito.</li>
+            <li><strong>Actividad.</strong> "¿Humano o IA?": muestren dos imágenes o dos textos y que la clase adivine cuál lo hizo la IA.</li>
+            <li><strong>Conclusión + opinión.</strong> Su respuesta: ¿amiga o enemiga? (probablemente "depende de cómo se use") y qué opina cada uno.</li>
+            <li><strong>Referencias.</strong> Ej.: página educativa de un museo de ciencia o universidad, un medio de tecnología serio, una guía sobre deepfakes.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="t7-group c-s-4-1">
+        <div class="t7-group-head">
+          <p class="t7-topic">¿El misterio del internet?</p>
+          <p class="t7-names">Yeray Naim Chevere Rivera &nbsp;·&nbsp; Keilianys Torres Cruz</p>
+        </div>
+        <div class="t7-group-body">
+          <p class="t7-lead">El "misterio" que van a resolver: <strong>¿qué pasa realmente cuando abres un video o un mensaje?</strong> Internet no es "una nube": son cables y máquinas reales.</p>
+          <ol class="t7-slides">
+            <li><strong>Portada.</strong> Título, nombres, "7-3", fecha. Imagen de un mapa de cables o un planeta con líneas.</li>
+            <li><strong>Gancho.</strong> Planteen el misterio: "Le das play a un video y en un segundo aparece. ¿De dónde salió y por dónde viajó?"</li>
+            <li><strong>Qué es internet de verdad.</strong> Millones de aparatos conectados por cables — incluidos cables gigantes bajo el mar — y por servidores. La "nube" es la computadora de otra persona.</li>
+            <li><strong>El viaje de un mensaje.</strong> Tu celular → router → tu proveedor → el servidor → y de regreso. La información se parte en "paquetes" y cada aparato tiene una dirección (IP).</li>
+            <li><strong>La web no es lo mismo que internet.</strong> El navegador, las páginas y los enlaces son "la web", que va POR internet. Qué es una URL y el DNS (la agenda que traduce el nombre a un número).</li>
+            <li><strong>Quién guarda todo.</strong> Centros de datos enormes, las cookies, tu huella digital. Lo que subes no se borra tan fácil como parece.</li>
+            <li><strong>Navegar seguro + dato sorprendente.</strong> El candado/HTTPS, cuidado con el wifi público, qué compartes. Dato fuerte: cuántos datos se suben por minuto, o cuánto tarda la luz en cruzar un cable submarino.</li>
+            <li><strong>Actividad.</strong> Muestren un mapa real de cables submarinos y pregunten a la clase por dónde creen que llega el internet a Puerto Rico.</li>
+            <li><strong>Conclusión + opinión.</strong> El misterio resuelto en una frase. Qué fue lo que más les sorprendió al investigar.</li>
+            <li><strong>Referencias.</strong> Ej.: mapa de cables submarinos (TeleGeography), página educativa sobre cómo funciona internet, un medio de tecnología.</li>
+          </ol>
+        </div>
+      </article>
+
+      <article class="t7-group c-s-5-1">
+        <div class="t7-group-head">
+          <p class="t7-topic">¿Cómo se hacen los efectos especiales?</p>
+          <p class="t7-names">Adriana Cortés Vázquez &nbsp;·&nbsp; Daniella Otero Reyes</p>
+        </div>
+        <div class="t7-group-body">
+          <p class="t7-lead">La idea que organiza todo: hay <strong>dos grandes familias</strong> de efectos — los prácticos (de verdad, en el set) y los digitales (hechos en computadora, CGI/VFX). Casi toda película mezcla las dos.</p>
+          <ol class="t7-slides">
+            <li><strong>Portada.</strong> Título, nombres, "7-3", fecha. Imagen de una pantalla verde o una escena de película.</li>
+            <li><strong>Gancho.</strong> Muestren una escena famosa y pregunten: "¿Qué de esto es real y qué es computadora?"</li>
+            <li><strong>Efectos prácticos.</strong> Maquetas y miniaturas, maquillaje y prótesis, explosiones controladas, dobles de riesgo. Un ejemplo de película para cada uno.</li>
+            <li><strong>La pantalla verde (chroma key).</strong> Por qué se usa verde, cómo la computadora borra ese color y pone otro fondo detrás del actor.</li>
+            <li><strong>CGI y captura de movimiento.</strong> Trajes con puntos que graban cómo se mueve un actor para convertirlo en un personaje digital. Modelado 3D e iluminación.</li>
+            <li><strong>Cómo se arma una toma paso a paso.</strong> Rodaje → quitar el fondo → añadir elementos digitales → luces y sombras → render final. Enséñenlo como una línea de tiempo.</li>
+            <li><strong>Antes / después + hazlo tú.</strong> Dos o tres imágenes de una escena con y sin efectos. Apps sencillas para probar en el celular (CapCut, pantalla verde casera con una sábana).</li>
+            <li><strong>Actividad.</strong> Muestren un "antes/después" tapado y que la clase adivine qué se añadió por computadora.</li>
+            <li><strong>Conclusión + opinión.</strong> ¿Los efectos "engañan" al público o "ayudan a contar la historia"? Qué opina cada una.</li>
+            <li><strong>Referencias.</strong> Ej.: canal o página de un estudio de efectos, artículo de un museo del cine, un medio serio sobre cine.</li>
+          </ol>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="t7-note">
+      <strong>Antes de exponer:</strong> practiquen la charla completa en voz alta al menos una vez, con reloj. Si pasa de 7 minutos, quiten texto de los slides — no lo lean.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; <span id="copyright-year">2026</span> Escuela Arianys Nicole Rosa Luquis. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('copyright-year').textContent = new Date().getFullYear();
+  (function(){
+    var btn = document.getElementById('theme-toggle');
+    if(!btn) return;
+    function current(){ return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+    function sync(){ btn.setAttribute('aria-pressed', current() === 'dark' ? 'true' : 'false'); }
+    sync();
+    btn.addEventListener('click', function(){
+      var next = current() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch(e){}
+      sync();
+    });
+  })();
+</script>
+</body>
+</html>
