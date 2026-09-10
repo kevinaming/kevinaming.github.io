@@ -418,13 +418,17 @@ function getAllSessions(){
     // Para salones con formato "código · Grado" (ej. "8-1 · 8vo Grado") basta el código;
     // los nombres de rutas de EE no tienen ese separador y se muestran completos.
     const gradeText = gradeFull.includes(' · ') ? gradeFull.split(' · ')[0] : gradeFull;
-    const metaText = panel.querySelector('.panel-meta')?.textContent || '';
-    // Puede haber varias apariciones de "salón"/"room" en la ficha (ej. "maestro/a
-    // salón hogar:" o "homeroom teacher:"); el salón real siempre es la última,
-    // así que tomamos esa. La palabra debe empezar tras un espacio/inicio (no
-    // "room" dentro de "homeroom").
-    const roomMatches = [...metaText.matchAll(/(?:^|\s)(?:salón|room)\s+(\S+)/gi)];
-    const room = roomMatches.length ? roomMatches[roomMatches.length - 1][1] : '';
+    // La ficha usa una fila de íconos; el 2º dato (ícono de puerta) es siempre
+    // el salón de la charla. Orden fijo: fecha/hora · salón · nº estudiantes ·
+    // maestro/a salón hogar · materia · maestro/a que da la clase.
+    const metaItems = panel.querySelectorAll('.panel-meta .pm-item');
+    let room = metaItems.length > 1 ? metaItems[1].textContent.trim() : '';
+    if(!room){
+      // Compatibilidad con el formato viejo de texto ("… salón X …").
+      const metaText = panel.querySelector('.panel-meta')?.textContent || '';
+      const roomMatches = [...metaText.matchAll(/(?:^|\s)(?:salón|room)\s+(\S+)/gi)];
+      room = roomMatches.length ? roomMatches[roomMatches.length - 1][1] : '';
+    }
     panel.querySelectorAll('.grade-table tbody tr').forEach(row=>{
       const fechaCell = row.querySelector('.col-fecha');
       const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
