@@ -449,6 +449,26 @@ function getAllSessions(){
   return sessions;
 }
 
+/* Días con las charlas canceladas (formato 'AAAA-MM-DD'). Solo afecta el modo
+   Pizarra: ese día muestra un aviso de cancelación en vez de la lista de
+   charlas. Agrega la fecha para activarlo y quítala cuando el horario ya
+   esté reacomodado — el horario y los datos de las charlas no cambian. */
+const CANCELLED_DAYS = new Set(['2026-09-22']);
+
+function cancelledNoticeHTML(lang){
+  const title = lang === 'en'
+    ? 'TODAY’S SESSIONS ARE CANCELLED'
+    : 'LAS CHARLAS DE HOY QUEDAN CANCELADAS';
+  const sub = lang === 'en'
+    ? 'They will be rescheduled over the coming days.'
+    : 'Se estarán reacomodando en los próximos días.';
+  return `<div class="pizarra-cancel">
+    <svg class="pizarra-cancel-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.2 22.3 21H1.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.6v5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.15" fill="currentColor"/></svg>
+    <div class="pizarra-cancel-title">${title}</div>
+    <div class="pizarra-cancel-sub">${sub}</div>
+  </div>`;
+}
+
 function dayKey(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
 
 function getTargetDaySessions(){
@@ -621,6 +641,10 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     const content = document.getElementById('pizarra-content');
     if(!content) return;
     const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    if(CANCELLED_DAYS.has(dayKey(new Date()))){
+      content.innerHTML = cancelledNoticeHTML(lang);
+      return;
+    }
     const info = getTargetDaySessions();
     if(!info){
       content.innerHTML = `<div class="pizarra-date">${lang === 'en' ? 'No more sessions this school year' : 'No quedan más charlas este año escolar'}</div>`;
