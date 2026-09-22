@@ -455,18 +455,26 @@ function getAllSessions(){
    esté reacomodado — el horario y los datos de las charlas no cambian. */
 const CANCELLED_DAYS = new Set(['2026-09-22']);
 
+const CANCEL_ICON_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.2 22.3 21H1.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.6v5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.15" fill="currentColor"/></svg>';
+
+function cancelledTexts(lang){
+  return {
+    title: lang === 'en' ? 'TODAY’S SESSIONS ARE CANCELLED' : 'LAS CHARLAS DE HOY QUEDAN CANCELADAS',
+    sub: lang === 'en' ? 'They will be rescheduled over the coming days.' : 'Se estarán reacomodando en los próximos días.',
+  };
+}
+
 function cancelledNoticeHTML(lang){
-  const title = lang === 'en'
-    ? 'TODAY’S SESSIONS ARE CANCELLED'
-    : 'LAS CHARLAS DE HOY QUEDAN CANCELADAS';
-  const sub = lang === 'en'
-    ? 'They will be rescheduled over the coming days.'
-    : 'Se estarán reacomodando en los próximos días.';
-  return `<div class="pizarra-cancel">
-    <svg class="pizarra-cancel-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.2 22.3 21H1.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.6v5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.15" fill="currentColor"/></svg>
+  const { title, sub } = cancelledTexts(lang);
+  return `<div class="pizarra-cancel">${CANCEL_ICON_SVG.replace('<svg ', '<svg class="pizarra-cancel-icon" ')}
     <div class="pizarra-cancel-title">${title}</div>
     <div class="pizarra-cancel-sub">${sub}</div>
   </div>`;
+}
+
+function cancelledBannerHTML(lang){
+  const { title, sub } = cancelledTexts(lang);
+  return `<div class="today-banner-cancel">${CANCEL_ICON_SVG.replace('<svg ', '<svg class="today-banner-cancel-icon" ')}<div><strong class="today-banner-cancel-title">${title}</strong><p class="today-banner-cancel-sub">${sub}</p></div></div>`;
 }
 
 function dayKey(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
@@ -526,6 +534,22 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     const pzBtn = document.getElementById('pizarra-open');
     const firstReveal = el.hidden || (pzBtn && pzBtn.hidden);
     const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+
+    if(CANCELLED_DAYS.has(dayKey(new Date()))){
+      el.innerHTML = cancelledBannerHTML(lang);
+      el.classList.remove('is-today');
+      el.classList.add('is-cancelled');
+      if(firstReveal){
+        fadeIn(el);
+        if(pzBtn) fadeIn(pzBtn);
+      } else {
+        el.hidden = false;
+        if(pzBtn) pzBtn.hidden = false;
+      }
+      return;
+    }
+    el.classList.remove('is-cancelled');
+
     const info = getTargetDaySessions();
     if(!info){ el.hidden = true; el.innerHTML = ''; return; }
     const { targetSessions, isToday } = info;

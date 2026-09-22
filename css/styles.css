@@ -243,6 +243,22 @@ a{color:var(--teal);}
   font-family:'IBM Plex Mono',monospace; font-size:.65rem; font-weight:700; letter-spacing:.04em;
   color:#fff; background:var(--teal-btn); padding:2px 7px; border-radius:999px; flex:none;
 }
+.today-banner.is-cancelled{
+  border-color:var(--danger);
+  background:linear-gradient(135deg, rgba(192,57,43,0.14), rgba(192,57,43,0.05));
+  animation:today-banner-cancel-flash 2.2s ease-in-out infinite;
+}
+.today-banner-cancel{display:flex; align-items:center; gap:12px;}
+.today-banner-cancel-icon{width:30px; height:30px; color:var(--danger); flex:none;}
+.today-banner-cancel-title{display:block; color:var(--danger-deep); font-size:.95rem;}
+.today-banner-cancel-sub{margin:2px 0 0; color:var(--ink-soft); font-size:.82rem;}
+@keyframes today-banner-cancel-flash{
+  0%, 100%{ box-shadow:0 0 0 0 rgba(192,57,43,0.3); }
+  50%{ box-shadow:0 0 0 8px rgba(192,57,43,0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .today-banner.is-cancelled{ animation:none; }
+}
 
 /* ---------- Modo pizarra ---------- */
 .pizarra{
