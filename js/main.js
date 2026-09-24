@@ -410,7 +410,7 @@ function fmtFechaLarga(year, month, day, lang){
 })();
 
 /* ---------- Sesiones del día (compartido por el aviso y el modo pizarra) ---------- */
-function getAllSessions(){
+function getAllSessions(applyOverrides){
   const sessions = [];
   document.querySelectorAll('.tab-panel').forEach(panel=>{
     const gradeEl = panel.querySelector('.panel-head h3');
@@ -445,9 +445,23 @@ function getAllSessions(){
       });
     });
   });
+  if(applyOverrides){
+    sessions.forEach(s=>{
+      const o = PIZARRA_OVERRIDES[`${dayKey(s.start)}|${s.grade}`];
+      if(!o) return;
+      s.start = new Date(s.start.getFullYear(), s.start.getMonth(), s.start.getDate(), o[0][0], o[0][1]);
+      s.end = new Date(s.end.getFullYear(), s.end.getMonth(), s.end.getDate(), o[1][0], o[1][1]);
+    });
+  }
   sessions.sort((a,b)=> a.start - b.start);
   return sessions;
 }
+
+/* Cambios de horario puntuales que solo se ven en el modo Pizarra. Clave:
+   'AAAA-MM-DD|grupo' -> [[hora, min] inicio, [hora, min] fin]. */
+const PIZARRA_OVERRIDES = {
+  '2026-09-24|5-1': [[13, 30], [14, 30]],
+};
 
 /* Días con las charlas canceladas (formato 'AAAA-MM-DD'). Solo afecta el modo
    Pizarra: ese día muestra un aviso de cancelación en vez de la lista de
@@ -479,8 +493,8 @@ function cancelledBannerHTML(lang){
 
 function dayKey(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
 
-function getTargetDaySessions(){
-  const sessions = getAllSessions();
+function getTargetDaySessions(applyOverrides){
+  const sessions = getAllSessions(applyOverrides);
   const now = new Date();
   const todayKey = dayKey(now);
   let todaySessions = sessions.filter(s => dayKey(s.start) === todayKey);
@@ -669,7 +683,7 @@ function sessionItemsHTML(targetSessions, lang, prefix){
       content.innerHTML = cancelledNoticeHTML(lang);
       return;
     }
-    const info = getTargetDaySessions();
+    const info = getTargetDaySessions(true);
     if(!info){
       content.innerHTML = `<div class="pizarra-date">${lang === 'en' ? 'No more sessions this school year' : 'No quedan más charlas este año escolar'}</div>`;
       return;
