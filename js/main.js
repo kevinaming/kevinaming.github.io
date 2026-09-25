@@ -429,7 +429,11 @@ function getAllSessions(applyOverrides){
       const roomMatches = [...metaText.matchAll(/(?:^|\s)(?:salón|room)\s+(\S+)/gi)];
       room = roomMatches.length ? roomMatches[roomMatches.length - 1][1] : '';
     }
+    const titleByNum = {};
     panel.querySelectorAll('.grade-table tbody tr').forEach(row=>{
+      const numText = row.querySelector('.col-num')?.textContent.trim();
+      const tituloRow = row.querySelector('.col-tema strong');
+      if(numText && tituloRow) titleByNum[numText] = tituloRow.childNodes[0].textContent.trim();
       const fechaCell = row.querySelector('.col-fecha');
       const fechaText = fechaCell ? fechaCell.childNodes[0].textContent.trim() : '';
       const horaText = row.querySelector('.col-hora')?.textContent.trim();
@@ -444,6 +448,14 @@ function getAllSessions(applyOverrides){
         grade: gradeText, room, title: titulo,
       });
     });
+    // Charlas extra de un día puntual (reposiciones): mismo salón y tema que la charla indicada.
+    EXTRA_SESSIONS.filter(x => x.grade === gradeText).forEach(x=>{
+      sessions.push({
+        start: new Date(x.date[0], x.date[1], x.date[2], x.from[0], x.from[1]),
+        end: new Date(x.date[0], x.date[1], x.date[2], x.to[0], x.to[1]),
+        grade: gradeText, room, title: titleByNum[x.num] || '',
+      });
+    });
   });
   if(applyOverrides){
     sessions.forEach(s=>{
@@ -456,6 +468,14 @@ function getAllSessions(applyOverrides){
   sessions.sort((a,b)=> a.start - b.start);
   return sessions;
 }
+
+/* Charlas de reposición en un día puntual: se ven en el aviso de la portada y en
+   la Pizarra, y desaparecen solas al terminar. date = [año, mes(0-11), día];
+   num = número de la charla del grupo cuyo tema se dicta. */
+const EXTRA_SESSIONS = [
+  { date: [2026, 8, 25], grade: '8-2', from: [12, 50], to: [13, 40], num: '2' },
+  { date: [2026, 8, 25], grade: '8-3', from: [13, 40], to: [14, 30], num: '2' },
+];
 
 /* Cambios de horario puntuales que solo se ven en el modo Pizarra. Clave:
    'AAAA-MM-DD|grupo' -> [[hora, min] inicio, [hora, min] fin]. */
