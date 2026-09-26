@@ -1,11 +1,11 @@
-# Calendario de Charlas de Alfabetización Digital 2026–2027
+# Calendario de Talleres de Alfabetización Digital 2026–2027
 
 Sitio web estático — sin backend, sin base de datos, sin servicios que requieran autenticación. Todo el contenido (calendario, horario, almanaque, buscador) vive en archivos HTML, CSS y JavaScript planos.
 
 ## Estructura del proyecto
 
 ```
-charlas-alfabetizacion-digital/
+Workshop/
 ├── index.html          ← página principal
 ├── css/
 │   └── styles.css      ← todos los estilos
@@ -27,7 +27,7 @@ La única dependencia externa es la hoja de tipografías de Google Fonts (Fraunc
    ```bash
    git init
    git add .
-   git commit -m "Publicar calendario de charlas de alfabetización digital"
+   git commit -m "Publicar calendario de talleres de alfabetización digital"
    git branch -M main
    git remote add origin https://github.com/<tu-usuario>/<tu-repositorio>.git
    git push -u origin main
@@ -43,7 +43,7 @@ La única dependencia externa es la hoja de tipografías de Google Fonts (Fraunc
 Como el sitio usa rutas relativas (`css/styles.css`, `js/data.js`, `js/main.js`), basta con abrir `index.html` directamente en el navegador — no hace falta servidor. Si prefieres simular exactamente cómo se verá en GitHub Pages, puedes levantar un servidor simple:
 
 ```bash
-cd charlas-alfabetizacion-digital
+cd Workshop
 python3 -m http.server 8000
 ```
 

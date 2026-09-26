@@ -157,7 +157,7 @@ body.sch-fs-active .sch-sync-row{
 
 <section class="block" id="hoy">
   <div class="wrap">
-    <a class="sch-back" href="index.html">&larr; Volver al calendario de charlas</a>
+    <a class="sch-back" href="index.html">&larr; Volver al calendario de talleres</a>
     <div class="section-head">
       <span class="kicker">En vivo</span>
       <h2>Tu horario de hoy</h2>
@@ -181,7 +181,7 @@ body.sch-fs-active .sch-sync-row{
     <div class="section-head">
       <span class="kicker">Referencia</span>
       <h2>Tu horario por semana</h2>
-      <p>Los períodos de charla muestran el grupo o la preparación que corresponde a cada semana del ciclo de 3 semanas.</p>
+      <p>Los períodos de taller muestran el grupo o la preparación que corresponde a cada semana del ciclo de 3 semanas.</p>
     </div>
 
     <div class="tabs-nav" id="sch-week-tabs">
@@ -254,7 +254,7 @@ body.sch-fs-active .sch-sync-row{
     </div>
 
     <div class="sch-legend">
-      <span class="lg"><span class="sw sch-sw-class"></span> Clase / ruta / charla</span>
+      <span class="lg"><span class="sw sch-sw-class"></span> Clase / ruta / taller</span>
       <span class="lg"><span class="sw sch-sw-lunch"></span> Almuerzo</span>
       <span class="lg"><span class="sw sch-sw-break"></span> TADO</span>
     </div>
@@ -497,7 +497,7 @@ body.sch-fs-active .sch-sync-row{
       }
       if(isDoneNow){ cls = 'is-done'; }
       else if(isCurrent){ cls = 'is-current'; badge = '<span class="tb-now">AHORA</span>'; }
-      else if(!nextMarked){ cls = 'is-next'; badge = '<span class="tb-next-badge">PRÓXIMA</span>'; nextMarked = true; }
+      else if(!nextMarked){ cls = 'is-next'; badge = '<span class="tb-next-badge">PRÓXIMO</span>'; nextMarked = true; }
       else { cls = 'is-later'; }
       var grade = formatCode(abbreviateFixed(p.actividad));
       // Compacto: solo el código corto, sin la descripción larga al lado
@@ -540,7 +540,7 @@ body.sch-fs-active .sch-sync-row{
           var tr = document.createElement('tr');
           var tdLabel = document.createElement('td');
           tdLabel.className = 'wk-slotlabel';
-          tdLabel.textContent = p.kind === 'var' ? ('Charla ' + (p.slot + 1)) : abbreviateFixed(p.actividad);
+          tdLabel.textContent = p.kind === 'var' ? ('Taller ' + (p.slot + 1)) : abbreviateFixed(p.actividad);
           tr.appendChild(tdLabel);
           dias.forEach(function(day){
             var td = document.createElement('td');

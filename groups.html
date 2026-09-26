@@ -18,7 +18,7 @@
 </script>
 <title>Grupos y Grados — Kevin García</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="description" content="Organización de grados, grupos y grupos de charla, año escolar 2026-2027. Escuela Arianys Nicole Rosa Luquis.">
+<meta name="description" content="Organización de grados, grupos y grupos de taller, año escolar 2026-2027. Escuela Arianys Nicole Rosa Luquis.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -91,7 +91,7 @@
   <div class="wrap">
     <span class="eyebrow"><span class="dot"></span> Uso interno · Año escolar 2026&ndash;2027</span>
     <h1>Grupos y Grados</h1>
-    <p class="subtitle">Organización de salones, maestros(as) y grupos de charla — editable.</p>
+    <p class="subtitle">Organización de salones, maestros(as) y grupos de taller — editable.</p>
     <div class="hero-meta">
       <div class="item"><div class="label">Maestro</div><div class="value">Kevin García</div></div>
       <div class="item"><div class="label">Puesto</div><div class="value">Maestro Recurso — Uso de la Computadora</div></div>
@@ -102,10 +102,10 @@
 
 <section class="block" id="grupos">
   <div class="wrap">
-    <a class="sch-back" href="index.html">&larr; Volver al calendario de charlas</a>
+    <a class="sch-back" href="index.html">&larr; Volver al calendario de talleres</a>
     <div class="section-head">
       <span class="kicker">Organización</span>
-      <h2>Grados, salones y grupos de charla</h2>
+      <h2>Grados, salones y grupos de taller</h2>
       <p>Edita cualquier celda directamente. Usa las flechas para reordenar filas y la papelera para eliminarlas. Los cambios se guardan automáticamente en este navegador.</p>
     </div>
     <div class="grp-toolbar">
@@ -124,7 +124,7 @@
             <th scope="col">Maestro(a) Salón Hogar</th>
             <th scope="col">Salón</th>
             <th scope="col">Est.</th>
-            <th scope="col">Grupo de Charla</th>
+            <th scope="col">Grupo de Taller</th>
             <th scope="col">Nivel</th>
             <th scope="col"></th>
           </tr>
@@ -227,7 +227,7 @@
   function updateSummary(){
     var total = rows.reduce(function(sum, r){ return sum + (parseInt(r.estudiantes,10) || 0); }, 0);
     var grupos = rows.filter(function(r){ return r.grupo && r.grupo.trim(); }).length;
-    document.getElementById('grp-summary').textContent = rows.length + ' filas · ' + grupos + ' grupos de charla · ' + total + ' estudiantes';
+    document.getElementById('grp-summary').textContent = rows.length + ' filas · ' + grupos + ' grupos de taller · ' + total + ' estudiantes';
   }
 
   function renderTable(){
@@ -354,7 +354,7 @@
     });
 
     document.getElementById('grp-export-csv').addEventListener('click', function(){
-      var header = ['Clasificación','Grado/Grupo','Maestro(a) Salón Hogar','Salón','Núm. de Estudiantes','Grupos de Charlas','Nivel'];
+      var header = ['Clasificación','Grado/Grupo','Maestro(a) Salón Hogar','Salón','Núm. de Estudiantes','Grupos de Talleres','Nivel'];
       var lines = [header.join(',')];
       rows.forEach(function(r){
         lines.push([r.clasificacion, r.grado, r.maestro, r.salon, r.estudiantes, r.grupo, r.nivel].map(csvEscape).join(','));

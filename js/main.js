@@ -160,10 +160,10 @@ function fmtFechaLarga(year, month, day, lang){
   return `${DIAS_ES[dow]}, ${day} de ${MESES_ES_ARR[month]}`;
 }
 
-/* ---------- 00c · Exportar charlas a .ics (Google Calendar / Outlook / Apple) ---------- */
+/* ---------- 00c · Exportar talleres a .ics (Google Calendar / Outlook / Apple) ---------- */
 (function(){
   const ICS_LABEL = { es: 'Agregar al calendario (.ics)', en: 'Add to calendar (.ics)' };
-  const ICS_PREFIX = { es: 'Charla de Alfabetización Digital', en: 'Digital Literacy Session' };
+  const ICS_PREFIX = { es: 'Taller de Alfabetización Digital', en: 'Digital Literacy Workshop' };
 
   function fmtICSDateTime(year, month, day, h, min){
     return `${year}${pad2(month+1)}${pad2(day)}T${pad2(h)}${pad2(min)}00`;
@@ -182,7 +182,7 @@ function fmtFechaLarga(year, month, day, lang){
   }
   function slugify(s){
     return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-      .toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'charlas';
+      .toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'talleres';
   }
 
   function exportPanelToICS(panel){
@@ -229,7 +229,7 @@ function fmtFechaLarga(year, month, day, lang){
     const ics = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//ANRL//Calendario de Charlas de Alfabetizacion Digital//ES',
+      'PRODID:-//ANRL//Calendario de Talleres de Alfabetizacion Digital//ES',
       'CALSCALE:GREGORIAN',
       ...events,
       'END:VCALENDAR'
@@ -239,7 +239,7 @@ function fmtFechaLarga(year, month, day, lang){
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `charlas-${slugify(gradeText)}.ics`;
+    a.download = `talleres-${slugify(gradeText)}.ics`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -419,7 +419,7 @@ function getAllSessions(applyOverrides){
     // los nombres de rutas de EE no tienen ese separador y se muestran completos.
     const gradeText = gradeFull.includes(' · ') ? gradeFull.split(' · ')[0] : gradeFull;
     // La ficha usa una fila de íconos; el 2º dato (ícono de puerta) es siempre
-    // el salón de la charla. Orden fijo: fecha/hora · salón · nº estudiantes ·
+    // el salón del taller. Orden fijo: fecha/hora · salón · nº estudiantes ·
     // maestro/a salón hogar · materia · maestro/a que da la clase.
     const metaItems = panel.querySelectorAll('.panel-meta .pm-item');
     let room = metaItems.length > 1 ? metaItems[1].textContent.trim() : '';
@@ -448,7 +448,7 @@ function getAllSessions(applyOverrides){
         grade: gradeText, room, title: titulo,
       });
     });
-    // Charlas extra de un día puntual (reposiciones): mismo salón y tema que la charla indicada.
+    // Talleres extra de un día puntual (reposiciones): mismo salón y tema que el taller indicado.
     EXTRA_SESSIONS.filter(x => x.grade === gradeText).forEach(x=>{
       sessions.push({
         start: new Date(x.date[0], x.date[1], x.date[2], x.from[0], x.from[1]),
@@ -469,9 +469,9 @@ function getAllSessions(applyOverrides){
   return sessions;
 }
 
-/* Charlas de reposición en un día puntual: se ven en el aviso de la portada y en
+/* Talleres de reposición en un día puntual: se ven en el aviso de la portada y en
    la Pizarra, y desaparecen solas al terminar. date = [año, mes(0-11), día];
-   num = número de la charla del grupo cuyo tema se dicta. */
+   num = número del taller del grupo cuyo tema se dicta. */
 const EXTRA_SESSIONS = [
   { date: [2026, 8, 25], grade: '8-2', from: [12, 50], to: [13, 40], num: '2' },
   { date: [2026, 8, 25], grade: '8-3', from: [13, 40], to: [14, 30], num: '2' },
@@ -483,17 +483,17 @@ const PIZARRA_OVERRIDES = {
   '2026-09-24|5-1': [[13, 30], [14, 30]],
 };
 
-/* Días con las charlas canceladas (formato 'AAAA-MM-DD'). Solo afecta el modo
+/* Días con los talleres cancelados (formato 'AAAA-MM-DD'). Solo afecta el modo
    Pizarra: ese día muestra un aviso de cancelación en vez de la lista de
-   charlas. Agrega la fecha para activarlo y quítala cuando el horario ya
-   esté reacomodado — el horario y los datos de las charlas no cambian. */
+   talleres. Agrega la fecha para activarlo y quítala cuando el horario ya
+   esté reacomodado — el horario y los datos de los talleres no cambian. */
 const CANCELLED_DAYS = new Set(['2026-09-22']);
 
 const CANCEL_ICON_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.2 22.3 21H1.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.6v5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.15" fill="currentColor"/></svg>';
 
 function cancelledTexts(lang){
   return {
-    title: lang === 'en' ? 'TODAY’S SESSIONS ARE CANCELLED' : 'LAS CHARLAS DE HOY QUEDAN CANCELADAS',
+    title: lang === 'en' ? 'TODAY’S WORKSHOPS ARE CANCELLED' : 'LOS TALLERES DE HOY QUEDAN CANCELADOS',
     sub: lang === 'en' ? 'They will be rescheduled over the coming days.' : 'Se estarán reacomodando en los próximos días.',
   };
 }
@@ -535,7 +535,7 @@ function getTargetDaySessions(applyOverrides){
 function sessionItemsHTML(targetSessions, lang, prefix){
   const now = new Date();
   const nowLabel = lang === 'en' ? 'NOW' : 'AHORA';
-  const nextLabel = lang === 'en' ? 'NEXT' : 'PRÓXIMA';
+  const nextLabel = lang === 'en' ? 'NEXT' : 'PRÓXIMO';
   let nextMarked = false;
   return targetSessions.map(s=>{
     const isDone = s.end <= now;
@@ -560,7 +560,7 @@ function sessionItemsHTML(targetSessions, lang, prefix){
   }).join('');
 }
 
-/* ---------- 00d · Hoy / próxima charla + resaltar hoy en el almanaque ---------- */
+/* ---------- 00d · Hoy / próximo taller + resaltar hoy en el almanaque ---------- */
 (function(){
   function renderBanner(){
     const el = document.getElementById('today-banner');
@@ -589,8 +589,8 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     const { targetSessions, isToday } = info;
 
     const label = isToday
-      ? (lang === 'en' ? 'Today’s sessions' : 'Charlas de hoy')
-      : (lang === 'en' ? 'Upcoming sessions' : 'Próximas charlas');
+      ? (lang === 'en' ? 'Today’s workshops' : 'Talleres de hoy')
+      : (lang === 'en' ? 'Upcoming workshops' : 'Próximos talleres');
     const dateStr = fmtFechaLarga(targetSessions[0].start.getFullYear(), targetSessions[0].start.getMonth(), targetSessions[0].start.getDate(), lang);
     const items = sessionItemsHTML(targetSessions, lang, 'tb');
 
@@ -624,9 +624,9 @@ function sessionItemsHTML(targetSessions, lang, prefix){
   }
 })();
 
-/* ---------- 00d2 · Resaltar la próxima charla dentro de cada tabla de grado ---------- */
+/* ---------- 00d2 · Resaltar el próximo taller dentro de cada tabla de grado ---------- */
 (function(){
-  const NEXT_LABEL = { es: 'PRÓXIMA', en: 'NEXT' };
+  const NEXT_LABEL = { es: 'PRÓXIMO', en: 'NEXT' };
   const NOW_LABEL = { es: 'AHORA', en: 'NOW' };
 
   function markNextSessions(){
@@ -705,13 +705,13 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     }
     const info = getTargetDaySessions(true);
     if(!info){
-      content.innerHTML = `<div class="pizarra-date">${lang === 'en' ? 'No more sessions this school year' : 'No quedan más charlas este año escolar'}</div>`;
+      content.innerHTML = `<div class="pizarra-date">${lang === 'en' ? 'No more workshops this school year' : 'No quedan más talleres este año escolar'}</div>`;
       return;
     }
     const { targetSessions, isToday } = info;
     const label = isToday
-      ? (lang === 'en' ? 'Today’s sessions' : 'Charlas de hoy')
-      : (lang === 'en' ? 'Upcoming sessions' : 'Próximas charlas');
+      ? (lang === 'en' ? 'Today’s workshops' : 'Talleres de hoy')
+      : (lang === 'en' ? 'Upcoming workshops' : 'Próximos talleres');
     const dateStr = fmtFechaLarga(targetSessions[0].start.getFullYear(), targetSessions[0].start.getMonth(), targetSessions[0].start.getDate(), lang);
     const items = sessionItemsHTML(targetSessions, lang, 'pz');
     content.innerHTML = `<div class="pizarra-date">${label} — ${dateStr}</div><ul class="pizarra-list">${items}</ul>`;
@@ -861,7 +861,7 @@ function activarTab(tabId, grupo){
   window.addEventListener('hashchange', ()=> activarDesdeHash(true));
 })();
 
-/* ---------- 04 · Selectores de Grupo / Maestro / Grado-Salón en "Charlas por grado" ---------- */
+/* ---------- 04 · Selectores de Grupo / Maestro / Grado-Salón en "Talleres por grado" ---------- */
 function poblarGrupoSelect(){
   const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
   const sel = document.getElementById('gf-grupo');

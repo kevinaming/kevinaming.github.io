@@ -1,8 +1,8 @@
 /* ================================================================
    Traducción ES/EN — diccionario de interfaz + traductor de patrones
    para contenido repetitivo (fechas, días, meses, grados, materias,
-   títulos de charla). No traduce las descripciones largas de cada
-   charla ni los tooltips del almanaque — quedan en español a propósito.
+   títulos de taller). No traduce las descripciones largas de cada
+   taller ni los tooltips del almanaque — quedan en español a propósito.
    ================================================================ */
 
 /* ---------- 1. Diccionario de interfaz (data-i18n="key") ---------- */
@@ -11,11 +11,11 @@ const I18N_UI = {
     'nav.brand': 'Alfabetización Digital · ANRL',
     'nav.metodologia': 'Metodología',
     'nav.horario': 'Horario',
-    'nav.grados': 'Buscar charla',
+    'nav.grados': 'Buscar taller',
     'nav.almanaque': 'Almanaque',
 
     'hero.eyebrow': 'Año escolar 2026–2027',
-    'hero.h1': 'Calendario de Charlas de Alfabetización Digital',
+    'hero.h1': 'Calendario de Talleres de Alfabetización Digital',
     'hero.subtitle': 'Simple. Organizado. Para todos.',
     'hero.escuela': 'Escuela',
     'hero.directora': 'Directora',
@@ -24,17 +24,17 @@ const I18N_UI = {
 
     'metodologia.kicker': 'Metodología',
     'metodologia.h2': 'Cómo se organizó este calendario',
-    'metodologia.p1': 'Cada salón se atiende individualmente, respetando siempre el máximo de 24 estudiantes por charla —el salón más numeroso tiene 22—.',
+    'metodologia.p1': 'Cada salón se atiende individualmente, respetando siempre el máximo de 24 estudiantes por taller —el salón más numeroso tiene 22—.',
     'metodologia.p2': 'El Maestro Recurso dedica una semana completa a cada bloque —Intermedia (6to-8vo) y 5to, Elemental (PK-4to), y Educación Especial— en ese orden, repitiendo el ciclo cada tres semanas.',
     'metodologia.p3': 'El contenido sigue el temario oficial: Introducción a la Alfabetización Digital para PK–2do, y Fundamentos de la Alfabetización Digital para 3ro–8vo, adaptado al nivel de cada salón. El calendario respeta además los días festivos y recesos oficiales del Departamento de Educación.',
-    'metodologia.li1': 'Máximo 24 estudiantes por charla — cada salón se atiende individualmente.',
+    'metodologia.li1': 'Máximo 24 estudiantes por taller — cada salón se atiende individualmente.',
     'metodologia.li2': 'Un bloque completo por semana: Intermedia+5to, Elemental PK-4to, o Educación Especial.',
     'metodologia.li3': 'El ciclo de 3 semanas se repite durante todo el año escolar.',
     'metodologia.li4': 'Los períodos libres de cada semana quedan como preparación de recursos.',
     'metodologia.li5': 'Contenido alineado al temario oficial de cada nivel, en el orden de sus unidades.',
 
     'horario.kicker': 'Rotación semanal',
-    'horario.h2': 'Horario semanal de charlas',
+    'horario.h2': 'Horario semanal de talleres',
     'horario.p': 'Cada semana del ciclo dedica los tres períodos diarios a un solo bloque de salones; los períodos sin salón asignado esa semana quedan como preparación de recursos.',
     'horario.th.hora': 'Hora',
     'horario.tab-a': 'Semana A',
@@ -49,8 +49,8 @@ const I18N_UI = {
     'horario.ee-glosario-btn': 'Glosario de códigos EE',
 
     'grados.kicker': 'Calendario detallado',
-    'grados.h2': '¡Busca tu charla!',
-    'grados.p': 'Selecciona un salón para ver la fecha, hora y tema de cada charla programada durante el año escolar.',
+    'grados.h2': '¡Busca tu taller!',
+    'grados.p': 'Selecciona un salón para ver la fecha, hora y tema de cada taller programado durante el año escolar.',
     'grados.filtro-grupo': 'Nivel',
     'grados.filtro-maestro': 'Maestro/a Salón Hogar',
     'grados.filtro-clase': 'Maestro/a que da la clase',
@@ -69,12 +69,12 @@ const I18N_UI = {
     'grados.th.fecha': 'Fecha',
     'grados.th.hora': 'Hora',
     'grados.th.unidad': 'Unidad',
-    'grados.th.tema': 'Tema de la charla',
+    'grados.th.tema': 'Tema del taller',
     'grados.rotation-note': 'El Maestro Recurso dedica una semana completa a cada bloque —Intermedia y 5to, Elemental PK-4to, y Educación Especial— en ese orden, repitiendo el ciclo cada 3 semanas. Cada salón se atiende individualmente, siempre el mismo día y período dentro de su semana.',
 
     'almanaque.kicker': 'Vista de almanaque',
     'almanaque.h2': 'Almanaque del año escolar',
-    'almanaque.p': 'Cada ficha muestra el salón y el número de charla —por ejemplo, <span class="mono">3-1·07</span> = salón 3-1, charla #7. Despliega el detalle debajo de cada mes para ver el tema completo de cada sesión.',
+    'almanaque.p': 'Cada ficha muestra el salón y el número de taller —por ejemplo, <span class="mono">3-1·07</span> = salón 3-1, taller #7. Despliega el detalle debajo de cada mes para ver el tema completo de cada sesión.',
 
     'footer.p1': 'Calendario preparado por Kevin García, Maestro Recurso en el Uso de la Computadora, para la Escuela Arianys Nicole Rosa Luquis.',
     'footer.sig': 'Educación Bilingüe · Dos idiomas, infinitas posibilidades',
@@ -86,11 +86,11 @@ const I18N_UI = {
     'nav.brand': 'Digital Literacy · ANRL',
     'nav.metodologia': 'Methodology',
     'nav.horario': 'Schedule',
-    'nav.grados': 'Find a session',
+    'nav.grados': 'Find a workshop',
     'nav.almanaque': 'Calendar',
 
     'hero.eyebrow': 'School year 2026–2027',
-    'hero.h1': 'Digital Literacy Session Calendar',
+    'hero.h1': 'Digital Literacy Workshop Calendar',
     'hero.subtitle': 'Simple. Organized. For everyone.',
     'hero.escuela': 'School',
     'hero.directora': 'Principal',
@@ -99,17 +99,17 @@ const I18N_UI = {
 
     'metodologia.kicker': 'Methodology',
     'metodologia.h2': 'How this calendar was built',
-    'metodologia.p1': 'Each classroom is served individually, always respecting the maximum of 24 students per session —the largest classroom has 22—.',
+    'metodologia.p1': 'Each classroom is served individually, always respecting the maximum of 24 students per workshop —the largest classroom has 22—.',
     'metodologia.p2': 'The Resource Teacher dedicates a full week to each block —Intermediate (6th-8th) and 5th, Elementary (PK-4th), and Special Education— in that order, repeating the cycle every three weeks.',
     'metodologia.p3': 'Content follows the official curriculum: Introduction to Digital Literacy for PK–2nd grade, and Digital Literacy Fundamentals for 3rd–8th grade, adapted to each classroom’s level. The calendar also respects official holidays and breaks from the Department of Education.',
-    'metodologia.li1': 'Maximum 24 students per session — each classroom is served individually.',
+    'metodologia.li1': 'Maximum 24 students per workshop — each classroom is served individually.',
     'metodologia.li2': 'One full block per week: Intermediate+5th, Elementary PK-4th, or Special Education.',
     'metodologia.li3': 'The 3-week cycle repeats throughout the whole school year.',
     'metodologia.li4': 'Free periods each week are used for resource preparation.',
     'metodologia.li5': 'Content aligned to the official curriculum for each level, in unit order.',
 
     'horario.kicker': 'Weekly rotation',
-    'horario.h2': 'Weekly session schedule',
+    'horario.h2': 'Weekly workshop schedule',
     'horario.p': 'Each week of the cycle dedicates all three daily periods to a single block of classrooms; periods with no classroom assigned that week are used for resource preparation.',
     'horario.th.hora': 'Time',
     'horario.tab-a': 'Week A',
@@ -124,8 +124,8 @@ const I18N_UI = {
     'horario.ee-glosario-btn': 'SPED code glossary',
 
     'grados.kicker': 'Detailed calendar',
-    'grados.h2': 'Find your session!',
-    'grados.p': 'Pick a classroom to see the date, time, and topic of every session scheduled during the school year.',
+    'grados.h2': 'Find your workshop!',
+    'grados.p': 'Pick a classroom to see the date, time, and topic of every workshop scheduled during the school year.',
     'grados.filtro-grupo': 'Level',
     'grados.filtro-maestro': 'Homeroom Teacher',
     'grados.filtro-clase': 'Class Teacher',
@@ -144,12 +144,12 @@ const I18N_UI = {
     'grados.th.fecha': 'Date',
     'grados.th.hora': 'Time',
     'grados.th.unidad': 'Unit',
-    'grados.th.tema': 'Session topic',
+    'grados.th.tema': 'Workshop topic',
     'grados.rotation-note': 'The Resource Teacher dedicates a full week to each block —Intermediate and 5th, Elementary PK-4th, and Special Education— in that order, repeating the cycle every 3 weeks. Each classroom is served individually, always on the same day and period within its week.',
 
     'almanaque.kicker': 'Calendar view',
     'almanaque.h2': 'School year calendar',
-    'almanaque.p': 'Each tile shows the classroom and the session number —for example, <span class="mono">3-1·07</span> = classroom 3-1, session #7. Expand the detail below each month to see the full topic of each session.',
+    'almanaque.p': 'Each tile shows the classroom and the workshop number —for example, <span class="mono">3-1·07</span> = classroom 3-1, workshop #7. Expand the detail below each month to see the full topic of each workshop.',
 
     'footer.p1': 'Calendar prepared by Kevin García, Resource Teacher for Computer Use, for Arianys Nicole Rosa Luquis School.',
     'footer.sig': 'Bilingual Education · Two languages, endless possibilities',
@@ -275,20 +275,20 @@ const I18N_ROLES = [
 // Se aplican de más larga a más corta.
 const I18N_PHRASES = [
   ['temas del currículo + repaso continuo', 'curriculum topics + ongoing review'],
-  ['charlas durante el año', 'sessions during the school year'],
+  ['talleres durante el año', 'workshops during the school year'],
   ['Por confirmar', 'To be confirmed'],
   ['Todo el día', 'All day'],
   ['Período 1', 'Period 1'],
   ['Período 2', 'Period 2'],
   ['Período 3', 'Period 3'],
-  ['charla #', 'session #'],
+  ['taller #', 'workshop #'],
   ['estudiantes', 'students'],
   ['Introducción a la Alfabetización Digital (TEED 111-0001)', 'Introduction to Digital Literacy (TEED 111-0001)'],
   ['Introducción a la Alfabetización Digital (adaptado)', 'Introduction to Digital Literacy (adapted)'],
   ['Fundamentos de la Alfabetización Digital (TEED 151-1025)', 'Digital Literacy Fundamentals (TEED 151-1025)'],
   ['Fundamentos de la Alfabetización Digital (adaptado)', 'Digital Literacy Fundamentals (adapted)'],
   ['Unidad', 'Unit'],
-  ['Ver detalle de charlas de', 'See session details for'],
+  ['Ver detalle de talleres de', 'See workshop details for'],
   ['PREP — 1ro-2do', 'PREP — 1st-2nd'],
   ['PREP — 3ro-4to', 'PREP — 3rd-4th'],
   ['PREP — R1-1x1, PK-A y PK-NC', 'PREP — R1-1x1, PK-A, and PK-NC'],
