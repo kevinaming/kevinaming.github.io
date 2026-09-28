@@ -487,27 +487,41 @@ const PIZARRA_OVERRIDES = {
    Pizarra: ese día muestra un aviso de cancelación en vez de la lista de
    talleres. Agrega la fecha para activarlo y quítala cuando el horario ya
    esté reacomodado — el horario y los datos de los talleres no cambian. */
-const CANCELLED_DAYS = new Set(['2026-09-22']);
+// Clave 'AAAA-MM-DD' -> detalles del aviso. `rescheduleDate` (opcional) es
+// [año, mes(0-11), día] del día en que se repondrán esos talleres; si se
+// omite, el aviso usa un texto genérico ('en los próximos días').
+const CANCELLED_DAYS = {
+  '2026-09-22': {},
+  '2026-09-28': { rescheduleDate: [2026, 9, 2] },
+};
 
 const CANCEL_ICON_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.2 22.3 21H1.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.6v5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.15" fill="currentColor"/></svg>';
 
-function cancelledTexts(lang){
+function cancelledTexts(lang, info){
+  const rd = info && info.rescheduleDate;
+  let sub;
+  if(rd){
+    const dateStr = fmtFechaLarga(rd[0], rd[1], rd[2], lang);
+    sub = lang === 'en' ? `They will be held on ${dateStr}.` : `Se darán el ${dateStr}.`;
+  } else {
+    sub = lang === 'en' ? 'They will be rescheduled over the coming days.' : 'Se estarán reacomodando en los próximos días.';
+  }
   return {
     title: lang === 'en' ? 'TODAY’S WORKSHOPS ARE CANCELLED' : 'LOS TALLERES DE HOY QUEDAN CANCELADOS',
-    sub: lang === 'en' ? 'They will be rescheduled over the coming days.' : 'Se estarán reacomodando en los próximos días.',
+    sub,
   };
 }
 
-function cancelledNoticeHTML(lang){
-  const { title, sub } = cancelledTexts(lang);
+function cancelledNoticeHTML(lang, info){
+  const { title, sub } = cancelledTexts(lang, info);
   return `<div class="pizarra-cancel">${CANCEL_ICON_SVG.replace('<svg ', '<svg class="pizarra-cancel-icon" ')}
     <div class="pizarra-cancel-title">${title}</div>
     <div class="pizarra-cancel-sub">${sub}</div>
   </div>`;
 }
 
-function cancelledBannerHTML(lang){
-  const { title, sub } = cancelledTexts(lang);
+function cancelledBannerHTML(lang, info){
+  const { title, sub } = cancelledTexts(lang, info);
   return `<div class="today-banner-cancel">${CANCEL_ICON_SVG.replace('<svg ', '<svg class="today-banner-cancel-icon" ')}<div><strong class="today-banner-cancel-title">${title}</strong><p class="today-banner-cancel-sub">${sub}</p></div></div>`;
 }
 
@@ -569,8 +583,8 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     const firstReveal = el.hidden || (pzBtn && pzBtn.hidden);
     const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
 
-    if(CANCELLED_DAYS.has(dayKey(new Date()))){
-      el.innerHTML = cancelledBannerHTML(lang);
+    if(CANCELLED_DAYS[dayKey(new Date())]){
+      el.innerHTML = cancelledBannerHTML(lang, CANCELLED_DAYS[dayKey(new Date())]);
       el.classList.remove('is-today');
       el.classList.add('is-cancelled');
       if(firstReveal){
@@ -699,8 +713,8 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     const content = document.getElementById('pizarra-content');
     if(!content) return;
     const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
-    if(CANCELLED_DAYS.has(dayKey(new Date()))){
-      content.innerHTML = cancelledNoticeHTML(lang);
+    if(CANCELLED_DAYS[dayKey(new Date())]){
+      content.innerHTML = cancelledNoticeHTML(lang, CANCELLED_DAYS[dayKey(new Date())]);
       return;
     }
     const info = getTargetDaySessions(true);
