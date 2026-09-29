@@ -484,15 +484,15 @@ const PIZARRA_OVERRIDES = {
 };
 
 /* Días con los talleres cancelados (formato 'AAAA-MM-DD'). Solo afecta el modo
-   Pizarra: ese día muestra un aviso de cancelación en vez de la lista de
-   talleres. Agrega la fecha para activarlo y quítala cuando el horario ya
-   esté reacomodado — el horario y los datos de los talleres no cambian. */
-// Clave 'AAAA-MM-DD' -> detalles del aviso. `rescheduleDate` (opcional) es
-// [año, mes(0-11), día] del día en que se repondrán esos talleres; si se
-// omite, el aviso usa un texto genérico ('en los próximos días').
+   Pizarra y el aviso de la portada: ese día muestran un aviso de cancelación
+   en vez de la lista de talleres. Agrega la fecha para activarlo (con un
+   `rescheduleDate` opcional: [año, mes(0-11), día] del día en que se reponen
+   esos talleres; si se omite, el aviso usa un texto genérico) y quítala
+   cuando el horario ya esté reacomodado — el horario y los datos de los
+   talleres no cambian. Vacío: la semana del 28 de sept. de 2026 se aplazó de
+   forma permanente en el propio calendario (index.html), así que ya no
+   necesita este aviso temporal. */
 const CANCELLED_DAYS = {
-  '2026-09-22': {},
-  '2026-09-28': { rescheduleDate: [2026, 9, 2] },
 };
 
 const CANCEL_ICON_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.2 22.3 21H1.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.6v5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.15" fill="currentColor"/></svg>';
