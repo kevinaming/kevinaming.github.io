@@ -769,19 +769,19 @@ function sessionItemsHTML(targetSessions, lang, prefix){
 })();
 
 /* ---------- 00e2 · Aviso emergente: talleres suspendidos esta semana ----------
-   Aviso temporal que se muestra al entrar al sitio mientras la fecha de hoy
-   caiga dentro de [from, until). Se cierra con el botón (o Escape) y no
-   vuelve a aparecer en esa misma pestaña (sessionStorage); al llegar `until`
-   deja de mostrarse para todos, automáticamente. Para retirarlo antes de
-   tiempo, basta con borrar el <div id="announce-overlay"> del HTML o dejar
-   `until` en el pasado. */
+   Aviso temporal que se muestra CADA VEZ que se carga o recarga el sitio,
+   mientras la fecha de hoy caiga dentro de [from, until) — a propósito
+   vuelve a salir aunque ya se haya cerrado antes, para que se vea todas las
+   veces que haga falta esta semana. Se cierra con el botón (o Escape). Al
+   llegar `until` deja de mostrarse para todos, automáticamente. Para
+   retirarlo antes de tiempo, basta con borrar el <div id="announce-overlay">
+   del HTML o dejar `until` en el pasado. */
 (function(){
   const overlay = document.getElementById('announce-overlay');
   if(!overlay) return;
 
   const WINDOW_FROM = [2026, 8, 28];  // 28 de septiembre de 2026
   const WINDOW_UNTIL = [2026, 9, 5];  // 5 de octubre de 2026 (ya no se muestra)
-  const DISMISS_KEY = 'announce-dismissed-2026-09-28';
 
   function inWindow(){
     const now = new Date();
@@ -790,9 +790,7 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     return now >= from && now < until;
   }
 
-  let dismissedThisTab = false;
-  try { dismissedThisTab = sessionStorage.getItem(DISMISS_KEY) === '1'; } catch(e){}
-  if(!inWindow() || dismissedThisTab) return;
+  if(!inWindow()) return;
 
   const TEXTS = {
     es: {
@@ -835,7 +833,6 @@ function sessionItemsHTML(targetSessions, lang, prefix){
   function close(){
     overlay.hidden = true;
     document.documentElement.style.removeProperty('overflow');
-    try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(e){}
     document.removeEventListener('keydown', onKeydown);
   }
 
