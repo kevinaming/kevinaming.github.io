@@ -32,10 +32,23 @@
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+
+<div class="announce-overlay" id="announce-overlay" hidden>
+  <div class="announce-card" role="dialog" aria-modal="true" aria-labelledby="announce-title">
+    <span class="announce-kicker" id="announce-kicker"></span>
+    <h2 class="announce-title" id="announce-title"></h2>
+    <div class="announce-body" id="announce-body"></div>
+    <div class="announce-sign">
+      <span class="announce-sign-name">Kevin García</span>
+      <span class="announce-sign-role" id="announce-role"></span>
+    </div>
+    <button type="button" class="announce-close" id="announce-close"></button>
+  </div>
+</div>
 
 <div class="topnav">
   <div class="wrap">

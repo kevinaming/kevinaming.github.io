@@ -768,6 +768,85 @@ function sessionItemsHTML(targetSessions, lang, prefix){
   });
 })();
 
+/* ---------- 00e2 · Aviso emergente: talleres suspendidos esta semana ----------
+   Aviso temporal que se muestra al entrar al sitio mientras la fecha de hoy
+   caiga dentro de [from, until). Se cierra con el botón (o Escape) y no
+   vuelve a aparecer en esa misma pestaña (sessionStorage); al llegar `until`
+   deja de mostrarse para todos, automáticamente. Para retirarlo antes de
+   tiempo, basta con borrar el <div id="announce-overlay"> del HTML o dejar
+   `until` en el pasado. */
+(function(){
+  const overlay = document.getElementById('announce-overlay');
+  if(!overlay) return;
+
+  const WINDOW_FROM = [2026, 8, 28];  // 28 de septiembre de 2026
+  const WINDOW_UNTIL = [2026, 9, 5];  // 5 de octubre de 2026 (ya no se muestra)
+  const DISMISS_KEY = 'announce-dismissed-2026-09-28';
+
+  function inWindow(){
+    const now = new Date();
+    const from = new Date(...WINDOW_FROM);
+    const until = new Date(...WINDOW_UNTIL);
+    return now >= from && now < until;
+  }
+
+  let dismissedThisTab = false;
+  try { dismissedThisTab = sessionStorage.getItem(DISMISS_KEY) === '1'; } catch(e){}
+  if(!inWindow() || dismissedThisTab) return;
+
+  const TEXTS = {
+    es: {
+      kicker: 'Aviso importante',
+      title: 'Talleres suspendidos esta semana',
+      body: [
+        'Estimada comunidad escolar,',
+        'Por motivos de salud, esta semana (28 de septiembre – 2 de octubre) quedan suspendidos todos los talleres de Alfabetización Digital.',
+        'Los del nivel <strong>Elemental (PK a 4to grado)</strong> se retoman el próximo <strong>lunes, 5 de octubre</strong>.',
+        'Disculpen las molestias que esto pueda ocasionar. Gracias por su comprensión.',
+      ],
+      role: 'Maestro Recurso — Uso de la Computadora',
+      close: 'Quitar',
+    },
+    en: {
+      kicker: 'Important notice',
+      title: 'Workshops suspended this week',
+      body: [
+        'Dear school community,',
+        'For health reasons, all Digital Literacy workshops are suspended this week (September 28 – October 2).',
+        '<strong>Elementary-level</strong> workshops (PK through 4th grade) resume next <strong>Monday, October 5</strong>.',
+        'We apologize for any inconvenience this may cause. Thank you for your understanding.',
+      ],
+      role: 'Resource Teacher — Computer Use',
+      close: 'Dismiss',
+    },
+  };
+
+  function render(){
+    const lang = typeof i18nGetLang === 'function' ? i18nGetLang() : 'es';
+    const t = TEXTS[lang];
+    document.getElementById('announce-kicker').textContent = t.kicker;
+    document.getElementById('announce-title').textContent = t.title;
+    document.getElementById('announce-body').innerHTML = t.body.map(p => `<p>${p}</p>`).join('');
+    document.getElementById('announce-role').textContent = t.role;
+    document.getElementById('announce-close').textContent = t.close;
+  }
+
+  function onKeydown(e){ if(e.key === 'Escape') close(); }
+  function close(){
+    overlay.hidden = true;
+    document.documentElement.style.removeProperty('overflow');
+    try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(e){}
+    document.removeEventListener('keydown', onKeydown);
+  }
+
+  render();
+  window.I18N_RERENDER_HOOKS.push(render);
+  overlay.hidden = false;
+  document.documentElement.style.overflow = 'hidden';
+  document.addEventListener('keydown', onKeydown);
+  document.getElementById('announce-close').addEventListener('click', close);
+})();
+
 /* ---------- 00b · Idioma ES / EN ---------- */
 (function(){
   const btn = document.getElementById('lang-toggle');

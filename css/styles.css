@@ -824,3 +824,53 @@ table.grp-table .grp-idx{font-family:'IBM Plex Mono',monospace; font-size:.76rem
 @media (max-width:600px){
   table.grp-table{min-width:0;}
 }
+
+/* ---------- Aviso emergente (anuncio temporal al entrar) ---------- */
+.announce-overlay{
+  position:fixed; inset:0; z-index:1200;
+  display:flex; align-items:center; justify-content:center; padding:24px;
+  background:rgba(15,20,24,.55);
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+}
+.announce-overlay[hidden]{display:none;}
+.announce-card{
+  position:relative; width:100%; max-width:480px; max-height:calc(100vh - 48px); overflow-y:auto;
+  background:var(--card); border-radius:calc(var(--radius) + 4px); border:1px solid var(--line);
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
+  padding:34px 32px 28px; text-align:center;
+}
+.announce-card::before{
+  content:''; position:absolute; top:0; left:20px; right:20px; height:4px;
+  border-radius:0 0 4px 4px; background:linear-gradient(90deg, var(--teal), var(--mango));
+}
+.announce-kicker{
+  font-family:'IBM Plex Mono',monospace; font-size:.74rem; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--mango-deep); display:block; margin-bottom:10px;
+}
+.announce-title{
+  font-family:'Fraunces',serif; font-weight:700; font-size:clamp(1.3rem,3vw,1.65rem);
+  color:var(--teal-deep); margin:0 0 14px; line-height:1.25;
+}
+.announce-body{color:var(--ink); font-size:.98rem; line-height:1.6; text-align:left;}
+.announce-body p{margin:0 0 12px;}
+.announce-body p:last-child{margin-bottom:0;}
+.announce-body strong{color:var(--teal-deep);}
+.announce-sign{
+  margin-top:22px; padding-top:16px; border-top:1px dashed var(--line);
+  display:flex; flex-direction:column; align-items:flex-end; text-align:right;
+}
+.announce-sign-name{
+  font-family:'Dancing Script',cursive; font-weight:700; font-size:2.1rem; line-height:1;
+  color:var(--teal-deep);
+}
+.announce-sign-role{font-size:.78rem; color:var(--ink-soft); margin-top:4px;}
+.announce-close{
+  margin-top:26px; width:100%; padding:12px 20px; border-radius:999px; border:none;
+  background:var(--teal-btn); color:#fff; font-weight:600; font-size:.95rem; cursor:pointer;
+  transition:background .15s;
+}
+.announce-close:hover{background:var(--teal-btn-hover);}
+@media (max-width:480px){
+  .announce-card{padding:28px 22px 24px;}
+  .announce-sign{align-items:center; text-align:center;}
+}
