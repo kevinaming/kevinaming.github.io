@@ -844,15 +844,15 @@ table.grp-table .grp-idx{font-family:'IBM Plex Mono',monospace; font-size:.76rem
   border-radius:0 0 4px 4px;
   background:linear-gradient(90deg, var(--teal), var(--mango), var(--teal-deep), var(--mango-deep), var(--teal));
   background-size:300% 100%;
-  animation:announce-bar-flow 5s linear infinite, announce-bar-glow 2.6s ease-in-out infinite;
+  animation:announce-bar-flow 14s linear infinite, announce-bar-glow 6s ease-in-out infinite;
 }
 @keyframes announce-bar-flow{
   0%{background-position:0% 50%;}
   100%{background-position:300% 50%;}
 }
 @keyframes announce-bar-glow{
-  0%, 100%{box-shadow:0 0 6px 0 rgba(31,111,120,.35);}
-  50%{box-shadow:0 0 16px 2px rgba(232,163,61,.6);}
+  0%, 100%{box-shadow:0 0 5px 0 rgba(31,111,120,.25);}
+  50%{box-shadow:0 0 9px 1px rgba(232,163,61,.35);}
 }
 @media (prefers-reduced-motion: reduce){
   .announce-card::before{animation:none;}
