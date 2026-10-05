@@ -493,6 +493,7 @@ const PIZARRA_OVERRIDES = {
    forma permanente en el propio calendario (index.html), así que ya no
    necesita este aviso temporal. */
 const CANCELLED_DAYS = {
+  '2026-10-05': { rescheduleDate: [2026, 9, 9] },
 };
 
 const CANCEL_ICON_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.2 22.3 21H1.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.6v5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.15" fill="currentColor"/></svg>';
@@ -781,7 +782,7 @@ function sessionItemsHTML(targetSessions, lang, prefix){
   if(!overlay) return;
 
   const WINDOW_FROM = [2026, 8, 28];  // 28 de septiembre de 2026
-  const WINDOW_UNTIL = [2026, 9, 5];  // 5 de octubre de 2026 (ya no se muestra)
+  const WINDOW_UNTIL = [2026, 9, 6];  // 6 de octubre de 2026 (ya no se muestra)
 
   function inWindow(){
     const now = new Date();
@@ -795,11 +796,11 @@ function sessionItemsHTML(targetSessions, lang, prefix){
   const TEXTS = {
     es: {
       kicker: 'Aviso importante',
-      title: 'Talleres suspendidos esta semana',
+      title: 'Talleres suspendidos',
       body: [
         'Estimada comunidad escolar,',
-        'Por motivos de salud, esta semana (28 de septiembre – 2 de octubre) quedan suspendidos todos los talleres de Alfabetización Digital.',
-        'Los del nivel <strong>Elemental (PK a 4to grado)</strong> se retoman el próximo <strong>lunes, 5 de octubre</strong>.',
+        'Por motivos de salud, los talleres de Alfabetización Digital estuvieron suspendidos la semana del 28 de septiembre y también hoy, lunes 5 de octubre.',
+        'Los talleres se retoman mañana, <strong>martes 6 de octubre</strong>. Los que correspondían a hoy (4to grado: 4-1, 4-2 y 4-3) se darán el <strong>viernes 9 de octubre</strong>.',
         'Disculpen las molestias que esto pueda ocasionar. Gracias por su comprensión.',
       ],
       role: 'Maestro Recurso — Uso de la Computadora',
@@ -807,11 +808,11 @@ function sessionItemsHTML(targetSessions, lang, prefix){
     },
     en: {
       kicker: 'Important notice',
-      title: 'Workshops suspended this week',
+      title: 'Workshops suspended',
       body: [
         'Dear school community,',
-        'For health reasons, all Digital Literacy workshops are suspended this week (September 28 – October 2).',
-        '<strong>Elementary-level</strong> workshops (PK through 4th grade) resume next <strong>Monday, October 5</strong>.',
+        'For health reasons, the Digital Literacy workshops were suspended the week of September 28 and also today, Monday, October 5.',
+        'Workshops resume tomorrow, <strong>Tuesday, October 6</strong>. Today’s workshops (4th grade: 4-1, 4-2 and 4-3) will be held on <strong>Friday, October 9</strong>.',
         'We apologize for any inconvenience this may cause. Thank you for your understanding.',
       ],
       role: 'Resource Teacher — Computer Use',
