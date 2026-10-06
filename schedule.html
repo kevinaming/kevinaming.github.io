@@ -258,7 +258,7 @@ body.sch-fs-active .sch-sync-row{
       <span class="lg"><span class="sw sch-sw-lunch"></span> Almuerzo</span>
       <span class="lg"><span class="sw sch-sw-break"></span> TADO</span>
     </div>
-    <p style="color:var(--ink-soft); font-size:.8rem; margin-top:14px;">Esta página no conoce días feriados ni cierres específicos — solo la rotación semanal (A/B/C). Para fechas exactas y feriados, consulta el calendario principal.</p>
+    <p style="color:var(--ink-soft); font-size:.8rem; margin-top:14px;">Los talleres cancelados, las reposiciones y los cambios puntuales se toman del calendario de la portada. Los feriados que caen en viernes (día de preparación) no se pueden detectar: confirma en el calendario principal.</p>
   </div>
 </section>
 
@@ -334,8 +334,10 @@ body.sch-fs-active .sch-sync-row{
     return escapeHTML(code);
   }
 
-  async function fetchWeekTypeMap(){
-    var text = await fetch('js/data.js', {cache:'no-store'}).then(function(r){ return r.text(); });
+  // Mapa viejo de semanas por lunes (js/data.js). Ya no es la fuente principal
+  // —la portada aplazó semanas en su calendario con fechas sin actualizar este
+  // mapa—, pero se conserva como respaldo si no se puede leer el calendario.
+  function parseWeekTypeMap(text){
     var idx = text.indexOf('WEEK_TYPE_BY_MONDAY');
     if(idx === -1) throw new Error('WEEK_TYPE_BY_MONDAY no encontrado');
     var braceStart = text.indexOf('{', idx);
@@ -367,11 +369,10 @@ body.sch-fs-active .sch-sync-row{
     return 'A';
   }
 
-  async function fetchSiteHorario(){
-    var html = await fetch('index.html', {cache:'no-store'}).then(function(r){ return r.text(); });
-    var doc = new DOMParser().parseFromString(html, 'text/html');
+  // Tablas semanales A/B/C de la portada (la rotación "permanente").
+  function parseWeeklyTables(doc){
     var days = ['lunes','martes','miercoles','jueves','viernes'];
-    var out = {};
+    var out = {}, codeByTab = {}, weekByTab = {};
     ['a','b','c'].forEach(function(w){
       var panel = doc.getElementById('tab-week-' + w);
       if(!panel) return;
@@ -387,18 +388,170 @@ body.sch-fs-active .sch-sync-row{
           var prep = cell.querySelector('.wk-prep-chip');
           var gradeEl = cell.querySelector('.wk-grade');
           perDay[day].push({
-            hora: horaEl ? horaEl.textContent.replace(/ /g, ' ').trim() : '',
+            hora: horaEl ? horaEl.textContent.replace(/ /g, ' ').trim() : '',
             code: chip ? chip.textContent.trim() : (prep ? prep.textContent.trim() : ''),
             label: gradeEl ? gradeEl.textContent.trim() : (prep ? prep.textContent.trim() : '')
           });
         });
+      });
+      // Cada chip lleva la clase c-<tabId sin "tab-"> (ej. c-s-4-1 <-> tab-s-4-1):
+      // así se sabe el código corto y la semana de cada grupo.
+      panel.querySelectorAll('.wk-rot-chip').forEach(function(chip){
+        var m = /(?:^|\s)c-(s-[\w-]+)(?:\s|$)/.exec(chip.className);
+        if(!m) return;
+        var tabId = 'tab-' + m[1];
+        codeByTab[tabId] = chip.textContent.trim();
+        weekByTab[tabId] = w.toUpperCase();
       });
       out[w.toUpperCase()] = {
         title: titleEl ? titleEl.textContent.replace(/\s+/g, ' ').trim() : ('Semana ' + w.toUpperCase()),
         days: perDay
       };
     });
-    return out;
+    return {weekly: out, codeByTab: codeByTab, weekByTab: weekByTab};
+  }
+
+  /* ---------- Calendario con fechas (el mismo que usa la portada) ---------- */
+
+  function pad2(n){ return (n < 10 ? '0' : '') + n; }
+  function dayKeyOf(d){ return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  function dayKeyYMD(y, m, d){ return y + '-' + pad2(m + 1) + '-' + pad2(d); }
+
+  var MESES_MAP = {enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,octubre:9,noviembre:10,diciembre:11};
+
+  function parseFechaTxt(text){
+    var m = (text || '').match(/(\d{1,2}) de (\p{L}+) de (\d{4})/iu);
+    if(!m) return null;
+    var mo = MESES_MAP[m[2].toLowerCase()];
+    return mo === undefined ? null : {y: +m[3], m: mo, d: +m[1]};
+  }
+
+  // "8:30 a.m. – 9:30 a.m." -> minutos desde medianoche (cada extremo trae su a.m./p.m.).
+  function parseHoraTxt(text){
+    if(!text) return null;
+    var parts = text.split(/[–-]/).map(function(s){ return s.trim(); });
+    if(parts.length < 2) return null;
+    function una(s){
+      var m = s.match(/(\d{1,2}):(\d{2})\s*(a\.m\.|p\.m\.|am|pm)/i);
+      if(!m) return null;
+      var h = parseInt(m[1], 10), min = parseInt(m[2], 10);
+      var ap = m[3].toLowerCase().replace(/\./g, '');
+      if(ap === 'pm' && h !== 12) h += 12;
+      if(ap === 'am' && h === 12) h = 0;
+      return h * 60 + min;
+    }
+    var a = una(parts[0]), b = una(parts[1]);
+    return (a == null || b == null) ? null : {s: a, e: b};
+  }
+
+  function fmtRange(s, e){
+    function f(min){
+      var h = Math.floor(min / 60), m = min % 60;
+      return {t: ((h % 12) || 12) + ':' + pad2(m), ap: h >= 12 ? 'p.m.' : 'a.m.'};
+    }
+    var a = f(s), b = f(e);
+    return a.t + (a.ap !== b.ap ? ' ' + a.ap : '') + '–' + b.t + ' ' + b.ap;
+  }
+
+  // Extrae un literal ([...] o {...}) de `const NOMBRE = ...;` en el texto de js/main.js.
+  function extractLiteral(text, name){
+    var m = new RegExp('const\\s+' + name + '\\s*=\\s*').exec(text || '');
+    if(!m) return null;
+    var start = m.index + m[0].length;
+    var open = text[start];
+    var close = open === '[' ? ']' : (open === '{' ? '}' : null);
+    if(!close) return null;
+    var depth = 0, inStr = null;
+    for(var i = start; i < text.length; i++){
+      var ch = text[i];
+      if(inStr){
+        if(ch === '\\'){ i++; continue; }
+        if(ch === inStr) inStr = null;
+        continue;
+      }
+      if(ch === "'" || ch === '"' || ch === '`'){ inStr = ch; continue; }
+      if(ch === open) depth++;
+      else if(ch === close){
+        depth--;
+        if(depth === 0){
+          try { return (new Function('return (' + text.slice(start, i + 1) + ')'))(); } catch(e){ return null; }
+        }
+      }
+    }
+    return null;
+  }
+
+  // Replica getAllSessions() de la portada: los talleres con fecha de cada
+  // grupo + las reposiciones puntuales (EXTRA_SESSIONS) + los días cancelados
+  // (CANCELLED_DAYS) + los cambios de hora puntuales (PIZARRA_OVERRIDES).
+  function parseCalendar(doc, mainText, codeByTab, weekByTab){
+    var cal = {byDay: {}, cancelled: {}, codeByTab: codeByTab, weekByTab: weekByTab, hasSessions: false};
+    var tabByGrade = {}, gradeByTab = {}, all = [];
+    doc.querySelectorAll('.tab-panel').forEach(function(panel){
+      var h3 = panel.querySelector('.panel-head h3');
+      if(!h3) return;
+      var full = h3.textContent.trim();
+      var grade = full.indexOf(' · ') !== -1 ? full.split(' · ')[0] : full;
+      tabByGrade[grade] = panel.id;
+      gradeByTab[panel.id] = grade;
+      panel.querySelectorAll('.grade-table tbody tr').forEach(function(row){
+        var fechaCell = row.querySelector('.col-fecha');
+        var horaCell = row.querySelector('.col-hora');
+        if(!fechaCell || !horaCell) return;
+        var f = parseFechaTxt(fechaCell.childNodes[0] ? fechaCell.childNodes[0].textContent.trim() : '');
+        var h = parseHoraTxt(horaCell.textContent.trim());
+        if(!f || !h) return;
+        all.push({tabId: panel.id, key: dayKeyYMD(f.y, f.m, f.d), startMin: h.s, endMin: h.e});
+      });
+    });
+
+    var regularCount = all.length;
+    var extras = extractLiteral(mainText, 'EXTRA_SESSIONS') || [];
+    extras.forEach(function(x){
+      var tabId = tabByGrade[x.grade];
+      if(!tabId || !x.date || !x.from || !x.to) return;
+      all.push({tabId: tabId, key: dayKeyYMD(x.date[0], x.date[1], x.date[2]),
+        startMin: x.from[0] * 60 + x.from[1], endMin: x.to[0] * 60 + x.to[1], extra: true});
+    });
+
+    var overrides = extractLiteral(mainText, 'PIZARRA_OVERRIDES') || {};
+    all.forEach(function(s){
+      var o = overrides[s.key + '|' + gradeByTab[s.tabId]];
+      if(!o) return;
+      s.startMin = o[0][0] * 60 + o[0][1];
+      s.endMin = o[1][0] * 60 + o[1][1];
+    });
+
+    all.forEach(function(s){
+      (cal.byDay[s.key] = cal.byDay[s.key] || []).push(s);
+    });
+    Object.keys(cal.byDay).forEach(function(k){
+      cal.byDay[k].sort(function(a, b){ return a.startMin - b.startMin; });
+    });
+    cal.cancelled = extractLiteral(mainText, 'CANCELLED_DAYS') || {};
+    cal.hasSessions = regularCount > 0;
+    return cal;
+  }
+
+  // Trae lo que publica la portada: las tablas semanales, el calendario con
+  // fechas (index.html + js/main.js) y el mapa viejo de semanas (respaldo).
+  async function fetchSiteBundle(){
+    function getText(url, optional){
+      return fetch(url, {cache: 'no-store'}).then(function(r){
+        if(!r.ok) throw new Error(url + ' ' + r.status);
+        return r.text();
+      }).catch(function(e){
+        if(optional) return '';
+        throw e;
+      });
+    }
+    var texts = await Promise.all([getText('index.html'), getText('js/main.js', true), getText('js/data.js', true)]);
+    var doc = new DOMParser().parseFromString(texts[0], 'text/html');
+    var weekly = parseWeeklyTables(doc);
+    var cal = parseCalendar(doc, texts[1], weekly.codeByTab, weekly.weekByTab);
+    var weekMap = null;
+    try { weekMap = texts[2] ? parseWeekTypeMap(texts[2]) : null; } catch(e){ weekMap = null; }
+    return {siteData: weekly.weekly, cal: cal, weekMap: weekMap};
   }
 
   function templateFor(templates, day, weekType){
@@ -446,7 +599,8 @@ body.sch-fs-active .sch-sync-row{
     return DIAS_LABEL_CAP[date.getDay()] + ', ' + date.getDate() + ' de ' + MESES_ES[date.getMonth()];
   }
 
-  function findTargetDay(templates, weekMap, siteData){
+  // Respaldo: usa solo la rotación semanal + el mapa viejo de semanas.
+  function findTargetDayFromGrid(templates, weekMap, siteData){
     var now = new Date();
     var cursor = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     for(var i = 0; i < 14; i++){
@@ -474,6 +628,111 @@ body.sch-fs-active .sch-sync-row{
     return null;
   }
 
+  // Semana (A/B/C) que de verdad se da en la semana de `date`: se deduce de los
+  // talleres con fecha de ese lunes–viernes (así sigue los aplazamientos que
+  // hace la portada). null = ninguna semana con talleres (receso, feriado...).
+  function weekTypeForDate(cal, date){
+    var mon = lunesDe(date), counts = {A: 0, B: 0, C: 0};
+    for(var i = 0; i < 5; i++){
+      var d = new Date(mon);
+      d.setDate(mon.getDate() + i);
+      (cal.byDay[dayKeyOf(d)] || []).forEach(function(s){
+        var w = cal.weekByTab[s.tabId];
+        if(w) counts[w]++;
+      });
+    }
+    var best = null, bestN = 0;
+    ['A', 'B', 'C'].forEach(function(w){ if(counts[w] > bestN){ best = w; bestN = counts[w]; } });
+    return best;
+  }
+
+  // Arma el día `date`: kind 'cancelled' | 'day' | 'none'.
+  function resolveDay(templates, cal, siteData, date){
+    var key = dayKeyOf(date), day = dayNameOf(date);
+    if(cal.cancelled[key]) return {kind: 'cancelled', info: cal.cancelled[key]};
+    var W = weekTypeForDate(cal, date);
+    if(!W) return {kind: 'none'};
+    var tmpl = templateFor(templates, day, W);
+    var grid = (siteData[W] && siteData[W].days[day]) || [];
+
+    // Hora "nominal" de cada uno de los 3 talleres del día: la de la tabla semanal
+    // (o la de la plantilla si no está). Sirve para saber a cuál de los 3 espacios
+    // corresponde cada taller con fecha (una reposición suelta cae en el suyo).
+    var nominal = [0, 1, 2].map(function(k){
+      var g = grid[k], r = g && parseHoraRange(g.hora);
+      if(r) return r.startMin;
+      for(var i = 0; i < tmpl.length; i++){
+        if(tmpl[i].kind === 'var' && tmpl[i].slot === k){
+          var rr = parseHoraRange(tmpl[i].hora);
+          if(rr) return rr.startMin;
+        }
+      }
+      return 0;
+    });
+    var assigned = [null, null, null];
+    (cal.byDay[key] || []).forEach(function(s){
+      var best = -1, bestD = Infinity;
+      for(var k = 0; k < 3; k++){
+        if(assigned[k] !== null) continue;
+        var dd = Math.abs(s.startMin - nominal[k]);
+        if(dd < bestD){ bestD = dd; best = k; }
+      }
+      if(best >= 0) assigned[best] = s;
+    });
+
+    var missing = 0;
+    var slots = [0, 1, 2].map(function(k){
+      var s = assigned[k];
+      if(s){
+        return {hora: fmtRange(s.startMin, s.endMin), code: cal.codeByTab[s.tabId] || '—'};
+      }
+      var g = grid[k];
+      if(g && /^PREP/i.test(g.code)) return {hora: g.hora, code: g.code};
+      missing++;
+      return {hora: g ? g.hora : '', code: '—'};
+    });
+    // Ningún taller ese día (y no es un día de preparación): feriado, receso...
+    if(missing === 3) return {kind: 'none'};
+
+    var periods = tmpl.map(function(p){
+      if(p.kind === 'fixed') return {hora: p.hora, actividad: p.actividad, label: '', meta: p};
+      var s = slots[p.slot];
+      return {hora: s.hora || p.hora, actividad: s.code, label: '', meta: p};
+    }).map(function(p){
+      return Object.assign({}, p, {range: parseHoraRange(p.hora)});
+    });
+    return {kind: 'day', weekType: W, periods: periods};
+  }
+
+  // Día a mostrar: hoy (o el próximo día con talleres si hoy ya terminó, es fin
+  // de semana o no hay talleres), igual que "Talleres de hoy" en la portada.
+  function findTargetDay(templates, cal, siteData){
+    var now = new Date();
+    var cursor = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    for(var i = 0; i < 40; i++){
+      var name = dayNameOf(cursor);
+      if(isSchoolDay(name)){
+        var isToday = (i === 0);
+        var r = resolveDay(templates, cal, siteData, cursor);
+        if(r.kind === 'cancelled'){
+          // Como la portada: el aviso de cancelación solo se muestra el mismo día.
+          if(isToday) return {kind: 'cancelled', date: cursor, isToday: true, info: r.info};
+        } else if(r.kind === 'day'){
+          var base = {kind: 'day', date: cursor, dayName: name, weekType: r.weekType, periods: r.periods, isToday: isToday};
+          if(!isToday) return base;
+          var allDone = r.periods.length > 0 && r.periods.every(function(p){
+            if(!p.range) return false;
+            var endDate = new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate(), Math.floor(p.range.endMin / 60), p.range.endMin % 60);
+            return endDate <= now;
+          });
+          if(!allDone) return base;
+        }
+      }
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return null;
+  }
+
   function renderTodayBanner(target){
     var el = document.getElementById('sch-today-banner');
     if(!target){
@@ -481,6 +740,24 @@ body.sch-fs-active .sch-sync-row{
       el.classList.remove('is-today');
       return;
     }
+    if(target.kind === 'empty'){
+      el.innerHTML = '<p>No quedan talleres programados en el calendario.</p>';
+      el.classList.remove('is-today', 'is-cancelled');
+      return;
+    }
+    if(target.kind === 'cancelled'){
+      var rd = target.info && target.info.rescheduleDate;
+      var sub = rd
+        ? 'Se darán el ' + fmtFechaLarga(new Date(rd[0], rd[1], rd[2])) + '.'
+        : 'Se estarán reacomodando en los próximos días.';
+      el.innerHTML = '<div class="today-banner-cancel">' + CANCEL_ICON_SVG +
+        '<div><strong class="today-banner-cancel-title">LOS TALLERES DE HOY QUEDAN CANCELADOS</strong>' +
+        '<p class="today-banner-cancel-sub">' + escapeHTML(sub) + '</p></div></div>';
+      el.classList.remove('is-today');
+      el.classList.add('is-cancelled');
+      return;
+    }
+    el.classList.remove('is-cancelled');
     var now = new Date();
     var label = target.isToday ? 'Hoy' : 'Próximo día';
     var dateStr = fmtFechaLarga(target.date) + ' · Semana ' + target.weekType;
@@ -522,6 +799,8 @@ body.sch-fs-active .sch-sync-row{
       timeEls.forEach(function(t){ t.style.minWidth = (Math.ceil(maxW) + 48) + 'px'; });
     }
   }
+
+  var CANCEL_ICON_SVG = '<svg class="today-banner-cancel-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.2 22.3 21H1.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.6v5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.15" fill="currentColor"/></svg>';
 
   // Abrevia las etiquetas fijas largas, igual que los chips de la Rotación
   // semanal de la portada (CP, TADO, 7-3... ya son cortos de por sí).
@@ -608,22 +887,23 @@ body.sch-fs-active .sch-sync-row{
     if(el) el.textContent = '· ' + new Date().toLocaleTimeString('es-PR');
   }
 
-  var appState = {templates: null, weekMap: null, siteData: null};
+  var appState = {templates: null, weekMap: null, siteData: null, cal: null};
 
   async function loadLiveData(){
     setSyncStatus('Sincronizando con el calendario principal…', false);
-    var weekMap = null, siteData = null, errored = false;
+    var bundle = null, errored = false;
     try {
-      var results = await Promise.all([fetchWeekTypeMap(), fetchSiteHorario()]);
-      weekMap = results[0];
-      siteData = results[1];
+      bundle = await fetchSiteBundle();
     } catch(e){
       errored = true;
     }
-    appState.weekMap = weekMap;
-    appState.siteData = siteData;
-    if(errored || !weekMap || !siteData){
+    appState.siteData = bundle ? bundle.siteData : null;
+    appState.cal = bundle ? bundle.cal : null;
+    appState.weekMap = bundle ? bundle.weekMap : null;
+    if(errored || !bundle || !bundle.siteData || !bundle.siteData.A){
       setSyncStatus('No se pudo sincronizar — mostrando la estructura sin resolver grupos. Intenta "Actualizar".', true);
+    } else if(!bundle.cal.hasSessions){
+      setSyncStatus('Sincronizado, pero sin el calendario con fechas — se usa solo la rotación semanal (no ve cambios puntuales).', true);
     } else {
       setSyncStatus('Sincronizado con el calendario principal', false);
     }
@@ -631,7 +911,15 @@ body.sch-fs-active .sch-sync-row{
   }
 
   function renderAll(){
-    var target = appState.weekMap ? findTargetDay(appState.templates, appState.weekMap, appState.siteData) : null;
+    var target = null;
+    if(appState.siteData && appState.siteData.A){
+      if(appState.cal && appState.cal.hasSessions){
+        target = findTargetDay(appState.templates, appState.cal, appState.siteData);
+      } else if(appState.weekMap){
+        target = findTargetDayFromGrid(appState.templates, appState.weekMap, appState.siteData);
+      }
+    }
+    if(!target && appState.cal && appState.cal.hasSessions) target = {kind: 'empty'};
     renderTodayBanner(target);
     renderWeekTables(appState.templates, appState.siteData);
   }
