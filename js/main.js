@@ -845,6 +845,155 @@ function sessionItemsHTML(targetSessions, lang, prefix){
   document.getElementById('announce-close').addEventListener('click', close);
 })();
 
+/* ---------- 00f · Inicio de sesión: opciones extra solo con sesión iniciada ----------
+   El sitio es estático (sin servidor), así que el "inicio de sesión" es el mismo
+   PIN de 4 dígitos que ya protege /groups: se valida intentando descifrar el
+   contenido cifrado de groups.html (PBKDF2 + AES-GCM). Si descifra, se guarda la
+   clave derivada en localStorage y se muestran los elementos marcados con
+   `data-auth-only`. OJO: esos elementos solo se OCULTAN en la página; todo lo
+   que sea realmente privado debe ir cifrado, no solo con `data-auth-only`. */
+(function(){
+  const btn = document.getElementById('auth-toggle');
+  const overlay = document.getElementById('auth-overlay');
+  if(!btn || !overlay) return;
+  const KEY_STORAGE = 'auth-key-v1';
+  const PAYLOAD_URL = 'groups.html';
+  const digits = [...overlay.querySelectorAll('.auth-digit')];
+  const form = document.getElementById('auth-form');
+  const errorEl = document.getElementById('auth-error');
+  let loggedIn = false;
+
+  const TEXTS = {
+    es: {
+      login: 'Iniciar sesión', logout: 'Cerrar sesión',
+      title: 'Iniciar sesión', text: 'Ingresa tu PIN para ver las opciones adicionales.',
+      submit: 'Entrar', cancel: 'Cancelar',
+      needDigits: 'Ingresa los 4 dígitos.', bad: 'PIN incorrecto.', fail: 'No se pudo verificar. Intenta de nuevo.',
+    },
+    en: {
+      login: 'Log in', logout: 'Log out',
+      title: 'Log in', text: 'Enter your PIN to see the additional options.',
+      submit: 'Enter', cancel: 'Cancel',
+      needDigits: 'Enter all 4 digits.', bad: 'Incorrect PIN.', fail: 'Could not verify. Please try again.',
+    },
+  };
+  const T = () => TEXTS[typeof i18nGetLang === 'function' && i18nGetLang() === 'en' ? 'en' : 'es'];
+
+  const b64ToBytes = b64 => Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const bytesToB64 = bytes => btoa(String.fromCharCode(...new Uint8Array(bytes)));
+
+  let payloadPromise = null;
+  function getPayload(){
+    if(!payloadPromise){
+      payloadPromise = fetch(PAYLOAD_URL, { cache: 'no-cache' })
+        .then(r => r.text())
+        .then(html => {
+          const m = html.match(/id="enc-payload">([\s\S]*?)<\/script>/);
+          if(!m) throw new Error('payload');
+          return JSON.parse(m[1]);
+        });
+    }
+    return payloadPromise;
+  }
+  async function deriveKey(pin, payload){
+    const material = await crypto.subtle.importKey('raw', new TextEncoder().encode(pin), { name: 'PBKDF2' }, false, ['deriveKey']);
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: b64ToBytes(payload.salt), iterations: payload.iterations, hash: 'SHA-256' },
+      material, { name: 'AES-GCM', length: 256 }, true, ['decrypt']);
+  }
+  async function canDecrypt(key, payload){
+    await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64ToBytes(payload.iv) }, key, b64ToBytes(payload.cipher));
+  }
+
+  function renderUI(){
+    const t = T();
+    btn.classList.toggle('is-on', loggedIn);
+    btn.setAttribute('aria-pressed', String(loggedIn));
+    const label = loggedIn ? t.logout : t.login;
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+    document.querySelectorAll('[data-auth-only]').forEach(el => { el.hidden = !loggedIn; });
+    document.getElementById('auth-title').textContent = t.title;
+    document.getElementById('auth-text').textContent = t.text;
+    document.getElementById('auth-submit').textContent = t.submit;
+    document.getElementById('auth-cancel').textContent = t.cancel;
+  }
+
+  function openDialog(){
+    errorEl.textContent = '';
+    digits.forEach(d => { d.value = ''; });
+    overlay.hidden = false;
+    document.addEventListener('keydown', onKey);
+    digits[0].focus();
+  }
+  function closeDialog(){
+    overlay.hidden = true;
+    document.removeEventListener('keydown', onKey);
+  }
+  function onKey(e){ if(e.key === 'Escape') closeDialog(); }
+
+  function logout(){
+    try { localStorage.removeItem(KEY_STORAGE); } catch(e) {}
+    loggedIn = false;
+    renderUI();
+  }
+
+  btn.addEventListener('click', () => { loggedIn ? logout() : openDialog(); });
+  document.getElementById('auth-cancel').addEventListener('click', closeDialog);
+
+  digits.forEach((input, idx) => {
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/[^0-9]/g, '');
+      if(input.value && idx < digits.length - 1) digits[idx + 1].focus();
+    });
+    input.addEventListener('keydown', e => {
+      if(e.key === 'Backspace' && !input.value && idx > 0) digits[idx - 1].focus();
+    });
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const t = T();
+    const pin = digits.map(d => d.value).join('');
+    errorEl.textContent = '';
+    if(pin.length !== 4){ errorEl.textContent = t.needDigits; return; }
+    let payload;
+    try { payload = await getPayload(); } catch(err){ errorEl.textContent = t.fail; return; }
+    try {
+      const key = await deriveKey(pin, payload);
+      await canDecrypt(key, payload);
+      try { localStorage.setItem(KEY_STORAGE, bytesToB64(await crypto.subtle.exportKey('raw', key))); } catch(err) {}
+      loggedIn = true;
+      closeDialog();
+      renderUI();
+    } catch(err){
+      errorEl.textContent = t.bad;
+      digits.forEach(d => { d.value = ''; });
+      digits[0].focus();
+    }
+  });
+
+  // Sesión guardada: se vuelve a verificar la clave contra el contenido cifrado.
+  async function restore(){
+    let stored = null;
+    try { stored = localStorage.getItem(KEY_STORAGE); } catch(e) {}
+    if(!stored) return;
+    try {
+      const payload = await getPayload();
+      const key = await crypto.subtle.importKey('raw', b64ToBytes(stored), { name: 'AES-GCM' }, false, ['decrypt']);
+      await canDecrypt(key, payload);
+      loggedIn = true;
+    } catch(e) {
+      try { localStorage.removeItem(KEY_STORAGE); } catch(err) {}
+    }
+    renderUI();
+  }
+
+  renderUI();
+  window.I18N_RERENDER_HOOKS.push(renderUI);
+  restore();
+})();
+
 /* ---------- 00b · Idioma ES / EN ---------- */
 (function(){
   const btn = document.getElementById('lang-toggle');

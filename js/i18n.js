@@ -13,6 +13,9 @@ const I18N_UI = {
     'nav.horario': 'Horario',
     'nav.grados': 'Buscar taller',
     'nav.almanaque': 'Almanaque',
+    'nav.mihorario': 'Mi horario',
+    'nav.grupos': 'Grupos',
+    'nav.constructor': 'Constructor',
 
     'hero.eyebrow': 'Año escolar 2026–2027',
     'hero.h1': 'Calendario de Talleres de Alfabetización Digital',
@@ -88,6 +91,9 @@ const I18N_UI = {
     'nav.horario': 'Schedule',
     'nav.grados': 'Find a workshop',
     'nav.almanaque': 'Calendar',
+    'nav.mihorario': 'My schedule',
+    'nav.grupos': 'Groups',
+    'nav.constructor': 'Builder',
 
     'hero.eyebrow': 'School year 2026–2027',
     'hero.h1': 'Digital Literacy Workshop Calendar',
