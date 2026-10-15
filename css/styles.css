@@ -147,7 +147,12 @@ a{color:var(--teal);}
 .lang-toggle:hover{border-color:var(--teal); color:var(--teal-deep);}
 .topnav .brand{font-family:'Fraunces',serif; font-weight:600; color:var(--teal-deep); white-space:nowrap; font-size:1.05rem; text-decoration:none; transition:.15s;}
 .topnav .brand:hover{color:var(--teal);}
-.topnav nav{display:flex; gap:24px; flex-wrap:nowrap;}
+.topnav nav{
+  display:flex; gap:clamp(8px,1.4vw,24px); flex-wrap:nowrap;
+  flex:0 1 auto; min-width:0; overflow-x:auto; scrollbar-width:none;
+}
+.topnav nav::-webkit-scrollbar{display:none;}
+.topnav nav a{white-space:nowrap; flex:none;}
 .topnav nav a{
   color:var(--ink-soft); text-decoration:none; font-size:.92rem; font-weight:500;
   white-space:nowrap; padding:6px 10px; border-radius:8px; transition:.15s;
